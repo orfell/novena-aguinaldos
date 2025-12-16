@@ -2,7 +2,7 @@
   {
     "Orden": 1,
     "Titulo": "Oración para todos los días",
-    "Texto": "Benignísimo Dios de infinita caridad, que tanto amasteis a los hombres, que les disteis en vuestro Hijo la mejor\nprenda de vuestro amor para que hecho hombre en las entrañas de una Virgen, naciese en un pesebre para\nnuestra salud y remedio; yo, en nombre de todos los mortales, os doy infinitas gracias por tan soberano beneficio.\n\nEn torno a él os ofrezco la pobreza,humildad y demás virtudes de vuestro hijo humanado; suplicándoos por\nsus divinos méritos, por las incomodidades con que nació y por las tiernas lágrimas que derramó en su pesebre.\n\nQue dispongáis nuestros corazones con humildad profunda, con amor encendido, con total desprecio de todo lo terreno, para que Jesús recién nacido tenga en\nellos su cuna y more eternamente. Amén. (Se reza tresveces el Gloria al Padre).",
+    "Texto": "Benignísimo Dios de infinita caridad, que tanto amasteis a los hombres, que les disteis en vuestro Hijo la mejor\nprenda de vuestro amor para que hecho hombre en las entrañas de una Virgen, naciese en un pesebre para\nnuestra salud y remedio; yo, en nombre de todos los mortales, os doy infinitas gracias por tan soberano beneficio.\n\nEn torno a él os ofrezco la pobreza,humildad y demás virtudes de vuestro hijo humanado; suplicándoos por\nsus divinos méritos, por las incomodidades con que nació y por las tiernas lágrimas que derramó en su pesebre.\n\nQue dispongáis nuestros corazones con humildad profunda, con amor encendido, con total desprecio de todo lo terreno, para que Jesús recién nacido tenga en\nellos su cuna y more eternamente. Amén. (Se reza tres veces el Gloria al Padre).",
     "Audio_Oracion": "assets/audio/audio_oracion_todos.mp3"
   },
   {
@@ -15,7 +15,7 @@
     "Orden": 3,
     "Titulo": "Oración a San José",
     "Texto": "¡Oh, Santísimo San José! Esposo de María y padre adoptivo de Jesús. Infinitas gracias doy a Dios porque te escogió para tan altos ministerios y te adornó con todos los dones proporcionados a tan excelente grandeza. Te ruego, por el amor que tuviste al Divino Niño, me abrases en fervorosos deseos de verle y recibirle sacramentalmente, mientras en su divina esencia le veo y le gozo en el cielo. Amén. (Se reza el Padrenuestro, el Avemaría y el Gloria)",
-    "Audio_Oracion": "assets/audio/audio_sanjose.mp3"
+    "Audio_Oracion": "assets/audio/audio_oracion_sanjose.mp3"
   },
   {
     "Orden": 4,
