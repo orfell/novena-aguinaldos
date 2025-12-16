@@ -1,49 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Villancicos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
-
-<header class="header">
-  <div class="wrap">
-    <div class="brand">
-      <h1>Villancicos</h1>
-      <small><a href="index.html">← Inicio</a></small>
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="Volver al inicio">🎄 Novena de Aguinaldos</a>
+    <div class="top-actions">
+      <a class="btn small" href="./index.html">Inicio</a>
+      <button id="btnToggleTheme" class="btn small" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
     </div>
-  </div>
-</header>
+  </header>
 
-<main class="wrap main">
+  <main class="container">
 
-  <section class="card">
-    <p style="margin:0">
-      Lista de villancicos para acompañar la Novena.
-    </p>
-  </section>
+    <section class="card">
+      <h1 class="h1">Villancicos</h1>
+      <div class="muted">Lista con acceso directo al video. Usa el buscador para filtrar por nombre.</div>
+    </section>
 
-  <section class="grid">
-    <div class="card">
-      <div class="button-title">Noche de Paz</div>
-      <div class="button-desc">Villancico tradicional</div>
-      <p style="margin-top:8px;color:#555">
-        Aquí irá el botón para abrir YouTube.
-      </p>
-    </div>
+    <section class="card">
+      <h2 class="h2">Buscar</h2>
+      <input id="searchInput" type="search" placeholder="Escribe el nombre del villancico…"
+             class="btn" style="width:100%; text-align:left;"
+             aria-label="Buscar villancico por nombre" />
+      <div id="countInfo" class="muted" style="margin-top:10px;"></div>
+    </section>
 
-    <div class="card">
-      <div class="button-title">Los Peces en el Río</div>
-      <div class="button-desc">Villancico popular</div>
-      <p style="margin-top:8px;color:#555">
-        Otro ejemplo de tarjeta.
-      </p>
-    </div>
-  </section>
+    <section class="card">
+      <h2 class="h2">Listado</h2>
+      <div id="list" style="display:grid; gap:10px;"></div>
+    </section>
 
-</main>
+  </main>
 
+  <footer class="footer">
+    <div class="muted">App accesible • Modo lectura • Audios locales</div>
+  </footer>
+
+  <script>
+    // Tema persistente igual que index/day
+    (function () {
+      const btnTheme = document.getElementById("btnToggleTheme");
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") document.documentElement.classList.add("dark");
+
+      btnTheme?.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        localStorage.setItem(
+          "theme",
+          document.documentElement.classList.contains("dark") ? "dark" : "light"
+        );
+      });
+    })();
+
+    async function loadVillancicos() {
+      const res = await fetch("data/villancicos.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("No se pudo cargar data/villancicos.json");
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("villancicos.json debe ser un arreglo");
+      return data;
+    }
+
+    function normalize(s){
+      return (s || "")
+        .toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function makeItemCard(nombre, url){
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.padding = "12px";
+
+      const title = document.createElement("div");
+      title.style.fontWeight = "800";
+      title.style.marginBottom = "8px";
+      title.textContent = nombre;
+
+      const actions = document.createElement("div");
+      actions.style.display = "flex";
+      actions.style.gap = "10px";
+      actions.style.flexWrap = "wrap";
+
+      const btnOpen = document.createElement("a");
+      btnOpen.className = "btn";
+      btnOpen.textContent = "▶ Ver / Escuchar";
+      btnOpen.target = "_blank";
+      btnOpen.rel = "noopener";
+      btnOpen.href = url;
+
+      const btnCopy = document.createElement("button");
+      btnCopy.className = "btn";
+      btnCopy.type = "button";
+      btnCopy.textContent = "Copiar enlace";
+      btnCopy.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+          btnCopy.textContent = "¡Copiado!";
+          setTimeout(() => btnCopy.textContent = "Copiar enlace", 900);
+        } catch {
+          btnCopy.textContent = "No se pudo copiar";
+          setTimeout(() => btnCopy.textContent = "Copiar enlace", 1100);
+        }
+      });
+
+      if (!url) {
+        btnOpen.textContent = "Sin enlace";
+        btnOpen.style.pointerEvents = "none";
+        btnOpen.classList.add("muted");
+        btnCopy.disabled = true;
+
+        const note = document.createElement("div");
+        note.className = "muted";
+        note.style.marginTop = "8px";
+        note.textContent = "Falta URL del video en la hoja.";
+        card.appendChild(title);
+        actions.appendChild(btnOpen);
+        actions.appendChild(btnCopy);
+        card.appendChild(actions);
+        card.appendChild(note);
+        return card;
+      }
+
+      card.appendChild(title);
+      actions.appendChild(btnOpen);
+      actions.appendChild(btnCopy);
+      card.appendChild(actions);
+      return card;
+    }
+
+    function render(listEl, items){
+      listEl.innerHTML = "";
+      items.forEach((v, idx) => {
+        const nombre = (v.Nombre || v.nombre || v.Titulo || v.titulo || `Villancico ${idx+1}`).toString().trim();
+        const url = (v.Url || v.url || v.Video || v.videolink || "").toString().trim();
+        listEl.appendChild(makeItemCard(nombre, url));
+      });
+    }
+
+    (async function main(){
+      const listEl = document.getElementById("list");
+      const search = document.getElementById("searchInput");
+      const countInfo = document.getElementById("countInfo");
+
+      let all = [];
+      try {
+        all = await loadVillancicos();
+      } catch (e) {
+        listEl.innerHTML = `<div class="muted">Error: ${String(e)}</div>`;
+        return;
+      }
+
+      function applyFilter(){
+        const q = normalize(search.value);
+        const filtered = !q ? all : all.filter(v => normalize(v.Nombre || v.nombre || v.Titulo).includes(q));
+        countInfo.textContent = `Mostrando ${filtered.length} de ${all.length}`;
+        render(listEl, filtered);
+      }
+
+      search.addEventListener("input", applyFilter);
+      applyFilter();
+    })();
+  </script>
 </body>
 </html>
