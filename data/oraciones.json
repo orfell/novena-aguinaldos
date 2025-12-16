@@ -2,70 +2,31 @@
   {
     "Orden": 1,
     "Titulo": "Oración para todos los días",
-    "Texto": "Benignísimo Dios de infinita caridad, que tanto amasteis a los hombres, que les disteis en vuestro Hijo la mejor
-prenda de vuestro amor para que hecho hombre en las entrañas de una Virgen, naciese en un pesebre para
-nuestra salud y remedio; yo, en nombre de todos los mortales, os doy infinitas gracias por tan soberano beneficio.
-
-En torno a él os ofrezco la pobreza,humildad y demás virtudes de vuestro hijo humanado; suplicándoos por
-sus divinos méritos, por las incomodidades con que nació y por las tiernas lágrimas que derramó en su pesebre.
-
-Que dispongáis nuestros corazones con humildad profunda, con amor encendido, con total desprecio de todo lo terreno, para que Jesús recién nacido tenga en
-ellos su cuna y more eternamente. Amén. (Se reza tresveces el Gloria al Padre).",
+    "Texto": "Benignísimo Dios de infinita caridad, que tanto amasteis a los hombres, que les disteis en vuestro Hijo la mejor\nprenda de vuestro amor para que hecho hombre en las entrañas de una Virgen, naciese en un pesebre para\nnuestra salud y remedio; yo, en nombre de todos los mortales, os doy infinitas gracias por tan soberano beneficio.\n\nEn torno a él os ofrezco la pobreza,humildad y demás virtudes de vuestro hijo humanado; suplicándoos por\nsus divinos méritos, por las incomodidades con que nació y por las tiernas lágrimas que derramó en su pesebre.\n\nQue dispongáis nuestros corazones con humildad profunda, con amor encendido, con total desprecio de todo lo terreno, para que Jesús recién nacido tenga en\nellos su cuna y more eternamente. Amén. (Se reza tresveces el Gloria al Padre).",
     "Audio_Oracion": "assets/audio/audio_oracion_todos.mp3"
-  }
-
+  },
   {
     "Orden": 2,
     "Titulo": "Oración a la Virgen María",
-    "Texto": "Soberana María, que por tus grandes virtudes y especialmente por tu humildad, mereciste que todo un Dios te escogiera por madre suya, te suplico que tu misma prepares y dispongas mi alma, y la de todos los que en este tiempo hagan esta novena, para el nacimiento espiritual de tu dorado Hijo. 
-
-¡Oh dulcísima Madre! Comunícame algo del profundo recogimiento y divina ternura con la que guardaste tú, para que nos hagas menos indignos de verle, amarle y adorarle por toda la eternidad. Amén. (Se reza nueve veces el Avemaría)",
+    "Texto": "Soberana María, que por tus grandes virtudes y especialmente por tu humildad, mereciste que todo un Dios te escogiera por madre suya, te suplico que tu misma prepares y dispongas mi alma, y la de todos los que en este tiempo hagan esta novena, para el nacimiento espiritual de tu dorado Hijo.\n\n¡Oh dulcísima Madre! Comunícame algo del profundo recogimiento y divina ternura con la que guardaste tú, para que nos hagas menos indignos de verle, amarle y adorarle por toda la eternidad. Amén. (Se reza nueve veces el Avemaría)",
     "Audio_Oracion": "assets/audio/audio_oracion_virgen.mp3"
   },
-
   {
     "Orden": 3,
     "Titulo": "Oración a San José",
     "Texto": "¡Oh, Santísimo San José! Esposo de María y padre adoptivo de Jesús. Infinitas gracias doy a Dios porque te escogió para tan altos ministerios y te adornó con todos los dones proporcionados a tan excelente grandeza. Te ruego, por el amor que tuviste al Divino Niño, me abrases en fervorosos deseos de verle y recibirle sacramentalmente, mientras en su divina esencia le veo y le gozo en el cielo. Amén. (Se reza el Padrenuestro, el Avemaría y el Gloria)",
     "Audio_Oracion": "assets/audio/audio_sanjose.mp3"
   },
-
   {
     "Orden": 4,
     "Titulo": "Los Gozos",
     "Texto": "Aquí va el texto completo de los Gozos.",
     "Audio_Oracion": "assets/audio/audio_gozos.mp3"
   },
-
   {
     "Orden": 5,
     "Titulo": "Oración al Niño Jesús",
-    "Texto": "Dulce Jesús mío, mi niño adorado, ¡ven a nuestras almas! ¡Ven no tardes tanto!
-
-¡Oh sapiencia suma del Dios soberano, que al nivel de un niño te hayas rebajado! ¡Oh Divino Niño, ven para enseñarnos la prudencia que hace verdaderos sabios! (Coro: ¡Ven a nuestras almas! ¡Ven no tardes tanto!)
-
-¡Oh, Adonaí potente que, a Moisés hablando, de Israel al pueblo disteis los mandatos! ¡Ah! ven prontamente para rescatarnos y que un niño débil muestre fuerte brazo! (Coro)
-
-¡Oh raíz sagrada de José, que en lo alto presentan al orbe tu fragante nardo! ¡Dulcisimo Niño que has sido llamado lirio de los valles bella flor del campo! (Coro)
-
-¡Llave de David que abre al desterrado las cerradas puertas del regio palacio! ¡Sácanos, Oh, Niño con tu blanda mano, de la cárcel triste que labró el pecado! (Coro)
-
-¡Oh lumbre de Oriente sol de eternos rayos, que entre las tinieblas tu esplendor veamos! ¡Niño tan preciado, dicha del cristiano, luzca la sonrisa de tus dulces labios! (Coro)
-
-¡Espejo sin mancha Santo de los santos, sin igual imagen del Dios soberano! ¡Borra nuestras culpas, salva al desterrado y, en forma de Niño da al misero amparo! (Coro)
-
-¡Rey de las naciones, Emmanuel preclaro, de Israel anhelo, pastor del rebaño! ¡Niño que apacientas con suave cayado ya la oveja arisca, ya el cordero manso! (Coro)
-
-¡Ábranse los cielos y llueva de lo alto Bienhechor rocío, como riego santo! ¡Ven hermoso Niño! Ven Dios humanado luce, hermosa estrella, brota flor del campo. (Coro)
-
-¡Ven que ya María previene sus brazos do su niño vean, en tiempo cercano! ¡Ven, que ya José, con anhelo sacro, se dispone a hacerse de tu amor sagrario! (Coro)
-
-¡Del débil auxilio del doliente amparo, consuelo del triste, luz del desterrado! ¡Vida de mi vida, mi dueño adorado, mi constante amigo, mi divino hermano! (Coro)
-
-¡Ve ante mis ojos de ti enamorados! Bese ya tus plantas, bese ya tus manos. Prosternado en tierra te tiendo los brazos, y aún más que mis frases, te dice mi llanto. (Coro)
-
-Ven, Salvador nuestro, por quien suspiramos, Ven a nuestras almas, ¡ven no tardes tanto!",
+    "Texto": "Dulce Jesús mío, mi niño adorado, ¡ven a nuestras almas! ¡Ven no tardes tanto!\n\n¡Oh sapiencia suma del Dios soberano, que al nivel de un niño te hayas rebajado! ¡Oh Divino Niño, ven para enseñarnos la prudencia que hace verdaderos sabios! (Coro: ¡Ven a nuestras almas! ¡Ven no tardes tanto!)\n\n¡Oh, Adonaí potente que, a Moisés hablando, de Israel al pueblo disteis los mandatos! ¡Ah! ven prontamente para rescatarnos y que un niño débil muestre fuerte brazo! (Coro)\n\n¡Oh raíz sagrada de José, que en lo alto presentan al orbe tu fragante nardo! ¡Dulcisimo Niño que has sido llamado lirio de los valles bella flor del campo! (Coro)\n\n¡Llave de David que abre al desterrado las cerradas puertas del regio palacio! ¡Sácanos, Oh, Niño con tu blanda mano, de la cárcel triste que labró el pecado! (Coro)\n\n¡Oh lumbre de Oriente sol de eternos rayos, que entre las tinieblas tu esplendor veamos! ¡Niño tan preciado, dicha del cristiano, luzca la sonrisa de tus dulces labios! (Coro)\n\n¡Espejo sin mancha Santo de los santos, sin igual imagen del Dios soberano! ¡Borra nuestras culpas, salva al desterrado y, en forma de Niño da al misero amparo! (Coro)\n\n¡Rey de las naciones, Emmanuel preclaro, de Israel anhelo, pastor del rebaño! ¡Niño que apacientas con suave cayado ya la oveja arisca, ya el cordero manso! (Coro)\n\n¡Ábranse los cielos y llueva de lo alto Bienhechor rocío, como riego santo! ¡Ven hermoso Niño! Ven Dios humanado luce, hermosa estrella, brota flor del campo. (Coro)\n\n¡Ven que ya María previene sus brazos do su niño vean, en tiempo cercano! ¡Ven, que ya José, con anhelo sacro, se dispone a hacerse de tu amor sagrario! (Coro)\n\n¡Del débil auxilio del doliente amparo, consuelo del triste, luz del desterrado! ¡Vida de mi vida, mi dueño adorado, mi constante amigo, mi divino hermano! (Coro)\n\n¡Ve ante mis ojos de ti enamorados! Bese ya tus plantas, bese ya tus manos. Prosternado en tierra te tiendo los brazos, y aún más que mis frases, te dice mi llanto. (Coro)\n\nVen, Salvador nuestro, por quien suspiramos, Ven a nuestras almas, ¡ven no tardes tanto!",
     "Audio_Oracion": "assets/audio/audio_nino_jesus.mp3"
-  },
-
+  }
 ]
