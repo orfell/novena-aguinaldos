@@ -1,18 +1,26 @@
-/* ================================
-   VARIABLES GLOBALES (ACCESIBILIDAD)
-================================= */
+/* ======================================================
+   VARIABLES GLOBALES (LECTURA + ACCESIBILIDAD)
+====================================================== */
 :root {
   --font-scale: 1;
+
   --bg-color: #ffffff;
   --text-color: #111111;
+  --muted-text: #555555;
+
   --card-bg: #f5f6f8;
   --border-color: #e0e0e0;
+
   --primary-color: #6a3df0;
+
+  --button-bg: #ffffff;
+  --button-border: #d0d0d0;
+  --button-hover: #f0f0f0;
 }
 
-/* ================================
+/* ======================================================
    RESET BÁSICO
-================================= */
+====================================================== */
 * {
   box-sizing: border-box;
 }
@@ -22,20 +30,23 @@ html, body {
   padding: 0;
 }
 
-/* ================================
+/* ======================================================
    BODY GENERAL
-================================= */
+====================================================== */
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Arial, sans-serif;
+
   background-color: var(--bg-color);
   color: var(--text-color);
+
   font-size: calc(16px * var(--font-scale));
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
-/* ================================
+/* ======================================================
    HEADER
-================================= */
+====================================================== */
 header {
   padding: 16px 20px;
   border-bottom: 1px solid var(--border-color);
@@ -52,18 +63,18 @@ header a {
   font-size: 0.95em;
 }
 
-/* ================================
+/* ======================================================
    CONTENEDOR PRINCIPAL
-================================= */
+====================================================== */
 main {
   max-width: 900px;
   margin: auto;
   padding: 20px;
 }
 
-/* ================================
+/* ======================================================
    TARJETAS
-================================= */
+====================================================== */
 .card {
   background-color: var(--card-bg);
   border-radius: 14px;
@@ -72,9 +83,9 @@ main {
   border: 1px solid var(--border-color);
 }
 
-/* ================================
+/* ======================================================
    TEXTOS
-================================= */
+====================================================== */
 h2 {
   margin-top: 0;
   font-size: 1.5em;
@@ -84,9 +95,21 @@ p {
   margin: 0.6em 0;
 }
 
-/* ================================
+.muted {
+  color: var(--muted-text);
+}
+
+/* ======================================================
+   GRID SIMPLE
+====================================================== */
+.grid {
+  display: grid;
+  gap: 10px;
+}
+
+/* ======================================================
    NAVEGACIÓN (ANTERIOR / SIGUIENTE)
-================================= */
+====================================================== */
 .nav-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -94,24 +117,25 @@ p {
   margin-top: 10px;
 }
 
-.nav-buttons button {
-  padding: 12px;
-}
-
-/* ================================
+/* ======================================================
    BOTONES
-================================= */
+====================================================== */
 button {
-  background-color: #ffffff;
-  border: 1px solid var(--border-color);
+  background-color: var(--button-bg);
+  border: 1px solid var(--button-border);
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px;
   font-size: 1em;
   cursor: pointer;
+  color: var(--text-color);
 }
 
 button:hover {
-  background-color: #f0f0f0;
+  background-color: var(--button-hover);
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 button:disabled {
@@ -119,38 +143,74 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ================================
+/* ======================================================
    AUDIO
-================================= */
+====================================================== */
 audio {
   width: 100%;
   margin-top: 10px;
 }
 
-/* ================================
-   GRID SIMPLE
-================================= */
-.grid {
-  display: grid;
-  gap: 10px;
-}
-
-/* ================================
-   ACCESIBILIDAD - MODO OSCURO
-================================= */
-body.dark {
-  --bg-color: #111111;
-  --text-color: #f1f1f1;
-  --card-bg: #1e1e1e;
-  --border-color: #333333;
-}
-
-/* ================================
-   FOOTER (SI LO USAS)
-================================= */
+/* ======================================================
+   FOOTER (OPCIONAL)
+====================================================== */
 footer {
   text-align: center;
   padding: 20px;
   font-size: 0.9em;
-  color: #777;
+  color: var(--muted-text);
+}
+
+/* ======================================================
+   🌙 MODO OSCURO (AJUSTADO PARA LECTURA)
+====================================================== */
+body.dark {
+  --bg-color: #111111;
+  --text-color: #f1f1f1;
+  --muted-text: #bdbdbd;
+
+  --card-bg: #1e1e1e;
+  --border-color: #3a3a3a;
+
+  --primary-color: #9a7bff;
+
+  --button-bg: #1e1e1e;
+  --button-border: #4a4a4a;
+  --button-hover: #2a2a2a;
+}
+/* ================================
+   NAVEGACIÓN COMO BOTONES REALES
+================================ */
+
+.nav-buttons a {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+
+  background-color: var(--button-bg);
+  border: 1px solid var(--button-border);
+  border-radius: 10px;
+
+  padding: 12px;
+  font-size: 1em;
+  font-weight: 500;
+
+  color: var(--text-color);
+  cursor: pointer;
+
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.nav-buttons a:hover {
+  background-color: var(--button-hover);
+}
+
+.nav-buttons a:active {
+  transform: scale(0.97);
+}
+
+/* Estado deshabilitado (cuando JS los apaga) */
+.nav-buttons a[style*="pointer-events: none"] {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
