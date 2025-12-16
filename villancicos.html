@@ -20,9 +20,30 @@
 
     <section class="card">
       <h1 class="h1">Villancicos</h1>
-      <div class="muted">Lista con acceso directo al video. Usa el buscador para filtrar por nombre.</div>
+      <div class="muted">Toca un villancico para reproducirlo aquí mismo.</div>
     </section>
 
+    <!-- Reproductor embebido (UNO SOLO) -->
+    <section class="card">
+      <h2 class="h2" id="playerTitle">Selecciona un villancico</h2>
+
+      <div style="position:relative; width:100%; padding-top:56.25%; border-radius: var(--radius); overflow:hidden; border:1px solid var(--border);">
+        <iframe
+          id="ytPlayer"
+          title="Reproductor de YouTube"
+          style="position:absolute; inset:0; width:100%; height:100%; border:0;"
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div id="playerHint" class="muted" style="margin-top:10px;">
+        El video se abrirá aquí cuando elijas uno del listado.
+      </div>
+    </section>
+
+    <!-- Buscar -->
     <section class="card">
       <h2 class="h2">Buscar</h2>
       <input id="searchInput" type="search" placeholder="Escribe el nombre del villancico…"
@@ -31,6 +52,7 @@
       <div id="countInfo" class="muted" style="margin-top:10px;"></div>
     </section>
 
+    <!-- Lista (scroll natural) -->
     <section class="card">
       <h2 class="h2">Listado</h2>
       <div id="list" style="display:grid; gap:10px;"></div>
@@ -74,75 +96,89 @@
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function makeItemCard(nombre, url){
-      const card = document.createElement("div");
-      card.className = "card";
-      card.style.padding = "12px";
-
-      const title = document.createElement("div");
-      title.style.fontWeight = "800";
-      title.style.marginBottom = "8px";
-      title.textContent = nombre;
-
-      const actions = document.createElement("div");
-      actions.style.display = "flex";
-      actions.style.gap = "10px";
-      actions.style.flexWrap = "wrap";
-
-      const btnOpen = document.createElement("a");
-      btnOpen.className = "btn";
-      btnOpen.textContent = "▶ Ver / Escuchar";
-      btnOpen.target = "_blank";
-      btnOpen.rel = "noopener";
-      btnOpen.href = url;
-
-      const btnCopy = document.createElement("button");
-      btnCopy.className = "btn";
-      btnCopy.type = "button";
-      btnCopy.textContent = "Copiar enlace";
-      btnCopy.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(url);
-          btnCopy.textContent = "¡Copiado!";
-          setTimeout(() => btnCopy.textContent = "Copiar enlace", 900);
-        } catch {
-          btnCopy.textContent = "No se pudo copiar";
-          setTimeout(() => btnCopy.textContent = "Copiar enlace", 1100);
-        }
-      });
-
-      if (!url) {
-        btnOpen.textContent = "Sin enlace";
-        btnOpen.style.pointerEvents = "none";
-        btnOpen.classList.add("muted");
-        btnCopy.disabled = true;
-
-        const note = document.createElement("div");
-        note.className = "muted";
-        note.style.marginTop = "8px";
-        note.textContent = "Falta URL del video en la hoja.";
-        card.appendChild(title);
-        actions.appendChild(btnOpen);
-        actions.appendChild(btnCopy);
-        card.appendChild(actions);
-        card.appendChild(note);
-        return card;
-      }
-
-      card.appendChild(title);
-      actions.appendChild(btnOpen);
-      actions.appendChild(btnCopy);
-      card.appendChild(actions);
-      return card;
+    function getYouTubeId(url){
+      if (!url) return "";
+      const u = url.toString().trim();
+      // youtu.be/ID
+      const m1 = u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/);
+      if (m1) return m1[1];
+      // youtube.com/watch?v=ID
+      const m2 = u.match(/[?&]v=([A-Za-z0-9_-]{6,})/);
+      if (m2) return m2[1];
+      // youtube.com/embed/ID
+      const m3 = u.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/);
+      if (m3) return m3[1];
+      return "";
     }
 
-    function render(listEl, items){
-      listEl.innerHTML = "";
-      items.forEach((v, idx) => {
-        const nombre = (v.Nombre || v.nombre || v.Titulo || v.titulo || `Villancico ${idx+1}`).toString().trim();
-        const url = (v.Url || v.url || v.Video || v.videolink || "").toString().trim();
-        listEl.appendChild(makeItemCard(nombre, url));
+    function setPlayer(nombre, url){
+      const id = getYouTubeId(url);
+      const titleEl = document.getElementById("playerTitle");
+      const hintEl  = document.getElementById("playerHint");
+      const iframe  = document.getElementById("ytPlayer");
+
+      titleEl.textContent = nombre || "Villancico";
+      if (!id) {
+        iframe.src = "";
+        hintEl.textContent = "Este villancico no tiene URL válida de YouTube.";
+        return;
+      }
+
+      // autoplay=1 para que arranque al tocar (si el navegador lo permite)
+      iframe.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&autoplay=1`;
+      hintEl.textContent = "Si no reproduce automáticamente, pulsa ▶ dentro del video.";
+    }
+
+    function makeRow(v, idx){
+      const nombre = (v.Nombre || v.nombre || v.Titulo || v.titulo || `Villancico ${idx+1}`).toString().trim();
+      const url = (v.Url || v.url || v.Video || v.videolink || "").toString().trim();
+      const ok = Boolean(getYouTubeId(url));
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn";
+      btn.style.textAlign = "left";
+      btn.style.width = "100%";
+      btn.style.display = "flex";
+      btn.style.justifyContent = "space-between";
+      btn.style.alignItems = "center";
+      btn.style.gap = "10px";
+
+      const left = document.createElement("div");
+      left.style.display = "grid";
+      left.style.gap = "2px";
+
+      const t = document.createElement("div");
+      t.style.fontWeight = "800";
+      t.textContent = nombre;
+
+      const s = document.createElement("div");
+      s.className = "muted";
+      s.textContent = ok ? "YouTube" : "Sin enlace válido";
+
+      left.appendChild(t);
+      left.appendChild(s);
+
+      const right = document.createElement("div");
+      right.textContent = ok ? "▶" : "—";
+      right.setAttribute("aria-hidden", "true");
+
+      btn.appendChild(left);
+      btn.appendChild(right);
+
+      if (!ok){
+        btn.disabled = true;
+        btn.style.opacity = "0.6";
+        return btn;
+      }
+
+      btn.addEventListener("click", () => {
+        setPlayer(nombre, url);
+        // En móvil: subir suavemente al reproductor
+        document.getElementById("playerTitle").scrollIntoView({ behavior: "smooth", block: "start" });
       });
+
+      return btn;
     }
 
     (async function main(){
@@ -151,22 +187,31 @@
       const countInfo = document.getElementById("countInfo");
 
       let all = [];
-      try {
+      try{
         all = await loadVillancicos();
-      } catch (e) {
+      }catch(e){
         listEl.innerHTML = `<div class="muted">Error: ${String(e)}</div>`;
         return;
       }
 
+      function render(items){
+        listEl.innerHTML = "";
+        items.forEach((v, i) => listEl.appendChild(makeRow(v, i)));
+      }
+
       function applyFilter(){
         const q = normalize(search.value);
-        const filtered = !q ? all : all.filter(v => normalize(v.Nombre || v.nombre || v.Titulo).includes(q));
+        const filtered = !q ? all : all.filter(v => normalize(v.Nombre || v.nombre || v.Titulo || v.titulo).includes(q));
         countInfo.textContent = `Mostrando ${filtered.length} de ${all.length}`;
-        render(listEl, filtered);
+        render(filtered);
       }
 
       search.addEventListener("input", applyFilter);
       applyFilter();
+
+      // Si el primer item tiene video, lo preseleccionamos (opcional)
+      const firstWithUrl = all.find(v => getYouTubeId(v.Url || v.url || v.Video || v.videolink));
+      if (firstWithUrl) setPlayer(firstWithUrl.Nombre || firstWithUrl.Titulo || "Villancico", firstWithUrl.Url || firstWithUrl.url || "");
     })();
   </script>
 </body>
