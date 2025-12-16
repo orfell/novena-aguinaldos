@@ -1,32 +1,64 @@
-// Novena - day.js (lectura + accesibilidad enfocada al texto central)
-// Requiere: dias.json, oraciones.json en la misma carpeta.
+// Novena - day.js (robusto + accesibilidad enfocada al texto central)
+// Requiere: oraciones.json
+// dias.json puede estar en la raíz o en /data/
 
 function qs(id){ return document.getElementById(id); }
 
 function getParams(){
   const url = new URL(window.location.href);
-  return {
-    dia: Number(url.searchParams.get("dia") || 1),
-    orden: Number(url.searchParams.get("orden") || 1),
-    vista: url.searchParams.get("vista") || "oracion" // "oracion" | "dia"
-  };
+
+  // Compatibilidad NUEVA
+  const vistaNew = url.searchParams.get("vista");      // "oracion" | "dia"
+  const diaNew   = url.searchParams.get("dia");
+  const ordenNew = url.searchParams.get("orden");
+
+  // Compatibilidad VIEJA (tu enlace actual: ?tipo=oraciones&id=1)
+  const tipoOld = url.searchParams.get("tipo");        // "oraciones" | "dias"
+  const idOld   = url.searchParams.get("id");
+
+  // Resolver vista
+  let vista = "oracion";
+  if (vistaNew) vista = vistaNew;
+  else if (tipoOld === "dias") vista = "dia";
+  else if (tipoOld === "oraciones") vista = "oracion";
+
+  // Resolver índices
+  let dia = Number(diaNew || 1);
+  let orden = Number(ordenNew || 1);
+
+  if (idOld && !ordenNew && !diaNew) {
+    // Si viene esquema viejo, id representa la selección de la vista
+    if (vista === "oracion") orden = Number(idOld);
+    if (vista === "dia") dia = Number(idOld);
+  }
+
+  return { dia, orden, vista };
 }
 
 function setParams(next){
   const url = new URL(window.location.href);
   Object.entries(next).forEach(([k,v]) => url.searchParams.set(k, String(v)));
+  // Limpia parámetros viejos si existían
+  url.searchParams.delete("tipo");
+  url.searchParams.delete("id");
   window.location.href = url.toString();
 }
 
-async function loadJson(path){
-  const res = await fetch(path, { cache: "no-store" });
-  if(!res.ok) throw new Error(`No se pudo cargar ${path}`);
-  return await res.json();
+async function loadJsonTry(paths){
+  let lastErr = null;
+  for (const p of paths){
+    try{
+      const res = await fetch(p, { cache: "no-store" });
+      if(!res.ok) throw new Error(`No se pudo cargar ${p} (HTTP ${res.status})`);
+      return await res.json();
+    }catch(e){
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error("No se pudo cargar JSON");
 }
 
-function safeText(x){
-  return (x ?? "").toString();
-}
+function safeText(x){ return (x ?? "").toString(); }
 
 function initReadingAccessibility() {
   const readingTextEl = qs("readingText");
@@ -36,8 +68,8 @@ function initReadingAccessibility() {
   const btnBigger  = qs("btnTextBigger");
   const btnTheme   = qs("btnToggleTheme");
 
-  const MIN = 0.95;   // rem
-  const MAX = 1.70;   // rem
+  const MIN = 0.95;
+  const MAX = 1.70;
   const STEP = 0.10;
 
   let size = Number(localStorage.getItem("readingFontSize")) || 1.10;
@@ -59,7 +91,6 @@ function initReadingAccessibility() {
     );
   });
 
-  // Tema guardado
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") document.documentElement.classList.add("dark");
 
@@ -68,6 +99,7 @@ function initReadingAccessibility() {
 
 function renderOracionesNav(oraciones, currentOrden){
   const nav = qs("oracionesNav");
+  if (!nav) return;
   nav.innerHTML = "";
 
   oraciones
@@ -86,11 +118,13 @@ function renderOracionesNav(oraciones, currentOrden){
       nav.appendChild(btn);
     });
 
-  qs("oracionInfo").textContent = `Oración actual: ${currentOrden} de ${oraciones.length}`;
+  const info = qs("oracionInfo");
+  if (info) info.textContent = `Oración actual: ${currentOrden} de ${oraciones.length}`;
 }
 
 function renderDiasNav(dias, currentDia){
   const nav = qs("diasNav");
+  if (!nav) return;
   nav.innerHTML = "";
 
   dias
@@ -109,21 +143,8 @@ function renderDiasNav(dias, currentDia){
       nav.appendChild(btn);
     });
 
-  qs("diaInfo").textContent = `Día actual: ${currentDia} de ${dias.length}`;
-}
-
-function getDiaText(d){
-  // Espera d.Reflexion (string). Si no existe, intentamos fallback para no dejarlo en blanco.
-  // OJO: si el JSON está inválido (texto suelto) no llega aquí; hay que corregir el JSON.
-  if (typeof d.Reflexion === "string") return d.Reflexion;
-
-  // Fallback suave: toma la primera propiedad string que no sea Titulo/Fecha/Audio/Dia
-  const skip = new Set(["Dia","Fecha","Titulo","Audio_Reflexion","Reflexion"]);
-  for (const [k,v] of Object.entries(d)) {
-    if (skip.has(k)) continue;
-    if (typeof v === "string" && v.trim().length > 0) return v;
-  }
-  return "";
+  const info = qs("diaInfo");
+  if (info) info.textContent = `Día actual: ${currentDia} de ${dias.length}`;
 }
 
 function setReading(title, text, audioPath){
@@ -142,56 +163,64 @@ function setReading(title, text, audioPath){
 
 async function main(){
   initReadingAccessibility();
-
   const params = getParams();
 
-  let dias = [];
+  // 1) Cargar oraciones (prioritario para que siempre haya UI)
   let oraciones = [];
-
   try {
-    dias = await loadJson("dias.json");
-  } catch (e) {
-    qs("pageTitle").textContent = "Error cargando dias.json";
-    qs("readingTitle").textContent = "Revisa el archivo dias.json";
-    qs("readingText").innerText = String(e);
-    return;
-  }
-
-  try {
-    oraciones = await loadJson("oraciones.json");
+    oraciones = await loadJsonTry(["oraciones.json", "data/oraciones.json"]);
   } catch (e) {
     qs("pageTitle").textContent = "Error cargando oraciones.json";
-    qs("readingTitle").textContent = "Revisa el archivo oraciones.json";
-    qs("readingText").innerText = String(e);
+    setReading("Revisa el archivo oraciones.json", String(e), "");
     return;
   }
 
-  const maxDia = dias.length || 9;
-  const maxOrden = oraciones.length || 5;
+  // 2) Cargar días (si falla, no matamos la página)
+  let dias = [];
+  let diasError = null;
+  try {
+    dias = await loadJsonTry(["dias.json", "data/dias.json"]);
+  } catch (e) {
+    diasError = e;
+    dias = []; // seguimos solo con oraciones
+  }
 
-  const currentDia = Math.max(1, Math.min(maxDia, params.dia || 1));
+  const maxOrden = oraciones.length || 5;
   const currentOrden = Math.max(1, Math.min(maxOrden, params.orden || 1));
-  const vista = (params.vista === "dia") ? "dia" : "oracion";
 
   renderOracionesNav(oraciones, currentOrden);
-  renderDiasNav(dias, currentDia);
 
-  // Cabecera informativa
-  const diaObj = dias.find(x => Number(x.Dia) === currentDia) || dias[0];
-  const diaTitulo = diaObj ? safeText(diaObj.Titulo || `Día ${currentDia}`) : `Día ${currentDia}`;
-  const diaFecha = diaObj ? safeText(diaObj.Fecha || "") : "";
-  qs("pageTitle").textContent = diaTitulo;
-  qs("pageMeta").textContent = diaFecha ? `Fecha: ${diaFecha}` : "";
+  // Si no hay días, ocultamos nav de días y mostramos aviso (sin romper oraciones)
+  if (!dias.length) {
+    qs("diasNav").innerHTML = "";
+    qs("diaInfo").textContent = diasError
+      ? `Aviso: no se pudo cargar dias.json. ${String(diasError)}`
+      : "Aviso: no hay días cargados.";
+  } else {
+    const maxDia = dias.length || 9;
+    const currentDia = Math.max(1, Math.min(maxDia, params.dia || 1));
+    renderDiasNav(dias, currentDia);
+  }
 
-  if (vista === "dia"){
-    const texto = getDiaText(diaObj);
-    const audio = diaObj ? safeText(diaObj.Audio_Reflexion || "") : "";
-    setReading(diaTitulo, texto, audio);
+  // Cabecera
+  qs("pageTitle").textContent = "Novena de Aguinaldos";
+  qs("pageMeta").textContent = "";
+
+  // Vista
+  const vista = (params.vista === "dia") ? "dia" : "oracion";
+
+  if (vista === "dia" && dias.length) {
+    const currentDia = Math.max(1, Math.min(dias.length, params.dia || 1));
+    const diaObj = dias.find(x => Number(x.Dia) === currentDia) || dias[0];
+    const titulo = safeText(diaObj?.Titulo || `Día ${currentDia}`);
+    const texto = safeText(diaObj?.Reflexion || "");
+    const audio = safeText(diaObj?.Audio_Reflexion || "");
+    setReading(titulo, texto, audio);
   } else {
     const o = oraciones.find(x => Number(x.Orden) === currentOrden) || oraciones[0];
     const titulo = safeText(o?.Titulo || `Oración ${currentOrden}`);
-    const texto = safeText(o?.Texto || "");
-    const audio = safeText(o?.Audio_Oracion || o?.Audio || "");
+    const texto  = safeText(o?.Texto || "");
+    const audio  = safeText(o?.Audio_Oracion || "");
     setReading(titulo, texto, audio);
   }
 }
