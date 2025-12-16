@@ -12,30 +12,35 @@
     if (el) el.textContent = value;
   }
 
-  function initDayPage() {
+  async function initDayPage() {
     const tipo = getQueryParam("tipo"); // "oraciones" o "dias"
     if (!tipo) return;
 
-    if (tipo === "oraciones") {
-      setText("pageTitle", "Oraciones");
-      setText("itemTitle", "Oración (ejemplo)");
-      setText("itemMeta", "Sección · Oraciones");
-      setText(
-        "itemText",
-        "Aquí mostraremos una oración real desde data/oraciones.json. " +
-        "En el siguiente paso conectamos el archivo JSON y listo."
-      );
-      document.title = "Oraciones · Novena";
-    } else if (tipo === "dias") {
-      setText("pageTitle", "Días 1–9");
-      setText("itemTitle", "Día 1 (ejemplo)");
-      setText("itemMeta", "Sección · Días");
-      setText(
-        "itemText",
-        "Aquí mostraremos la reflexión real del día desde data/dias.json. " +
-        "En el siguiente paso conectamos el archivo JSON y navegamos día a día."
-      );
-      document.title = "Días · Novena";
+    try {
+      if (tipo === "oraciones") {
+        setText("pageTitle", "Oraciones");
+        document.title = "Oraciones · Novena";
+
+        const items = await loadJSON("data/oraciones.json");
+        const first = items[0];
+
+        setText("itemTitle", first?.Titulo || "Oración");
+        setText("itemMeta", "Sección · Oraciones");
+        setText("itemText", first?.Texto || "Sin contenido todavía.");
+      } else if (tipo === "dias") {
+        setText("pageTitle", "Días 1–9");
+        document.title = "Días · Novena";
+
+        const items = await loadJSON("data/dias.json");
+        const first = items[0];
+
+        setText("itemTitle", first?.Titulo || `Día ${first?.Dia || ""}`);
+        setText("itemMeta", `Sección · Días · ${first?.Fecha || ""}`);
+        setText("itemText", first?.Reflexion || "Sin contenido todavía.");
+      }
+    } catch (e) {
+      setText("itemTitle", "Error cargando datos");
+      setText("itemText", String(e));
     }
   }
 
