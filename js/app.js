@@ -123,11 +123,12 @@
   ========================= */
 
   function init() {
-    // Solo inicializa si estamos en day.html
-    if (document.getElementById("pageTitle")) {
-      initDayPage();
-    }
+  if (document.getElementById("pageTitle")) {
+    if (window.initAudioUI) window.initAudioUI();
+    initDayPage();
   }
+}
+
 
   document.addEventListener("DOMContentLoaded", init);
 })();

@@ -35,12 +35,21 @@
     <p id="navHint" style="color:#555;margin:10px 0 0 0;"></p>
   </article>
 
-  <article class="card">
-    <p style="margin:0"><b>Audio</b></p>
-    <p style="color:#555">
-      El botón de reproducción aparecerá aquí cuando conectemos los audios.
-    </p>
-  </article>
+  <article class="card" id="audioCard">
+  <p style="margin:0"><b>Audio</b></p>
+
+  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
+    <button id="playBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">▶ Escuchar</button>
+    <button id="pauseBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏸ Pausar</button>
+    <button id="stopBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏹ Detener</button>
+  </div>
+
+  <p id="audioMsg" style="color:#555;margin:10px 0 0 0;"></p>
+
+  <!-- Un solo reproductor controlado por JS -->
+  <audio id="audioPlayer" preload="none" style="width:100%; margin-top:10px;" controls></audio>
+</article>
+
 
   <article class="card">
     <p style="margin:0;color:#555">
@@ -50,6 +59,7 @@
 </main>
 
 <script src="js/data.js"></script>
+<script src="js/audio.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
