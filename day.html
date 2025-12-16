@@ -2,75 +2,68 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Día · Novena</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Novena de Aguinaldos</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <header>
-    <h1 id="pageTitle">Día</h1>
-    <a href="index.html">← Inicio</a>
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="Volver al inicio">🎄 Novena de Aguinaldos</a>
+    <div class="top-actions">
+      <a class="btn small" href="./index.html">Inicio</a>
+    </div>
   </header>
 
-  <main>
-    <article class="card">
-      <h2 id="itemTitle">Cargando…</h2>
-      <p id="itemMeta" class="muted"></p>
-      <p id="itemText"></p>
-    </article>
+  <main class="container">
+    <!-- CARD PRINCIPAL: DÍA / ORACIÓN -->
+    <section class="card">
+      <h1 id="pageTitle" class="h1">Cargando…</h1>
+      <div id="pageMeta" class="muted"></div>
 
-    <!-- NAVEGACIÓN (DÍAS u ORACIONES) -->
-    <article class="card" id="navCard">
-      <h3 id="navTitle" style="margin-top:0">Ir a…</h3>
+      <!-- PANEL DE ACCESIBILIDAD (sticky y cerca al texto) -->
+      <section class="card accessibility-card" aria-label="Accesibilidad">
+        <div class="accessibility-bar" role="toolbar" aria-label="Controles de lectura">
+          <button id="btnTextSmaller" class="btn" type="button" aria-label="Disminuir tamaño de lectura">A-</button>
+          <button id="btnTextBigger" class="btn" type="button" aria-label="Aumentar tamaño de lectura">A+</button>
+          <button id="btnToggleTheme" class="btn" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
+        </div>
+        <div class="accessibility-hint">Estos ajustes afectan solo el texto principal de lectura.</div>
+      </section>
 
-      <!-- Botones de DÍAS (1–9) -->
-      <div id="dayButtons" class="day-buttons" style="display:none;">
-        <!-- Se llena desde app.js -->
-      </div>
+      <!-- BLOQUE DE LECTURA (SOLO ESTE CAMBIA DE TAMAÑO) -->
+      <section class="card reading-card">
+        <h2 id="readingTitle" class="reading-title"></h2>
+        <div id="readingText" class="reading-text" tabindex="0"></div>
+      </section>
+    </section>
 
-      <!-- Botones de ORACIONES (títulos) -->
-      <div id="prayerButtons" class="prayer-buttons" style="display:none;">
-        <!-- Se llena desde app.js -->
-      </div>
+    <!-- NAVEGACIÓN ORACIONES -->
+    <section class="card">
+      <h2 class="h2">Ir a la oración</h2>
+      <div id="oracionesNav" class="grid-2"></div>
+      <div class="muted" id="oracionInfo"></div>
+    </section>
 
-      <p id="navHint" class="muted" style="margin:12px 0 0;">
-        —
-      </p>
-    </article>
+    <!-- AUDIO -->
+    <section class="card">
+      <h2 class="h2">Audio</h2>
+      <audio id="audioPlayer" controls preload="none" class="audio"></audio>
+      <div class="muted">Pulsa ▶ para escuchar el audio.</div>
+    </section>
 
-    <!-- Audio (solo reproductor nativo) -->
-    <article class="card">
-      <h3 style="margin-top:0">Audio</h3>
-
-      <audio id="audioPlayer" controls preload="metadata">
-        Tu navegador no soporta audio.
-      </audio>
-
-      <p id="audioHint" class="muted">
-        Audio no disponible para este contenido.
-      </p>
-    </article>
-
-    <!-- Accesibilidad -->
-    <article class="card" id="accessibilityCard">
-      <p style="margin:0"><b>Accesibilidad</b></p>
-
-      <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
-        <button id="fontMinus">A−</button>
-        <button id="fontPlus">A+</button>
-        <button id="toggleTheme">🌙</button>
-      </div>
-
-      <p class="muted" style="margin-top:10px">
-        Ajustes pensados para lectura cómoda.
-      </p>
-    </article>
+    <!-- NAVEGACIÓN DÍAS -->
+    <section class="card">
+      <h2 class="h2">Días</h2>
+      <div id="diasNav" class="grid-3"></div>
+      <div class="muted" id="diaInfo"></div>
+    </section>
   </main>
 
-  <script src="js/data.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/accessibility.js"></script>
-  <script src="js/app.js"></script>
+  <footer class="footer">
+    <div class="muted">App accesible • Modo lectura • Audios locales</div>
+  </footer>
+
+  <script src="day.js"></script>
 </body>
 </html>
