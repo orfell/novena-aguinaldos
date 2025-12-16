@@ -55,7 +55,11 @@
     <!-- Lista (scroll natural) -->
     <section class="card">
       <h2 class="h2">Listado</h2>
-      <div id="list" style="display:grid; gap:10px;"></div>
+      <div id="list"
+			style="display:grid; gap:10px; overflow:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--border); border-radius: var(--radius); padding:10px;"
+			aria-label="Listado de villancicos (desliza para ver más)">
+	</div>
+
     </section>
 
   </main>
