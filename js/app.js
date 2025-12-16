@@ -2,10 +2,6 @@
 (function () {
   "use strict";
 
-  /* =========================
-     Utilidades
-  ========================= */
-
   function getQueryParam(name) {
     const params = new URLSearchParams(window.location.search);
     return params.get(name);
@@ -22,74 +18,44 @@
     return n;
   }
 
-  /* =========================
-     Navegación
-  ========================= */
-
-  function updateNav(tipo, currentId, total) {
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const navHint = document.getElementById("navHint");
-
-    if (!prevBtn || !nextBtn) return;
-
-    const hasPrev = currentId > 1;
-    const hasNext = total ? currentId < total : true;
-
-    if (hasPrev) {
-      prevBtn.href = `day.html?tipo=${encodeURIComponent(tipo)}&id=${currentId - 1}`;
-      prevBtn.style.opacity = "1";
-      prevBtn.style.pointerEvents = "auto";
-    } else {
-      prevBtn.href = "#";
-      prevBtn.style.opacity = "0.5";
-      prevBtn.style.pointerEvents = "none";
-    }
-
-    if (hasNext) {
-      nextBtn.href = `day.html?tipo=${encodeURIComponent(tipo)}&id=${currentId + 1}`;
-      nextBtn.style.opacity = "1";
-      nextBtn.style.pointerEvents = "auto";
-    } else {
-      nextBtn.href = "#";
-      nextBtn.style.opacity = "0.5";
-      nextBtn.style.pointerEvents = "none";
-    }
-
-    if (navHint) {
-      navHint.textContent = `Navegación: ${currentId}${total ? " / " + total : ""}`;
-    }
+  function setNavVisibility(visible) {
+    const navCard = document.getElementById("navCard");
+    if (navCard) navCard.style.display = visible ? "block" : "none";
   }
 
-  /* =========================
-     Audio (blindado)
-  ========================= */
+  function initDayButtons(currentId, total) {
+    const box = document.getElementById("dayButtons");
+    const hint = document.getElementById("navHint");
+    if (!box) return;
+
+    box.innerHTML = "";
+
+    for (let i = 1; i <= total; i++) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = String(i);
+
+      if (i === currentId) btn.classList.add("active");
+
+      btn.addEventListener("click", () => {
+        window.location.href = `day.html?tipo=dias&id=${i}`;
+      });
+
+      box.appendChild(btn);
+    }
+
+    if (hint) hint.textContent = `Día actual: ${currentId} de ${total}`;
+  }
 
   function pickAudioUrl(item, tipo) {
     if (!item) return "";
 
     if (tipo === "oraciones") {
-      return (
-        item.Audio_Oracion ||
-        item.audio_oracion ||
-        item.AudioOracion ||
-        item.audioOracion ||
-        item.Audio ||
-        item.audio ||
-        ""
-      );
+      return item.Audio_Oracion || item.audio_oracion || item.AudioOracion || item.audioOracion || item.Audio || item.audio || "";
     }
 
     if (tipo === "dias") {
-      return (
-        item.Audio_Reflexion ||
-        item.audio_reflexion ||
-        item.AudioReflexion ||
-        item.audioReflexion ||
-        item.Audio ||
-        item.audio ||
-        ""
-      );
+      return item.Audio_Reflexion || item.audio_reflexion || item.AudioReflexion || item.audioReflexion || item.Audio || item.audio || "";
     }
 
     return "";
@@ -100,10 +66,6 @@
     if (window.loadAudio) window.loadAudio(url || "");
   }
 
-  /* =========================
-     Lógica principal (day.html)
-  ========================= */
-
   async function initDayPage() {
     const tipo = getQueryParam("tipo"); // "oraciones" | "dias"
     if (!tipo) return;
@@ -112,65 +74,62 @@
 
     try {
       if (tipo === "oraciones") {
+        setNavVisibility(false);
         setText("pageTitle", "Oraciones");
         document.title = "Oraciones · Novena";
 
         const items = await loadJSON("data/oraciones.json");
         const total = items.length;
 
-        // Buscar por Orden o por índice
-        let item = items.find((o) => Number(o.Orden) === currentId);
-        if (!item) item = items[currentId - 1];
+        const safeId = Math.min(Math.max(currentId, 1), total || 1);
+
+        let item = items.find((o) => Number(o.Orden) === safeId);
+        if (!item) item = items[safeId - 1];
 
         setText("itemTitle", item?.Titulo || "Oración");
-        setText("itemMeta", `Sección · Oraciones · ${currentId}${total ? " de " + total : ""}`);
+        setText("itemMeta", `Sección · Oraciones · ${safeId}${total ? " de " + total : ""}`);
         setText("itemText", item?.Texto || "Sin contenido todavía.");
 
-        updateNav(tipo, currentId, total);
         applyAudio(item, tipo);
         return;
       }
 
       if (tipo === "dias") {
+        setNavVisibility(true);
         setText("pageTitle", "Días 1–9");
         document.title = "Días · Novena";
 
         const items = await loadJSON("data/dias.json");
         const total = items.length;
 
-        // Buscar por Dia o por índice
-        let item = items.find((d) => Number(d.Dia) === currentId);
-        if (!item) item = items[currentId - 1];
+        const safeId = Math.min(Math.max(currentId, 1), total || 1);
 
-        setText("itemTitle", item?.Titulo || `Día ${currentId}`);
+        let item = items.find((d) => Number(d.Dia) === safeId);
+        if (!item) item = items[safeId - 1];
+
+        setText("itemTitle", item?.Titulo || `Día ${safeId}`);
         setText(
           "itemMeta",
-          `Sección · Días · ${currentId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`
+          `Sección · Días · ${safeId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`
         );
         setText("itemText", item?.Reflexion || "Sin contenido todavía.");
 
-        updateNav(tipo, currentId, total);
+        initDayButtons(safeId, total || 1);
         applyAudio(item, tipo);
         return;
       }
     } catch (err) {
+      setNavVisibility(false);
       setText("itemTitle", "Error cargando datos");
       setText("itemText", String(err));
       if (window.loadAudio) window.loadAudio("");
     }
   }
 
-  /* =========================
-     Inicialización
-  ========================= */
-
   function init() {
-    // Solo si estamos en day.html
     if (document.getElementById("pageTitle")) {
-      // Inicializa UI extra si existen
       if (window.initAccessibility) window.initAccessibility();
       if (window.initAudioUI) window.initAudioUI();
-
       initDayPage();
     }
   }

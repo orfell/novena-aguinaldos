@@ -20,23 +20,17 @@
       <p id="itemText"></p>
     </article>
 
-    <!-- Selector de día (solo se usa en tipo=dias; app.js lo muestra/oculta) -->
+    <!-- NAVEGACIÓN POR BOTONES 1–9 (solo para tipo=dias) -->
     <article class="card" id="navCard">
       <h3 style="margin-top:0">Ir al día</h3>
 
-      <div class="grid" style="grid-template-columns: 1fr; gap: 10px;">
-        <label for="daySelect" class="muted" style="font-size:0.95em;">
-          Selecciona el día (1–9):
-        </label>
-
-        <select id="daySelect">
-          <!-- Se llena desde app.js -->
-        </select>
-
-        <p id="navHint" class="muted" style="margin:0;">
-          Día actual: —
-        </p>
+      <div id="dayButtons" class="day-buttons">
+        <!-- Se llena desde app.js -->
       </div>
+
+      <p id="navHint" class="muted" style="margin:12px 0 0;">
+        Día actual: —
+      </p>
     </article>
 
     <!-- Audio (solo reproductor nativo) -->

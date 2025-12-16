@@ -214,3 +214,23 @@ body.dark {
   opacity: 0.45;
   cursor: not-allowed;
 }
+/* ================================
+   BOTONES GRANDES 1–9 (DÍAS)
+================================ */
+.day-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.day-buttons button {
+  padding: 18px;
+  font-size: 1.2em;
+  font-weight: 700;
+  border-radius: 12px;
+}
+
+.day-buttons button.active {
+  border: 2px solid var(--primary-color);
+}
