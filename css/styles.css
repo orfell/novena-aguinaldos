@@ -1,103 +1,156 @@
-:root{
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #555555;
-  --card: #f3f4f6;
-  --border: #e5e7eb;
-
-  --maxw: 920px;
-  --radius: 16px;
-  --pad: 18px;
-
-  --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  --fs: 18px;      /* tamaño base tipo lector */
-  --lh: 1.65;      /* interlineado cómodo */
+/* ================================
+   VARIABLES GLOBALES (ACCESIBILIDAD)
+================================= */
+:root {
+  --font-scale: 1;
+  --bg-color: #ffffff;
+  --text-color: #111111;
+  --card-bg: #f5f6f8;
+  --border-color: #e0e0e0;
+  --primary-color: #6a3df0;
 }
 
-*{ box-sizing: border-box; }
+/* ================================
+   RESET BÁSICO
+================================= */
+* {
+  box-sizing: border-box;
+}
 
-body{
+html, body {
   margin: 0;
-  font-family: var(--font);
-  font-size: var(--fs);
-  line-height: var(--lh);
-  background: var(--bg);
-  color: var(--text);
+  padding: 0;
 }
 
-.header{
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+/* ================================
+   BODY GENERAL
+================================= */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: calc(16px * var(--font-scale));
+  line-height: 1.6;
 }
 
-.wrap{
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 14px 14px;
+/* ================================
+   HEADER
+================================= */
+header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.brand{
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.brand h1{
-  font-size: 1.25rem;
+header h1 {
   margin: 0;
+  font-size: 1.6em;
 }
 
-.brand small{
-  color: var(--muted);
-}
-
-.main{
-  padding: 18px 0 32px;
-}
-
-.card{
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--pad);
-  margin: 14px 0;
-}
-
-.grid{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-@media (min-width: 720px){
-  .grid{
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-a.button{
-  display: block;
+header a {
+  color: var(--primary-color);
   text-decoration: none;
-  border: 1px solid var(--border);
-  background: #fff;
-  padding: 14px 14px;
+  font-size: 0.95em;
+}
+
+/* ================================
+   CONTENEDOR PRINCIPAL
+================================= */
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* ================================
+   TARJETAS
+================================= */
+.card {
+  background-color: var(--card-bg);
   border-radius: 14px;
-  color: var(--text);
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
 }
 
-a.button:hover{
-  border-color: #cbd5e1;
+/* ================================
+   TEXTOS
+================================= */
+h2 {
+  margin-top: 0;
+  font-size: 1.5em;
 }
 
-.button-title{
-  font-weight: 700;
+p {
+  margin: 0.6em 0;
 }
 
-.button-desc{
-  color: var(--muted);
-  font-size: 0.95rem;
-  margin-top: 4px;
+/* ================================
+   NAVEGACIÓN (ANTERIOR / SIGUIENTE)
+================================= */
+.nav-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.nav-buttons button {
+  padding: 12px;
+}
+
+/* ================================
+   BOTONES
+================================= */
+button {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================================
+   AUDIO
+================================= */
+audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* ================================
+   GRID SIMPLE
+================================= */
+.grid {
+  display: grid;
+  gap: 10px;
+}
+
+/* ================================
+   ACCESIBILIDAD - MODO OSCURO
+================================= */
+body.dark {
+  --bg-color: #111111;
+  --text-color: #f1f1f1;
+  --card-bg: #1e1e1e;
+  --border-color: #333333;
+}
+
+/* ================================
+   FOOTER (SI LO USAS)
+================================= */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9em;
+  color: #777;
 }

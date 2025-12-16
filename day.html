@@ -1,65 +1,75 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Lectura · Novena</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+			<!DOCTYPE html>
+			<html lang="es">
+			<head>
+			  <meta charset="UTF-8">
+			  <title>Lectura · Novena</title>
+			  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+			  <link rel="stylesheet" href="css/styles.css">
+			</head>
+			<body>
 
-<header class="header">
-  <div class="wrap">
-    <div class="brand">
-      <h1 id="pageTitle">Lectura</h1>
-      <small><a href="index.html">← Inicio</a></small>
-    </div>
-  </div>
-</header>
+			<header class="header">
+			  <div class="wrap">
+				<div class="brand">
+				  <h1 id="pageTitle">Lectura</h1>
+				  <small><a href="index.html">← Inicio</a></small>
+				</div>
+			  </div>
+			</header>
 
-<main class="wrap main">
-  <article class="card">
-    <h2 id="itemTitle">Cargando...</h2>
-    <p id="itemMeta" style="color:#555;margin-top:4px"></p>
-  </article>
+			<main class="wrap main">
+			  <article class="card">
+				<h2 id="itemTitle">Cargando...</h2>
+				<p id="itemMeta" style="color:#555;margin-top:4px"></p>
+			  </article>
 
-  <article class="card">
-    <p id="itemText">Cargando contenido...</p>
-  </article>
-  
-  <article class="card" id="navCard">
-    <div class="grid" style="grid-template-columns: 1fr 1fr;">
-      <a class="button" id="prevBtn" href="#" style="text-align:center;">← Anterior</a>
-      <a class="button" id="nextBtn" href="#" style="text-align:center;">Siguiente →</a>
-    </div>
-    <p id="navHint" style="color:#555;margin:10px 0 0 0;"></p>
-  </article>
+			  <article class="card">
+				<p id="itemText">Cargando contenido...</p>
+			  </article>
+			  
+			  <article class="card" id="navCard">
+				<div class="grid" style="grid-template-columns: 1fr 1fr;">
+				  <a class="button" id="prevBtn" href="#" style="text-align:center;">← Anterior</a>
+				  <a class="button" id="nextBtn" href="#" style="text-align:center;">Siguiente →</a>
+				</div>
+				<p id="navHint" style="color:#555;margin:10px 0 0 0;"></p>
+			  </article>
 
-  <article class="card" id="audioCard">
-  <p style="margin:0"><b>Audio</b></p>
+			  <article class="card" id="audioCard">
+			  <p style="margin:0"><b>Audio</b></p>
 
-  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
-    <button id="playBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">▶ Escuchar</button>
-    <button id="pauseBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏸ Pausar</button>
-    <button id="stopBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏹ Detener</button>
-  </div>
+			  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
+				<button id="playBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">▶ Escuchar</button>
+				<button id="pauseBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏸ Pausar</button>
+				<button id="stopBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏹ Detener</button>
+			  </div>
 
-  <p id="audioMsg" style="color:#555;margin:10px 0 0 0;"></p>
+			  <p id="audioMsg" style="color:#555;margin:10px 0 0 0;"></p>
 
-  <!-- Un solo reproductor controlado por JS -->
-  <audio id="audioPlayer" preload="none" style="width:100%; margin-top:10px;" controls></audio>
-</article>
+			  <!-- Un solo reproductor controlado por JS -->
+			  <audio id="audioPlayer" preload="none" style="width:100%; margin-top:10px;" controls></audio>
+			</article>
 
 
-  <article class="card">
-    <p style="margin:0;color:#555">
-      Controles de accesibilidad (A-/A+, modo noche) se agregarán en este nivel.
-    </p>
-  </article>
-</main>
+			<article class="card" id="accessibilityCard">
+			  <p style="margin:0"><b>Accesibilidad</b></p>
 
-<script src="js/data.js"></script>
-<script src="js/audio.js"></script>
-<script src="js/app.js"></script>
-</body>
-</html>
+			  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
+				<button id="fontMinus">A−</button>
+				<button id="fontPlus">A+</button>
+				<button id="toggleTheme">🌙</button>
+			  </div>
+
+			  <p style="color:#555;margin-top:10px">
+				Ajustes pensados para lectura cómoda.
+			  </p>
+			</article>
+
+			</main>
+
+			<script src="js/data.js"></script>
+			<script src="js/audio.js"></script>
+			<script src="js/accessibility.js"></script>
+			<script src="js/app.js"></script>
+	</body>
+	</html>
