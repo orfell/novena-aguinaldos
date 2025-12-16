@@ -1,0 +1,10 @@
+[
+  {
+    "Orden": 1,
+    "Titulo": "Oración a la Virgen María",
+    "Texto": "Texto de ejemplo. Aquí irá tu oración completa tomada del Google Sheets.",
+    "Audio_Oracion": "",
+    "Imagen_Oracion": "",
+    "Descripcion_Imagen_Oracion": "Imagen de ejemplo"
+  }
+]
