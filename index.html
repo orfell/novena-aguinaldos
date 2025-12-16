@@ -1,58 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Novena de Aguinaldos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
 
-  <header class="header">
-    <div class="wrap">
-      <div class="brand">
-        <h1>Novena de Aguinaldos</h1>
-        <small>Modo lector · versión inicial</small>
-      </div>
+<body>
+  <header>
+    <h1>Novena de Aguinaldos</h1>
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;">
+      <span style="font-size:0.95em;color:#555;">Modo lector · versión inicial</span>
+      <a href="about.html">Acerca de</a>
     </div>
   </header>
 
-  <main class="wrap main">
-    <section class="card">
+  <main>
+    <article class="card">
       <p style="margin:0">
         Bienvenido. Aquí vas a encontrar las <b>Oraciones</b>, los <b>9 días</b> con reflexión e imágenes,
         y una lista de <b>Villancicos</b>.
       </p>
-    </section>
+    </article>
 
-    <section class="grid">
-      <a class="button" href="day.html?tipo=oraciones">
-        <div class="button-title">📖 Oraciones</div>
-        <div class="button-desc">Virgen, Niño Jesús, San José y más</div>
-      </a>
+    <article class="card">
+      <h2 style="margin-top:0">Secciones</h2>
 
-      <a class="button" href="day.html?tipo=dias">
-        <div class="button-title">🗓️ Días 1–9</div>
-        <div class="button-desc">Reflexión, imagen y audio por día</div>
-      </a>
+      <div class="grid" style="grid-template-columns: 1fr; gap: 12px;">
+        <a href="day.html?tipo=oraciones&id=1" style="text-decoration:none;">
+          <div class="card" style="margin:0;">
+            <b>📖 Oraciones</b>
+            <p style="margin:6px 0 0;color:#555;">Virgen, Niño Jesús, San José y más</p>
+          </div>
+        </a>
 
-      <a class="button" href="villancicos.html">
-        <div class="button-title">🎶 Villancicos</div>
-        <div class="button-desc">Lista con acceso a YouTube</div>
-      </a>
+        <a href="day.html?tipo=dias&id=1" style="text-decoration:none;">
+          <div class="card" style="margin:0;">
+            <b>📅 Días 1–9</b>
+            <p style="margin:6px 0 0;color:#555;">Reflexión, imagen y audio por día</p>
+          </div>
+        </a>
 
-      <a class="button" href="about.html">
-        <div class="button-title">ℹ️ Acerca de</div>
-        <div class="button-desc">Créditos y cómo usar la app</div>
-      </a>
-    </section>
+        <a href="villancicos.html" style="text-decoration:none;">
+          <div class="card" style="margin:0;">
+            <b>🎶 Villancicos</b>
+            <p style="margin:6px 0 0;color:#555;">Lista con acceso a YouTube</p>
+          </div>
+        </a>
+      </div>
+    </article>
 
-    <section class="card">
-      <p style="margin:0;color:#555">
+    <article class="card">
+      <p style="margin:0;color:#555;">
         Siguiente paso: conectar los datos (JSON) desde tu Google Sheets.
       </p>
-    </section>
+    </article>
   </main>
-
 </body>
 </html>
