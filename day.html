@@ -1,75 +1,76 @@
-			<!DOCTYPE html>
-			<html lang="es">
-			<head>
-			  <meta charset="UTF-8">
-			  <title>Lectura · Novena</title>
-			  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-			  <link rel="stylesheet" href="css/styles.css">
-			</head>
-			<body>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Día · Novena</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
 
-			<header class="header">
-			  <div class="wrap">
-				<div class="brand">
-				  <h1 id="pageTitle">Lectura</h1>
-				  <small><a href="index.html">← Inicio</a></small>
-				</div>
-			  </div>
-			</header>
+<body>
+  <header>
+    <h1 id="pageTitle">Día</h1>
+    <a href="index.html">← Inicio</a>
+  </header>
 
-			<main class="wrap main">
-			  <article class="card">
-				<h2 id="itemTitle">Cargando...</h2>
-				<p id="itemMeta" style="color:#555;margin-top:4px"></p>
-			  </article>
+  <main>
+    <article class="card">
+      <h2 id="itemTitle">Cargando…</h2>
+      <p id="itemMeta" class="muted"></p>
+      <p id="itemText"></p>
+    </article>
 
-			  <article class="card">
-				<p id="itemText">Cargando contenido...</p>
-			  </article>
-			  
-			  <article class="card" id="navCard">
-				<div class="grid" style="grid-template-columns: 1fr 1fr;">
-				  <a class="button" id="prevBtn" href="#" style="text-align:center;">← Anterior</a>
-				  <a class="button" id="nextBtn" href="#" style="text-align:center;">Siguiente →</a>
-				</div>
-				<p id="navHint" style="color:#555;margin:10px 0 0 0;"></p>
-			  </article>
+    <!-- Selector de día (solo se usa en tipo=dias; app.js lo muestra/oculta) -->
+    <article class="card" id="navCard">
+      <h3 style="margin-top:0">Ir al día</h3>
 
-			  <article class="card" id="audioCard">
-			  <p style="margin:0"><b>Audio</b></p>
+      <div class="grid" style="grid-template-columns: 1fr; gap: 10px;">
+        <label for="daySelect" class="muted" style="font-size:0.95em;">
+          Selecciona el día (1–9):
+        </label>
 
-			  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
-				<button id="playBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">▶ Escuchar</button>
-				<button id="pauseBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏸ Pausar</button>
-				<button id="stopBtn" style="padding:14px;border-radius:14px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;">⏹ Detener</button>
-			  </div>
+        <select id="daySelect">
+          <!-- Se llena desde app.js -->
+        </select>
 
-			  <p id="audioMsg" style="color:#555;margin:10px 0 0 0;"></p>
+        <p id="navHint" class="muted" style="margin:0;">
+          Día actual: —
+        </p>
+      </div>
+    </article>
 
-			  <!-- Un solo reproductor controlado por JS -->
-			  <audio id="audioPlayer" preload="none" style="width:100%; margin-top:10px;" controls></audio>
-			</article>
+    <!-- Audio (solo reproductor nativo) -->
+    <article class="card">
+      <h3 style="margin-top:0">Audio</h3>
 
+      <audio id="audioPlayer" controls preload="metadata">
+        Tu navegador no soporta audio.
+      </audio>
 
-			<article class="card" id="accessibilityCard">
-			  <p style="margin:0"><b>Accesibilidad</b></p>
+      <p id="audioHint" class="muted">
+        Audio no disponible para este contenido.
+      </p>
+    </article>
 
-			  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
-				<button id="fontMinus">A−</button>
-				<button id="fontPlus">A+</button>
-				<button id="toggleTheme">🌙</button>
-			  </div>
+    <!-- Accesibilidad (A-/A+, modo noche) -->
+    <article class="card" id="accessibilityCard">
+      <p style="margin:0"><b>Accesibilidad</b></p>
 
-			  <p style="color:#555;margin-top:10px">
-				Ajustes pensados para lectura cómoda.
-			  </p>
-			</article>
+      <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
+        <button id="fontMinus">A−</button>
+        <button id="fontPlus">A+</button>
+        <button id="toggleTheme">🌙</button>
+      </div>
 
-			</main>
+      <p class="muted" style="margin-top:10px">
+        Ajustes pensados para lectura cómoda.
+      </p>
+    </article>
+  </main>
 
-			<script src="js/data.js"></script>
-			<script src="js/audio.js"></script>
-			<script src="js/accessibility.js"></script>
-			<script src="js/app.js"></script>
-	</body>
-	</html>
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/accessibility.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

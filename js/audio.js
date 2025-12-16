@@ -2,88 +2,44 @@
 (function () {
   "use strict";
 
-  function setMsg(text) {
-    const el = document.getElementById("audioMsg");
-    if (el) el.textContent = text || "";
-  }
-
-  function getPlayer() {
-    return document.getElementById("audioPlayer");
-  }
-
-  function setButtonsEnabled(enabled) {
-    const play = document.getElementById("playBtn");
-    const pause = document.getElementById("pauseBtn");
-    const stop = document.getElementById("stopBtn");
-    if (!play || !pause || !stop) return;
-
-    play.disabled = !enabled;
-    pause.disabled = !enabled;
-    stop.disabled = !enabled;
-
-    const opacity = enabled ? "1" : "0.5";
-    play.style.opacity = opacity;
-    pause.style.opacity = opacity;
-    stop.style.opacity = opacity;
-  }
+  let audio;
 
   function initAudioUI() {
-    const player = getPlayer();
-    if (!player) return;
+    audio = document.getElementById("audioPlayer");
+    const hint = document.getElementById("audioHint");
 
-    // Estado inicial
-    setButtonsEnabled(false);
-    setMsg("Audio no disponible aún.");
+    if (!audio) return;
 
-    const play = document.getElementById("playBtn");
-    const pause = document.getElementById("pauseBtn");
-    const stop = document.getElementById("stopBtn");
+    audio.style.display = "none";
 
-    play?.addEventListener("click", async () => {
-      try {
-        await player.play();
-      } catch (e) {
-        setMsg("No se pudo reproducir el audio. Verifica el enlace.");
-      }
-    });
-
-    pause?.addEventListener("click", () => {
-      player.pause();
-    });
-
-    stop?.addEventListener("click", () => {
-      player.pause();
-      player.currentTime = 0;
-    });
-
-    player.addEventListener("play", () => setMsg("Reproduciendo…"));
-    player.addEventListener("pause", () => {
-      if (player.currentTime > 0 && !player.ended) setMsg("Pausado.");
-    });
-    player.addEventListener("ended", () => setMsg("Finalizado."));
-    player.addEventListener("error", () => setMsg("Error cargando el audio."));
+    if (hint) {
+      hint.textContent = "Audio no disponible para este contenido.";
+    }
   }
 
-  // Carga un audio (URL) en el reproductor único
   function loadAudio(url) {
-    const player = getPlayer();
-    if (!player) return;
+    const hint = document.getElementById("audioHint");
+    if (!audio) return;
 
     if (!url) {
-      player.removeAttribute("src");
-      player.load();
-      setButtonsEnabled(false);
-      setMsg("Audio no disponible para este contenido.");
+      audio.style.display = "none";
+      audio.removeAttribute("src");
+
+      if (hint) {
+        hint.textContent = "Audio no disponible para este contenido.";
+      }
       return;
     }
 
-    player.src = url;
-    player.load();
-    setButtonsEnabled(true);
-    setMsg("Listo. Pulsa ▶ Escuchar.");
+    audio.src = url;
+    audio.load();
+    audio.style.display = "block";
+
+    if (hint) {
+      hint.textContent = "Pulsa ▶ para escuchar el audio.";
+    }
   }
 
-  // Exponer global
   window.initAudioUI = initAudioUI;
   window.loadAudio = loadAudio;
 })();
