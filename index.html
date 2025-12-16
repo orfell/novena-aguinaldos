@@ -2,60 +2,88 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Novena de Aguinaldos</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-  <header>
-    <h1>Novena de Aguinaldos</h1>
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;">
-      <span style="font-size:0.95em;color:#555;">Modo lector · versión inicial</span>
-      <a href="about.html">Acerca de</a>
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="Ir al inicio">🎄 Novena de Aguinaldos</a>
+    <div class="top-actions">
+      <a class="btn small" href="./about.html">Acerca de</a>
+      <button id="btnToggleTheme" class="btn small" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
     </div>
   </header>
 
-  <main>
-    <article class="card">
-      <p style="margin:0">
-        Bienvenido. Aquí vas a encontrar las <b>Oraciones</b>, los <b>9 días</b> con reflexión e imágenes,
-        y una lista de <b>Villancicos</b>.
-      </p>
-    </article>
+  <main class="container">
 
-    <article class="card">
-      <h2 style="margin-top:0">Secciones</h2>
+    <section class="card">
+      <h1 class="h1">Novena de Aguinaldos</h1>
+      <div class="muted">Modo lector • Accesible • Audios locales</div>
+    </section>
 
-      <div class="grid" style="grid-template-columns: 1fr; gap: 12px;">
-        <a href="day.html?tipo=oraciones&id=1" style="text-decoration:none;">
-          <div class="card" style="margin:0;">
-            <b>📖 Oraciones</b>
-            <p style="margin:6px 0 0;color:#555;">Virgen, Niño Jesús, San José y más</p>
-          </div>
+    <section class="card">
+      <h2 class="h2">Secciones</h2>
+
+      <div class="grid-2">
+        <a class="btn" href="./day.html?tipo=oraciones&id=1" aria-label="Abrir Oraciones">
+          📖 Oraciones
         </a>
 
-        <a href="day.html?tipo=dias&id=1" style="text-decoration:none;">
-          <div class="card" style="margin:0;">
-            <b>📅 Días 1–9</b>
-            <p style="margin:6px 0 0;color:#555;">Reflexión, imagen y audio por día</p>
-          </div>
+        <a class="btn" href="./day.html?tipo=dias&id=1" aria-label="Abrir Días 1 a 9">
+          🗓️ Días 1–9
         </a>
 
-        <a href="villancicos.html" style="text-decoration:none;">
-          <div class="card" style="margin:0;">
-            <b>🎶 Villancicos</b>
-            <p style="margin:6px 0 0;color:#555;">Lista con acceso a YouTube</p>
-          </div>
+        <a class="btn" href="./villancicos.html" aria-label="Abrir Villancicos">
+          🎶 Villancicos
+        </a>
+
+        <a class="btn" href="./about.html" aria-label="Abrir información de la app">
+          ℹ️ Acerca de
         </a>
       </div>
-    </article>
 
-    <article class="card">
-      <p style="margin:0;color:#555;">
-        Siguiente paso: conectar los datos (JSON) desde tu Google Sheets.
-      </p>
-    </article>
+      <div class="muted" style="margin-top: 10px;">
+        Entra a una sección y usa el panel de lectura para ajustar el texto y el tema.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Acceso rápido</h2>
+
+      <div class="grid-3">
+        <a class="btn" href="./day.html?tipo=oraciones&id=1">Oración 1</a>
+        <a class="btn" href="./day.html?tipo=oraciones&id=5">Gozos</a>
+        <a class="btn" href="./day.html?tipo=dias&id=9">Día 9</a>
+      </div>
+
+      <div class="muted" style="margin-top: 10px;">
+        Sugerencia: en celular, gira a horizontal si quieres ver más contenido por pantalla.
+      </div>
+    </section>
+
   </main>
+
+  <footer class="footer">
+    <div class="muted">App accesible • Modo lectura • Audios locales</div>
+  </footer>
+
+  <script>
+    // Tema persistente (sin depender de app.js)
+    (function () {
+      const btnTheme = document.getElementById("btnToggleTheme");
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") document.documentElement.classList.add("dark");
+
+      btnTheme?.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        localStorage.setItem(
+          "theme",
+          document.documentElement.classList.contains("dark") ? "dark" : "light"
+        );
+      });
+    })();
+  </script>
 </body>
 </html>
