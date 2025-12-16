@@ -1,65 +1,71 @@
-[
-  {
-    "Dia": 1,
-    "Fecha": "2025-12-16",
-    "Titulo": "Día 1",
-    "Reflexion": "Reflexión del Día 1.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_01.mp3"
-  },
-  {
-    "Dia": 2,
-    "Fecha": "2025-12-17",
-    "Titulo": "Día 2",
-    "Reflexion": "Reflexión del Día 2.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_02.mp3"
-  },
-  {
-    "Dia": 3,
-    "Fecha": "2025-12-18",
-    "Titulo": "Día 3",
-    "Reflexion": "Reflexión del Día 3.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_03.mp3"
-  },
-  {
-    "Dia": 4,
-    "Fecha": "2025-12-19",
-    "Titulo": "Día 4",
-    "Reflexion": "Reflexión del Día 4.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_04.mp3"
-  },
-  {
-    "Dia": 5,
-    "Fecha": "2025-12-20",
-    "Titulo": "Día 5",
-    "Reflexion": "Reflexión del Día 5.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_05.mp3"
-  },
-  {
-    "Dia": 6,
-    "Fecha": "2025-12-21",
-    "Titulo": "Día 6",
-    "Reflexion": "Reflexión del Día 6.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_06.mp3"
-  },
-  {
-    "Dia": 7,
-    "Fecha": "2025-12-22",
-    "Titulo": "Día 7",
-    "Reflexion": "Reflexión del Día 7.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_07.mp3"
-  },
-  {
-    "Dia": 8,
-    "Fecha": "2025-12-23",
-    "Titulo": "Día 8",
-    "Reflexion": "Reflexión del Día 8.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_08.mp3"
-  },
-  {
-    "Dia": 9,
-    "Fecha": "2025-12-24",
-    "Titulo": "Día 9",
-    "Reflexion": "Reflexión del Día 9.",
-    "Audio_Reflexion": "assets/audio/audio_reflexion_09.mp3"
-  }
-]
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Día · Novena</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <header>
+    <h1 id="pageTitle">Día</h1>
+    <a href="index.html">← Inicio</a>
+  </header>
+
+  <main>
+    <article class="card">
+      <h2 id="itemTitle">Cargando…</h2>
+      <p id="itemMeta" class="muted"></p>
+      <p id="itemText"></p>
+    </article>
+
+    <!-- NAVEGACIÓN POR BOTONES 1–9 (solo para tipo=dias) -->
+    <article class="card" id="navCard">
+      <h3 style="margin-top:0">Ir al día</h3>
+
+      <div id="dayButtons" class="day-buttons">
+        <!-- Se llena desde app.js -->
+      </div>
+
+      <p id="navHint" class="muted" style="margin:12px 0 0;">
+        Día actual: —
+      </p>
+    </article>
+
+    <!-- Audio (solo reproductor nativo) -->
+    <article class="card">
+      <h3 style="margin-top:0">Audio</h3>
+
+      <audio id="audioPlayer" controls preload="metadata">
+        Tu navegador no soporta audio.
+      </audio>
+
+      <p id="audioHint" class="muted">
+        Audio no disponible para este contenido.
+      </p>
+    </article>
+
+    <!-- Accesibilidad (A-/A+, modo noche) -->
+    <article class="card" id="accessibilityCard">
+      <p style="margin:0"><b>Accesibilidad</b></p>
+
+      <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; margin-top:10px;">
+        <button id="fontMinus">A−</button>
+        <button id="fontPlus">A+</button>
+        <button id="toggleTheme">🌙</button>
+      </div>
+
+      <p class="muted" style="margin-top:10px">
+        Ajustes pensados para lectura cómoda.
+      </p>
+    </article>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/accessibility.js"></script>
+  <script src="js/app.js?v=2"></script>
+
+</body>
+</html>
