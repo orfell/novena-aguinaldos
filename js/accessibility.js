@@ -2,51 +2,42 @@
 (function () {
   "use strict";
 
-  const MIN_SCALE = 0.85;
-  const MAX_SCALE = 1.4;
-  const STEP = 0.1;
-
-  function applySettings() {
-    const scale = localStorage.getItem("fontScale");
-    const theme = localStorage.getItem("theme");
-
-    if (scale) {
-      document.documentElement.style.setProperty("--font-scale", scale);
-    }
-
-    if (theme === "dark") {
-      document.body.classList.add("dark");
-    }
-  }
-
   function initAccessibility() {
-    const minus = document.getElementById("fontMinus");
-    const plus = document.getElementById("fontPlus");
-    const toggle = document.getElementById("toggleTheme");
+    const textEl = document.getElementById("itemText");
+    const btnMinus = document.getElementById("btnTextSmaller");
+    const btnPlus  = document.getElementById("btnTextBigger");
+    const btnTheme = document.getElementById("btnToggleTheme");
 
-    let currentScale = parseFloat(localStorage.getItem("fontScale")) || 1;
+    if (!textEl) return;
 
-    minus?.addEventListener("click", () => {
-      currentScale = Math.max(MIN_SCALE, currentScale - STEP);
-      document.documentElement.style.setProperty("--font-scale", currentScale);
-      localStorage.setItem("fontScale", currentScale);
-    });
+    const MIN = 0.95;
+    const MAX = 1.80;
+    const STEP = 0.10;
 
-    plus?.addEventListener("click", () => {
-      currentScale = Math.min(MAX_SCALE, currentScale + STEP);
-      document.documentElement.style.setProperty("--font-scale", currentScale);
-      localStorage.setItem("fontScale", currentScale);
-    });
+    let size = Number(localStorage.getItem("readingFontSize")) || 1.10;
 
-    toggle?.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
+    function applySize() {
+      size = Math.max(MIN, Math.min(MAX, size));
+      // Solo el texto principal
+      textEl.style.setProperty("--reading-font-size", `${size}rem`);
+      localStorage.setItem("readingFontSize", String(size));
+    }
+
+    btnMinus?.addEventListener("click", () => { size -= STEP; applySize(); });
+    btnPlus?.addEventListener("click",  () => { size += STEP; applySize(); });
+
+    btnTheme?.addEventListener("click", () => {
+      document.documentElement.classList.toggle("dark");
       localStorage.setItem(
         "theme",
-        document.body.classList.contains("dark") ? "dark" : "light"
+        document.documentElement.classList.contains("dark") ? "dark" : "light"
       );
     });
 
-    applySettings();
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") document.documentElement.classList.add("dark");
+
+    applySize();
   }
 
   window.initAccessibility = initAccessibility;

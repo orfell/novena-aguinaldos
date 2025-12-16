@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Novena de Aguinaldos</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
@@ -16,54 +16,59 @@
   </header>
 
   <main class="container">
-    <!-- CARD PRINCIPAL: DÍA / ORACIÓN -->
+
+    <!-- Encabezado -->
     <section class="card">
       <h1 id="pageTitle" class="h1">Cargando…</h1>
-      <div id="pageMeta" class="muted"></div>
-
-      <!-- PANEL DE ACCESIBILIDAD (sticky y cerca al texto) -->
-      <section class="card accessibility-card" aria-label="Accesibilidad">
-        <div class="accessibility-bar" role="toolbar" aria-label="Controles de lectura">
-          <button id="btnTextSmaller" class="btn" type="button" aria-label="Disminuir tamaño de lectura">A-</button>
-          <button id="btnTextBigger" class="btn" type="button" aria-label="Aumentar tamaño de lectura">A+</button>
-          <button id="btnToggleTheme" class="btn" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
-        </div>
-        <div class="accessibility-hint">Estos ajustes afectan solo el texto principal de lectura.</div>
-      </section>
-
-      <!-- BLOQUE DE LECTURA (SOLO ESTE CAMBIA DE TAMAÑO) -->
-      <section class="card reading-card">
-        <h2 id="readingTitle" class="reading-title"></h2>
-        <div id="readingText" class="reading-text" tabindex="0"></div>
-      </section>
     </section>
 
-    <!-- NAVEGACIÓN ORACIONES -->
-    <section class="card">
-      <h2 class="h2">Ir a la oración</h2>
-      <div id="oracionesNav" class="grid-2"></div>
-      <div class="muted" id="oracionInfo"></div>
+    <!-- Panel de accesibilidad (arriba del texto, como pediste) -->
+    <section class="card accessibility-card" aria-label="Accesibilidad">
+      <div class="accessibility-bar" role="toolbar" aria-label="Controles de lectura">
+        <button id="btnTextSmaller" class="btn" type="button" aria-label="Disminuir tamaño de lectura">A-</button>
+        <button id="btnTextBigger" class="btn" type="button" aria-label="Aumentar tamaño de lectura">A+</button>
+        <button id="btnToggleTheme" class="btn" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
+      </div>
+      <div class="accessibility-hint">Estos ajustes afectan solo el texto principal de lectura.</div>
     </section>
 
-    <!-- AUDIO -->
+    <!-- Contenido principal (app.js escribe aquí) -->
+    <section class="card reading-card">
+      <h2 id="itemTitle" class="reading-title"></h2>
+      <div id="itemMeta" class="muted"></div>
+      <div id="itemText" class="reading-text" tabindex="0"></div>
+    </section>
+
+    <!-- Navegación (app.js controla visibilidad y modo) -->
+    <section id="navCard" class="card">
+      <h2 id="navTitle" class="h2">Navegación</h2>
+
+      <div id="dayButtons" class="grid-3" style="display:none;"></div>
+      <div id="prayerButtons" class="grid-2" style="display:none;"></div>
+
+      <div id="navHint" class="muted"></div>
+    </section>
+
+    <!-- Audio (audio.js usa estos IDs) -->
     <section class="card">
       <h2 class="h2">Audio</h2>
       <audio id="audioPlayer" controls preload="none" class="audio"></audio>
-      <div class="muted">Pulsa ▶ para escuchar el audio.</div>
+      <div class="muted" id="audioHint">Pulsa ▶ para escuchar el audio.</div>
     </section>
 
-    <!-- NAVEGACIÓN DÍAS -->
-    <section class="card">
-      <h2 class="h2">Días</h2>
-      <div id="diasNav" class="grid-3"></div>
-      <div class="muted" id="diaInfo"></div>
-    </section>
   </main>
 
   <footer class="footer">
     <div class="muted">App accesible • Modo lectura • Audios locales</div>
   </footer>
 
-  <script src="day.js"></script>
+  <!-- Scripts en el orden correcto -->
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <!-- ui.js puede estar vacío; si quieres, puedes quitar esta línea -->
+  <script src="js/ui.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/accessibility.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
