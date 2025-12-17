@@ -302,3 +302,20 @@ body.no-bg{
   padding: 14px 16px 24px 16px;
   text-align: center;
 }
+/* Imagen entre título y texto (mobile-first) */
+.reading-media{
+  margin: 12px 0 16px 0;
+}
+
+.reading-image{
+  display: block;
+  width: 100%;
+  max-width: 600px;      /* tamaño ideal en celular */
+  aspect-ratio: 1 / 1;  /* cuadrada */
+  height: auto;
+  margin-inline: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+}
