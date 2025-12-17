@@ -302,3 +302,6 @@ body.no-bg{
   padding: 14px 16px 24px 16px;
   text-align: center;
 }
+.reading-title{
+  font-size: calc(clamp(1.85rem, 6.0vw, 2.35rem) * var(--reading-scale));
+}
