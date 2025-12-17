@@ -18,23 +18,29 @@
 
   <main class="container">
 
-    <!-- Panel de accesibilidad (arriba del texto, como pediste) -->
+    <!-- ✅ ESTE ID ES OBLIGATORIO PARA QUE app.js INICIALICE -->
+    <section class="card">
+      <h2 id="pageTitle" class="h2">Cargando…</h2>
+    </section>
+
+    <!-- Accesibilidad (A- / A+) -->
     <section class="card accessibility-card" aria-label="Accesibilidad">
       <div class="accessibility-bar" role="toolbar" aria-label="Controles de lectura">
+        <!-- ✅ IDs que usa tu accessibility.js -->
         <button id="btnTextSmaller" class="btn" type="button" aria-label="Disminuir tamaño de lectura">A-</button>
         <button id="btnTextBigger" class="btn" type="button" aria-label="Aumentar tamaño de lectura">A+</button>
-        <!-- ✅ Eliminado: botón de contraste (modo oscuro fijo) -->
+        <!-- (sin botón de tema) -->
       </div>
     </section>
 
-    <!-- Contenido principal (app.js escribe aquí) -->
+    <!-- Contenido principal -->
     <section class="card reading-card">
-      <h2 id="itemTitle" class="reading-title"></h2>
+      <h3 id="itemTitle" class="reading-title"></h3>
       <div id="itemMeta" class="muted"></div>
       <div id="itemText" class="reading-text" tabindex="0"></div>
     </section>
 
-    <!-- Navegación (app.js controla visibilidad y modo) -->
+    <!-- Navegación -->
     <section id="navCard" class="card">
       <h2 id="navTitle" class="h2">Navegación</h2>
 
@@ -44,7 +50,7 @@
       <div id="navHint" class="muted"></div>
     </section>
 
-    <!-- ✅ Audio SIN tarjetas anidadas -->
+    <!-- Audio (✅ sin tarjeta anidada) -->
     <section class="card">
       <h2 class="h2">Audio</h2>
       <audio id="audioPlayer" class="audio" controls preload="none"></audio>
@@ -56,10 +62,9 @@
     <div class="muted">App accesible • Modo lectura • Audios locales</div>
   </footer>
 
-  <!-- Scripts en el orden correcto -->
+  <!-- Scripts (en el orden que venías usando) -->
   <script src="js/storage.js"></script>
   <script src="js/data.js"></script>
-  <!-- ui.js puede estar vacío; si quieres, puedes quitar esta línea -->
   <script src="js/ui.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/accessibility.js"></script>

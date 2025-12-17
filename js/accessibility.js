@@ -2,12 +2,24 @@
 (function () {
   "use strict";
 
+  function forceDarkTheme() {
+    // Fuerza oscuro en <html> y <body> para compatibilidad con tu CSS/HTML
+    document.documentElement.classList.add("dark");
+    document.body?.classList.add("dark");
+
+    // Si quieres mantener consistencia en localStorage (opcional)
+    localStorage.setItem("theme", "dark");
+  }
+
   function initAccessibility() {
     const textEl = document.getElementById("itemText");
     const btnMinus = document.getElementById("btnTextSmaller");
     const btnPlus  = document.getElementById("btnTextBigger");
-    const btnTheme = document.getElementById("btnToggleTheme");
 
+    // 1) Modo oscuro fijo (sin botón de contraste)
+    forceDarkTheme();
+
+    // Si no hay texto principal, no hacemos nada más
     if (!textEl) return;
 
     const MIN = 0.95;
@@ -18,24 +30,13 @@
 
     function applySize() {
       size = Math.max(MIN, Math.min(MAX, size));
-      // Solo el texto principal
+      // Solo el texto principal (NO menús, NO títulos)
       textEl.style.setProperty("--reading-font-size", `${size}rem`);
       localStorage.setItem("readingFontSize", String(size));
     }
 
     btnMinus?.addEventListener("click", () => { size -= STEP; applySize(); });
     btnPlus?.addEventListener("click",  () => { size += STEP; applySize(); });
-
-    btnTheme?.addEventListener("click", () => {
-      document.documentElement.classList.toggle("dark");
-      localStorage.setItem(
-        "theme",
-        document.documentElement.classList.contains("dark") ? "dark" : "light"
-      );
-    });
-
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") document.documentElement.classList.add("dark");
 
     applySize();
   }

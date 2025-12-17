@@ -1,6 +1,5 @@
 :root{
   --bg: #f6f7fb;
-  --card: #ffffff;
   --text: #1b1f2a;
   --muted: rgba(27,31,42,.70);
   --border: rgba(0,0,0,.12);
@@ -10,30 +9,53 @@
 
 :root.dark{
   --bg: #0f1220;
-  --card: #151a2e;
   --text: #eef1ff;
   --muted: rgba(238,241,255,.70);
   --border: rgba(255,255,255,.14);
   --shadow: 0 10px 30px rgba(0,0,0,.25);
+  --radius: 18px;
 }
 
 *{ box-sizing: border-box; }
-html, body{ height: 100%; }
+
+html, body{
+  height: 100%;
+  min-height: 100%;
+}
+
 body{
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg);
   color: var(--text);
+
+  /* Fondo global (todas las páginas) */
+  background-color: var(--bg);
+  background-image: url("../assets/img/Fondo1.png");
+  background-repeat: repeat;
+  background-size: 720px auto;
+  background-position: center top;
+  background-attachment: scroll;
+
+  overflow-x: hidden; /* evita “zoom”/desborde horizontal en móvil */
 }
 
 a{ color: inherit; text-decoration: none; }
 
+/* Excepción: portada */
+body.no-bg{
+  background-image: none !important;
+}
+
+/* ===== Topbar ===== */
 .topbar{
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  background: rgba(15,18,32,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+
   padding: 12px 16px;
   display: flex;
   align-items: center;
@@ -45,20 +67,17 @@ a{ color: inherit; text-decoration: none; }
   letter-spacing: .2px;
 }
 
+/* ===== Layout ===== */
 .container{
-  max-width: 900px;
+  width: min(900px, 100%);
   margin: 0 auto;
-  padding: 16px;
+  padding: 14px;
   display: grid;
   gap: 14px;
 }
 
-.card{
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px;
+@media (max-width: 520px){
+  .container{ padding: 12px; }
 }
 
 .h1{ margin: 0 0 8px 0; font-size: 1.35rem; }
@@ -66,22 +85,84 @@ a{ color: inherit; text-decoration: none; }
 
 .muted{ color: var(--muted); font-size: .95rem; }
 
+/* ===== Cards (UNA sola definición, estable) ===== */
+.card{
+  width: 100%;
+  max-width: 100%;
+  padding: 16px;
+
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.dark .card{
+  background: rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Evita que texto largo o elementos internos ensanchen la card */
+.card, .card *{
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ===== Botones base ===== */
 .btn{
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid var(--border);
-  background: transparent;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.06);
   cursor: pointer;
   font-weight: 650;
+  color: inherit;
 }
 
-.btn.small{ padding: 8px 10px; border-radius: 12px; font-weight: 650; }
+.btn.small{
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-weight: 650;
+}
 
 .btn:focus{
   outline: 3px solid rgba(80, 120, 255, 0.7);
   outline-offset: 2px;
 }
 
+/* ===== Botón estilo portada (reutilizable) ===== */
+.btn-christmas{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(120, 0, 0, 0.35);
+  background: rgba(255, 248, 240, 0.92);
+  color: #7a0b0b;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+
+.btn-christmas:active{
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+}
+
+.btn-christmas.active{
+  outline: 2px solid rgba(122, 11, 11, 0.55);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+}
+
+/* ===== Grillas de navegación ===== */
 .grid-2{
   display: grid;
   gap: 10px;
@@ -99,14 +180,19 @@ a{ color: inherit; text-decoration: none; }
   .grid-3{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-.audio{ width: 100%; }
+/* ===== Audio ===== */
+.audio{
+  width: 100% !important;
+  display: block;
+  margin: 0;
+}
 
-/* --- Accesibilidad sticky, cerca al texto --- */
+/* ===== Accesibilidad ===== */
 .accessibility-card{
   position: sticky;
-  top: 64px; /* debajo del topbar */
+  top: 64px;
   z-index: 80;
-  padding: 12px 12px;
+  padding: 12px;
 }
 
 .accessibility-bar{
@@ -115,13 +201,25 @@ a{ color: inherit; text-decoration: none; }
   align-items: center;
 }
 
-.accessibility-hint{
-  margin-top: 8px;
-  font-size: .92rem;
-  color: var(--muted);
+/* En móvil, quitar sticky para evitar “huecos” y cards enormes */
+@media (max-width: 520px){
+  .accessibility-card{
+    position: static;
+    top: auto;
+  }
 }
 
-/* --- Lectura: SOLO este contenedor cambia de tamaño --- */
+.dark .accessibility-bar .btn{
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.28);
+  color: #ffffff;
+}
+
+.dark .accessibility-bar .btn:active{
+  background: rgba(255,255,255,0.16);
+}
+
+/* ===== Lectura: SOLO este contenedor cambia tamaño ===== */
 .reading-title{
   margin: 0 0 10px 0;
   font-size: 1.05rem;
@@ -136,99 +234,17 @@ a{ color: inherit; text-decoration: none; }
   word-break: break-word;
 }
 
-#readingText:focus{
-  outline: 3px solid rgba(80, 120, 255, 0.55);
-  outline-offset: 3px;
-  border-radius: 12px;
-}
-
+/* ===== Footer ===== */
 .footer{
   padding: 14px 16px 24px 16px;
   text-align: center;
 }
-/* ===== Botón estilo portada (reutilizable) ===== */
-.btn-christmas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(120, 0, 0, 0.35);
-  background: rgba(255, 248, 240, 0.92); /* crema */
-  color: #7a0b0b; /* rojo vino */
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  text-decoration: none;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-  cursor: pointer;
-}
-
-.btn-christmas:active {
-  transform: translateY(1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.14);
-}
-/* ===== Accesibilidad: botones visibles en modo oscuro ===== */
-.dark .accessibility-card {
-  border-color: rgba(255,255,255,0.18);
-}
-
-.dark .accessibility-bar .btn {
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,255,255,0.28);
-  color: #ffffff;
-}
-
-.dark .accessibility-bar .btn:active {
-  background: rgba(255,255,255,0.16);
-}
-/* ===== Fondo global (todas las páginas) ===== */
-body {
-  background-image: url("../assets/img/Fondo1.png");
-  background-repeat: repeat;        /* que nunca se acabe */
-  background-size: 720px auto;      /* patrón estable */
-  background-position: center top;
-  background-attachment: scroll;    /* CRUCIAL para móvil */
-}
-
-
-/* En móvil algunos navegadores ignoran fixed; no pasa nada. */
-@media (max-width: 900px) {
-  body { background-attachment: scroll; }
-}
-
-/* Excepción: portada */
-body.no-bg {
-  background-image: none !important;
-}
-/* ===== Tarjetas estilo portada (glass) ===== */
-.card {
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 16px;
-
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-}
-.dark .card {
-  background: rgba(0, 0, 0, 0.35);
-  border-color: rgba(255, 255, 255, 0.22);
-}
-/* ===== Corrección responsive móvil ===== */
-.container {
-  width: min(900px, 100%);
-  margin-inline: auto;
-  padding: 14px;
-}
-
-@media (max-width: 520px) {
-  .container {
-    padding: 12px;
-  }
-}
-
-body {
-  overflow-x: hidden; /* evita zoom horizontal */
+/* ===== FIX: aplicar variables dark cuando el body tiene class="dark" ===== */
+body.dark{
+  --bg: #0f1220;
+  --text: #eef1ff;
+  --muted: rgba(238,241,255,.70);
+  --border: rgba(255,255,255,.14);
+  --shadow: 0 10px 30px rgba(0,0,0,.25);
+  --radius: 18px;
 }
