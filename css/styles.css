@@ -185,11 +185,12 @@ a{ color: inherit; text-decoration: none; }
 /* ===== Fondo global (todas las páginas) ===== */
 body {
   background-image: url("../assets/img/Fondo1.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: repeat;
-  background-attachment: fixed; /* se siente “app” */
+  background-repeat: repeat;        /* que nunca se acabe */
+  background-size: 720px auto;      /* patrón estable */
+  background-position: center top;
+  background-attachment: scroll;    /* CRUCIAL para móvil */
 }
+
 
 /* En móvil algunos navegadores ignoran fixed; no pasa nada. */
 @media (max-width: 900px) {
@@ -214,4 +215,20 @@ body.no-bg {
 .dark .card {
   background: rgba(0, 0, 0, 0.35);
   border-color: rgba(255, 255, 255, 0.22);
+}
+/* ===== Corrección responsive móvil ===== */
+.container {
+  width: min(900px, 100%);
+  margin-inline: auto;
+  padding: 14px;
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 12px;
+  }
+}
+
+body {
+  overflow-x: hidden; /* evita zoom horizontal */
 }
