@@ -182,3 +182,21 @@ a{ color: inherit; text-decoration: none; }
 .dark .accessibility-bar .btn:active {
   background: rgba(255,255,255,0.16);
 }
+/* ===== Fondo global (todas las páginas) ===== */
+body {
+  background-image: url("../assets/img/Fondo1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* se siente “app” */
+}
+
+/* En móvil algunos navegadores ignoran fixed; no pasa nada. */
+@media (max-width: 900px) {
+  body { background-attachment: scroll; }
+}
+
+/* Excepción: portada */
+body.no-bg {
+  background-image: none !important;
+}
