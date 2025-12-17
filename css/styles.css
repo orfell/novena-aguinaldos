@@ -232,3 +232,14 @@ body.no-bg {
 body {
   overflow-x: hidden; /* evita zoom horizontal */
 }
+/* ===== Evitar salto de tarjetas al cargar contenido (mobile) ===== */
+.card {
+  min-height: 220px; /* reserva espacio inicial */
+}
+
+/* En pantallas grandes no hace falta */
+@media (min-width: 900px) {
+  .card {
+    min-height: auto;
+  }
+}
