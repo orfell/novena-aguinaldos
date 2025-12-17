@@ -261,3 +261,26 @@ body.dark{
 @media (max-width: 520px){
   #prayerButtons{ grid-template-columns: 1fr; }
 }
+/* ===== Escalado de lectura (solo títulos + texto) ===== */
+.page-title{
+  font-size: calc(1.6rem * var(--reading-scale, 1));
+  font-weight: 800;
+}
+
+.reading-title{
+  font-size: calc(1.3rem * var(--reading-scale, 1));
+  font-weight: 800;
+}
+
+.reading-text{
+  font-size: calc(1.1rem * var(--reading-scale, 1));
+  line-height: 1.7;
+}
+
+/* ===== Botones A- / A+ a la mitad ===== */
+.accessibility-bar .btn{
+  padding: 6px 10px;     /* antes ~12x14 */
+  border-radius: 12px;
+  font-size: 0.9rem;
+  min-width: 48px;
+}
