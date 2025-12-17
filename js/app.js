@@ -2,46 +2,40 @@
 (function () {
   "use strict";
 
+  // ---------- Helpers ----------
   function getQueryParam(name) {
     const params = new URLSearchParams(window.location.search);
     return params.get(name);
   }
 
-  function setText(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value || "";
+  function clampInt(n, min, max) {
+    return Math.min(max, Math.max(min, n));
   }
 
-  function normalizeId(idParam) {
-    let n = idParam ? parseInt(idParam, 10) : 1;
-    if (Number.isNaN(n) || n < 1) n = 1;
-    return n;
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = value ?? "";
+  }
+
+  function setHTML(id, value) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = value ?? "";
   }
 
   async function loadJSON(path) {
-    const res = await fetch(path);
-    if (!res.ok) throw new Error("No se pudo cargar " + path);
+    const res = await fetch(path, { cache: "no-store" });
+    if (!res.ok) throw new Error(`No se pudo cargar ${path} (${res.status})`);
     return await res.json();
   }
 
-  function setNavVisibility(show) {
-    const navCard = document.getElementById("navCard");
-    if (navCard) navCard.style.display = show ? "" : "none";
+  function show(el, isVisible) {
+    if (!el) return;
+    el.style.display = isVisible ? "" : "none";
   }
 
-  function showNavMode(mode) {
-    const dayButtons = document.getElementById("dayButtons");
-    const prayerButtons = document.getElementById("prayerButtons");
-
-    if (mode === "dias") {
-      if (dayButtons) dayButtons.style.display = "";
-      if (prayerButtons) prayerButtons.style.display = "none";
-    } else {
-      if (dayButtons) dayButtons.style.display = "none";
-      if (prayerButtons) prayerButtons.style.display = "";
-    }
-  }
-
+  // ---------- UI: navegación ----------
   function initDayButtons(currentId, total) {
     const box = document.getElementById("dayButtons");
     const hint = document.getElementById("navHint");
@@ -55,9 +49,7 @@
       const btn = document.createElement("button");
       btn.type = "button";
       btn.textContent = String(i);
-
-      // ✅ estilo portada
-      btn.classList.add("btn-christmas");
+      btn.className = "btn-christmas";
       if (i === currentId) btn.classList.add("active");
 
       btn.addEventListener("click", () => {
@@ -70,7 +62,7 @@
     if (hint) hint.textContent = `Día actual: ${currentId} de ${total}`;
   }
 
-  function initPrayerButtons(currentId, items) {
+  function initPrayerButtons(currentId) {
     const box = document.getElementById("prayerButtons");
     const hint = document.getElementById("navHint");
     const navTitle = document.getElementById("navTitle");
@@ -79,40 +71,20 @@
     if (navTitle) navTitle.textContent = "Ir a la oración";
     box.innerHTML = "";
 
-    // Orden fijo y nombres EXACTOS como los pediste
-    const desired = [
-      { key: "todos", label: "Oración para todos los días" },
-      { key: "virgen", label: "Oración a la Virgen" },
-      { key: "sanjose", label: "Oración a San José" },
-      { key: "nino_jesus", label: "Oración al Niño Jesús" },
-      { key: "gozos", label: "Los Gozos" },
+    const labels = [
+      "Oración para todos los días",
+      "Oración a la Virgen",
+      "Oración a San José",
+      "Oración al Niño Jesús",
+      "Los Gozos",
     ];
 
-    // Intento: resolver por Titulo o por Audio_Oracion
-    const resolved = desired.map((d) => {
-      const item =
-        items.find((o) => (o.Titulo || "").toLowerCase().includes(d.key.replace("_", " "))) ||
-        items.find((o) => (o.Audio_Oracion || "").toLowerCase().includes(d.key));
-      return { label: d.label, item };
-    });
-
-    // Si no resolvió bien, fallback: orden por Orden
-    const finalList = resolved.every((x) => x.item)
-      ? resolved
-      : items
-          .slice()
-          .sort((a, b) => (a.Orden || 0) - (b.Orden || 0))
-          .map((it) => ({ label: it.Titulo || "Oración", item: it }));
-
-    finalList.forEach(({ label, item }) => {
-      const id = Number(item?.Orden) || 1;
-
+    labels.forEach((label, idx) => {
+      const id = idx + 1;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.textContent = label;
-
-      // ✅ estilo portada
-      btn.classList.add("btn-christmas");
+      btn.className = "btn-christmas";
       if (id === currentId) btn.classList.add("active");
 
       btn.addEventListener("click", () => {
@@ -122,113 +94,147 @@
       box.appendChild(btn);
     });
 
-    const total = items.length || 1;
-    if (hint) hint.textContent = `Oración actual: ${currentId} de ${total}`;
+    if (hint) hint.textContent = `Oración actual: ${currentId} de ${labels.length}`;
   }
 
+  function showNavMode(mode) {
+    const dayButtons = document.getElementById("dayButtons");
+    const prayerButtons = document.getElementById("prayerButtons");
+
+    if (mode === "dias") {
+      show(dayButtons, true);
+      show(prayerButtons, false);
+    } else {
+      show(dayButtons, false);
+      show(prayerButtons, true);
+    }
+  }
+
+  // ---------- Media helpers ----------
+  function setDynamicImage({ safeId, tipo, item }) {
+    const media = document.getElementById("readingMedia");
+    const img = document.getElementById("itemImage");
+    if (!media || !img) return;
+
+    // Limpieza previa
+    img.removeAttribute("src");
+    img.alt = "";
+
+    if (tipo === "dias") {
+      const dayPadded = String(safeId).padStart(2, "0");
+      const primary = `assets/img/Dias/Dia_${dayPadded}.jpg`;   // D mayúscula
+      const fallback = `assets/img/Dias/Dia_${safeId}.jpg`;
+
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = fallback;
+      };
+
+      img.src = primary;
+      img.alt = item?.Titulo
+        ? `Imagen del Día ${safeId}: ${item.Titulo}`
+        : `Imagen del Día ${safeId}`;
+      return;
+    }
+
+    if (tipo === "oraciones") {
+      // Orden fijo 1..5 según tu menú / JSON
+      const map = {
+        1: "img_oracion_todos.jpg",
+        2: "img_oracion_virgen.jpg",
+        3: "img_oracion_sanjose.jpg",
+        4: "img_oracion_jesus.jpg",
+        5: "img_gozos.jpg",
+      };
+
+      const filename = map[safeId];
+      if (!filename) return;
+
+      img.src = `assets/img/Oracion/${filename}`; // O mayúscula
+      img.alt = item?.Titulo ? `Imagen: ${item.Titulo}` : "Imagen de la oración";
+      return;
+    }
+  }
+
+  function setAudio(src) {
+    const audio = document.getElementById("audioPlayer");
+    if (!audio) return;
+    audio.src = src || "";
+    audio.load();
+  }
+
+  // ---------- Main ----------
   async function init() {
-    // OBLIGATORIO: si no existe, no inicializa
+    // Si no existe el título de página, no hacemos nada
     const pageTitle = document.getElementById("pageTitle");
     if (!pageTitle) return;
 
     const tipo = (getQueryParam("tipo") || "dias").toLowerCase();
-    const currentId = normalizeId(getQueryParam("id"));
+    const idParam = parseInt(getQueryParam("id") || "1", 10);
+    const requestedId = Number.isFinite(idParam) ? idParam : 1;
 
     try {
+      // Siempre mostramos nav card (tu app lo usa)
+      const navCard = document.getElementById("navCard");
+      show(navCard, true);
+
       if (tipo === "oraciones") {
-        setNavVisibility(true);
         showNavMode("oraciones");
 
-        // ✅ dos puntos
         setText("pageTitle", "Oraciones:");
         document.title = "Oraciones · Novena";
 
         const items = await loadJSON("data/oraciones.json");
-        const total = items.length;
+        const total = Array.isArray(items) ? items.length : 0;
+        const safeId = clampInt(requestedId, 1, Math.max(total, 1));
 
-        const safeId = Math.min(Math.max(currentId, 1), total || 1);
-
+        // Encontrar por Orden (preferido) o por índice
         let item = items.find((o) => Number(o.Orden) === safeId);
         if (!item) item = items[safeId - 1];
 
-        initPrayerButtons(safeId, items);
+        initPrayerButtons(safeId);
 
         setText("itemTitle", (item?.Titulo || `Oración ${safeId}`) + ":");
         setText("itemMeta", `Sección · Oraciones · ${safeId}${total ? " de " + total : ""}`);
         setText("itemText", item?.Texto || "Sin contenido todavía.");
 
-        // Audio (✅ corregido: Audio_Oracion)
-        const audio = document.getElementById("audioPlayer");
-        if (audio) {
-          audio.src = item?.Audio_Oracion || item?.Audio || "";
-          audio.load();
-        }
+        // Audio de oraciones
+        setAudio(item?.Audio_Oracion || item?.Audio || "");
 
-        // ✅ En oraciones NO mostramos imagen de día
-        const media = document.getElementById("readingMedia");
-        if (media) media.style.display = "none";
+        // Imagen dinámica de oraciones
+        setDynamicImage({ safeId, tipo: "oraciones", item });
       } else {
-        setNavVisibility(true);
+        // DÍAS (por defecto)
         showNavMode("dias");
 
-        // ✅ dos puntos
         setText("pageTitle", "Consideración del Día:");
         document.title = "Días 1–9 · Novena";
 
         const items = await loadJSON("data/dias.json");
-        const total = items.length;
+        const total = Array.isArray(items) ? items.length : 0;
+        const safeId = clampInt(requestedId, 1, Math.max(total, 1));
 
-        const safeId = Math.min(Math.max(currentId, 1), total || 1);
-
-        // ✅ corregido: el JSON trae Dia (no id)
-        let item = items.find((d) => Number(d.Dia) === safeId || Number(d.id) === safeId);
+        // Encontrar por Dia (preferido) o por índice
+        let item =
+          items.find((d) => Number(d.Dia) === safeId) ||
+          items.find((d) => Number(d.id) === safeId);
         if (!item) item = items[safeId - 1];
 
         initDayButtons(safeId, total || 9);
 
-        // ✅ dos puntos también en el título del contenido
-        setText("itemTitle", (item?.Titulo || `Día ${safeId}`) + ":");
+        setText("itemTitle", `Día ${safeId} - ${(item?.Titulo || "").trim()}`.trim() + ":");
         setText(
           "itemMeta",
           `Sección · Días · ${safeId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`
         );
 
-        // ✅ corregido: el JSON trae Reflexion (no Texto)
         setText("itemText", item?.Reflexion || item?.Texto || "Sin contenido todavía.");
 
-        // Audio (✅ corregido: Audio_Reflexion)
-        const audio = document.getElementById("audioPlayer");
-        if (audio) {
-          audio.src = item?.Audio_Reflexion || item?.Audio || "";
-          audio.load();
-        }
+        // Audio de días
+        setAudio(item?.Audio_Reflexion || item?.Audio || "");
 
-        // ===== Imagen del día (dinámica) =====
-		// Requiere: day.html tenga #readingMedia y #itemImage
-		// Carpeta: assets/img/Dias/  (D mayúscula)
-		const media = document.getElementById("readingMedia");
-		const img = document.getElementById("itemImage");
-
-		if (media && img) {
-		  const dayPadded = String(safeId).padStart(2, "0");
-
-		  const primarySrc = `assets/img/Dias/Dia_${dayPadded}.jpg`;
-		  const fallbackSrc = `assets/img/Dias/Dia_${safeId}.jpg`;
-
-		  // Limpiar src previo (por navegación entre días)
-		  img.removeAttribute("src");
-
-		  img.onerror = () => {
-			img.onerror = null; // evita bucle
-			img.src = fallbackSrc;
-		  };
-
-		  img.src = primarySrc;
-		  img.alt = item?.Titulo
-			? `Imagen del Día ${safeId}: ${item.Titulo}`
-			: `Imagen del Día ${safeId}`;
-		}
-
+        // Imagen dinámica de días
+        setDynamicImage({ safeId, tipo: "dias", item });
       }
 
       // Accesibilidad (si existe)
@@ -237,14 +243,19 @@
       }
     } catch (err) {
       console.error(err);
-      setText("pageTitle", "Error cargando datos");
-      setText("itemTitle", "Error cargando datos");
-      setText("itemMeta", "");
-      setText("itemText", err && err.message ? err.message : "Ocurrió un error.");
 
-      // Si hay bloque de imagen, lo ocultamos para no dejar “hueco”
-      const media = document.getElementById("readingMedia");
-      if (media) media.style.display = "none";
+      setText("pageTitle", "Error cargando datos");
+      setText("itemTitle", "Error");
+      setText("itemMeta", "");
+      setText("itemText", err?.message || "Ocurrió un error.");
+
+      // Limpieza de audio/imagen
+      setAudio("");
+      const img = document.getElementById("itemImage");
+      if (img) {
+        img.removeAttribute("src");
+        img.alt = "";
+      }
     }
   }
 
