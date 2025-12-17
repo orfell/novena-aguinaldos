@@ -204,35 +204,31 @@
         }
 
         // ===== Imagen del día (dinámica) =====
-        // Requiere: day.html tenga #readingMedia y #itemImage
-        // Carpeta: assets/img/Dias/  (D mayúscula)
-        const media = document.getElementById("readingMedia");
-        const img = document.getElementById("itemImage");
+		// Requiere: day.html tenga #readingMedia y #itemImage
+		// Carpeta: assets/img/Dias/  (D mayúscula)
+		const media = document.getElementById("readingMedia");
+		const img = document.getElementById("itemImage");
 
-        if (media && img) {
-          const dayPadded = String(safeId).padStart(2, "0");
+		if (media && img) {
+		  const dayPadded = String(safeId).padStart(2, "0");
 
-          const primarySrc = `assets/img/Dias/Dia_${dayPadded}.jpg`;
-          const fallbackSrc = `assets/img/Dias/Dia_${safeId}.jpg`;
+		  const primarySrc = `assets/img/Dias/Dia_${dayPadded}.jpg`;
+		  const fallbackSrc = `assets/img/Dias/Dia_${safeId}.jpg`;
 
-          // Estado inicial: oculto hasta que cargue bien
-          media.style.display = "none";
+		  // Limpiar src previo (por navegación entre días)
+		  img.removeAttribute("src");
 
-          img.onload = () => {
-            media.style.display = "";
-          };
+		  img.onerror = () => {
+			img.onerror = null; // evita bucle
+			img.src = fallbackSrc;
+		  };
 
-          img.onerror = () => {
-            // Evita bucle si también falla el fallback
-            img.onerror = null;
-            img.src = fallbackSrc;
-          };
+		  img.src = primarySrc;
+		  img.alt = item?.Titulo
+			? `Imagen del Día ${safeId}: ${item.Titulo}`
+			: `Imagen del Día ${safeId}`;
+		}
 
-          img.src = primarySrc;
-          img.alt = item?.Titulo
-            ? `Imagen del Día ${safeId}: ${item.Titulo}`
-            : `Imagen del Día ${safeId}`;
-        }
       }
 
       // Accesibilidad (si existe)
