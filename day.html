@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Novena de Aguinaldos</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body class="dark">
-   
+
   <header class="topbar">
     <a class="brand" href="./index.html" aria-label="Volver al inicio">🎄 Novena de Aguinaldos</a>
     <div class="top-actions">
@@ -18,17 +18,12 @@
 
   <main class="container">
 
-    <!-- Encabezado -->
-    <section class="card">
-      <h1 id="pageTitle" class="h1">Cargando…</h1>
-    </section>
-
     <!-- Panel de accesibilidad (arriba del texto, como pediste) -->
     <section class="card accessibility-card" aria-label="Accesibilidad">
       <div class="accessibility-bar" role="toolbar" aria-label="Controles de lectura">
         <button id="btnTextSmaller" class="btn" type="button" aria-label="Disminuir tamaño de lectura">A-</button>
         <button id="btnTextBigger" class="btn" type="button" aria-label="Aumentar tamaño de lectura">A+</button>
-        <button id="btnToggleTheme" class="btn" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
+        <!-- ✅ Eliminado: botón de contraste (modo oscuro fijo) -->
       </div>
     </section>
 
@@ -49,16 +44,10 @@
       <div id="navHint" class="muted"></div>
     </section>
 
-    <!-- Audio (audio.js usa estos IDs) -->
+    <!-- ✅ Audio SIN tarjetas anidadas -->
     <section class="card">
       <h2 class="h2">Audio</h2>
-      <section class="card">
-		<h3>Audio</h3>
-
-		<audio id="audioPlayer" controls preload="none"></audio>
-</section>
-
-	  
+      <audio id="audioPlayer" class="audio" controls preload="none"></audio>
     </section>
 
   </main>
