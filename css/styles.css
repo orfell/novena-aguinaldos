@@ -303,5 +303,5 @@ body.no-bg{
   text-align: center;
 }
 .reading-title{
-  font-size: calc(clamp(1.85rem, 5,5vw, 2.35rem) * var(--reading-scale));
+  font-size: calc(clamp(1.85rem, 5.5vw, 2.35rem) * var(--reading-scale));
 }
