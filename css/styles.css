@@ -1,140 +1,169 @@
-:root{
-  --bg: #f6f7fb;
-  --text: #1b1f2a;
-  --muted: rgba(27,31,42,.70);
-  --border: rgba(0,0,0,.12);
-  --shadow: 0 10px 30px rgba(0,0,0,.06);
-  --radius: 18px;
-}
+/* =========================================================
+   Novena de Aguinaldos – styles.css (LIMPIO / SIN DUPLICADOS)
+   - Dark por defecto
+   - Fondo repetible (móvil-friendly)
+   - Cards glass
+   - Escalado SOLO del texto de lectura con --reading-scale
+   ========================================================= */
 
-:root.dark{
-  --bg: #0f1220;
-  --text: #eef1ff;
-  --muted: rgba(238,241,255,.70);
-  --border: rgba(255,255,255,.14);
-  --shadow: 0 10px 30px rgba(0,0,0,.25);
-  --radius: 18px;
-}
-
+/* ===== Reset base ===== */
 *{ box-sizing: border-box; }
-
-html, body{
-  height: 100%;
-  min-height: 100%;
-}
-
+html, body{ height: 100%; }
+img, video{ max-width: 100%; height: auto; }
 body{
   margin: 0;
+  overflow-x: hidden; /* evita “crecimiento” horizontal */
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--text);
-
-  /* Fondo global (todas las páginas) */
-  background-color: var(--bg);
-  background-image: url("../assets/img/Fondo1.png");
-  background-repeat: repeat;
-  background-size: 720px auto;
-  background-position: center top;
-  background-attachment: scroll;
-
-  overflow-x: hidden; /* evita “zoom”/desborde horizontal en móvil */
 }
 
-a{ color: inherit; text-decoration: none; }
+/* =========================================================
+   1) TEMA: oscuro por defecto (SIN depender de body.dark)
+   ========================================================= */
+:root{
+  --bg: #0f1220;
+  --text: #eef1ff;
+  --muted: rgba(238,241,255,0.70);
+  --border: rgba(255,255,255,0.18);
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  --radius: 18px;
+
+  /* Card “glass” */
+  --card: rgba(0, 0, 0, 0.35);
+  --card-border: rgba(255, 255, 255, 0.22);
+
+  /* Escala de lectura (A-/A+) */
+  --reading-scale: 1;
+}
+
+/* Si en algún momento vuelves a usar class="dark", no pasa nada */
+body.dark{
+  --bg: #0f1220;
+  --text: #eef1ff;
+  --muted: rgba(238,241,255,0.70);
+  --border: rgba(255,255,255,0.18);
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  --radius: 18px;
+  --card: rgba(0, 0, 0, 0.35);
+  --card-border: rgba(255, 255, 255, 0.22);
+}
+
+/* =========================================================
+   2) FONDO GLOBAL (todas las páginas excepto portada con .no-bg)
+   IMPORTANTÍSIMO: background-attachment: scroll para móvil
+   ========================================================= */
+body{
+  color: var(--text);
+  background-color: var(--bg);
+
+  /* OJO: este path asume que el CSS está en /css/styles.css */
+  background-image: url("../assets/img/Fondo1.png");
+  background-repeat: repeat;        /* que nunca se acabe */
+  background-size: 720px auto;      /* patrón estable */
+  background-position: center top;
+  background-attachment: scroll;    /* CRUCIAL para celular */
+}
 
 /* Excepción: portada */
 body.no-bg{
   background-image: none !important;
 }
 
-/* ===== Topbar ===== */
-.topbar{
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(15,18,32,0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,0.14);
-
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand{
-  font-weight: 800;
-  letter-spacing: .2px;
-}
-
-/* ===== Layout ===== */
+/* =========================================================
+   3) Layout
+   ========================================================= */
 .container{
   width: min(900px, 100%);
-  margin: 0 auto;
+  margin-inline: auto;
   padding: 14px;
-  display: grid;
-  gap: 14px;
 }
 
 @media (max-width: 520px){
   .container{ padding: 12px; }
 }
 
-.h1{ margin: 0 0 8px 0; font-size: 1.35rem; }
-.h2{ margin: 0 0 10px 0; font-size: 1.15rem; }
+/* =========================================================
+   4) Topbar (si la tienes)
+   ========================================================= */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 
-.muted{ color: var(--muted); font-size: .95rem; }
-
-/* ===== Cards (UNA sola definición, estable) ===== */
-.card{
-  width: 100%;
-  max-width: 100%;
-  padding: 16px;
-
-  background: rgba(255, 255, 255, 0.18);
+  padding: 12px 14px;
+  background: rgba(10, 12, 20, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
 
-  border: 1px solid rgba(255, 255, 255, 0.35);
+.brand{
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.top-actions{ display: flex; gap: 10px; align-items: center; }
+
+/* =========================================================
+   5) Cards glass
+   ========================================================= */
+.card{
+  background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
-
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  padding: 16px;
 }
 
-.dark .card{
-  background: rgba(0, 0, 0, 0.35);
-  border-color: rgba(255, 255, 255, 0.22);
-}
-
-/* Evita que texto largo o elementos internos ensanchen la card */
+/* Evita que contenido interno “ensanche” la tarjeta */
 .card, .card *{
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-/* ===== Botones base ===== */
+/* =========================================================
+   6) Tipografías
+   ========================================================= */
+.h1{ margin: 0 0 8px 0; font-size: 1.35rem; font-weight: 900; }
+.h2{ margin: 0 0 10px 0; font-size: 1.15rem; font-weight: 800; }
+.muted{ color: var(--muted); font-size: 0.95rem; }
+
+/* Título principal (pageTitle) escala también si quieres */
+.page-title,
+#pageTitle{
+  font-size: calc(1.6rem * var(--reading-scale, 1));
+  font-weight: 900;
+}
+
+/* =========================================================
+   7) Botones base + botones “portada”
+   ========================================================= */
 .btn{
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.22);
+  border: 1px solid var(--border);
   background: rgba(255,255,255,0.06);
   cursor: pointer;
   font-weight: 650;
-  color: inherit;
+  color: var(--text);
 }
 
 .btn.small{
   padding: 8px 10px;
   border-radius: 12px;
-  font-weight: 650;
 }
 
 .btn:focus{
-  outline: 3px solid rgba(80, 120, 255, 0.7);
+  outline: 3px solid rgba(80, 120, 255, 0.70);
   outline-offset: 2px;
 }
 
-/* ===== Botón estilo portada (reutilizable) ===== */
+/* Botón estilo portada (crema con rojo) */
 .btn-christmas{
   display: flex;
   align-items: center;
@@ -145,7 +174,7 @@ body.no-bg{
   border: 1px solid rgba(120, 0, 0, 0.35);
   background: rgba(255, 248, 240, 0.92);
   color: #7a0b0b;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.4px;
   text-decoration: none;
   box-shadow: 0 6px 14px rgba(0,0,0,0.12);
@@ -162,7 +191,9 @@ body.no-bg{
   box-shadow: 0 10px 22px rgba(0,0,0,0.16);
 }
 
-/* ===== Grillas de navegación ===== */
+/* =========================================================
+   8) Grillas de navegación
+   ========================================================= */
 .grid-2{
   display: grid;
   gap: 10px;
@@ -180,14 +211,12 @@ body.no-bg{
   .grid-3{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-/* ===== Audio ===== */
-.audio{
-  width: 100% !important;
-  display: block;
-  margin: 0;
-}
-
-/* ===== Accesibilidad ===== */
+/* =========================================================
+   9) Accesibilidad (A-/A+)
+   - sticky en desktop
+   - NO sticky en móvil
+   - botones a la mitad
+   ========================================================= */
 .accessibility-card{
   position: sticky;
   top: 64px;
@@ -201,7 +230,7 @@ body.no-bg{
   align-items: center;
 }
 
-/* En móvil, quitar sticky para evitar “huecos” y cards enormes */
+/* En móvil, quitar sticky para evitar “huecos” y crecimiento raro */
 @media (max-width: 520px){
   .accessibility-card{
     position: static;
@@ -209,78 +238,67 @@ body.no-bg{
   }
 }
 
-.dark .accessibility-bar .btn{
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,255,255,0.28);
-  color: #ffffff;
+/* Botones A-/A+ a la mitad */
+.accessibility-bar .btn{
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  min-width: 48px;
 }
 
-.dark .accessibility-bar .btn:active{
-  background: rgba(255,255,255,0.16);
+/* (Si dejas el hint, aquí; si lo borraste del HTML, no molesta) */
+.accessibility-hint{
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: var(--muted);
 }
 
-/* ===== Lectura: SOLO este contenedor cambia tamaño ===== */
-.reading-title{
+/* =========================================================
+   10) Lectura (SOLO títulos + texto escalan)
+   ========================================================= */
+
+/* TÍTULO del ítem: “Día 1 - …” (el que querías AL DOBLE) */
+.reading-title,
+#readingTitle,
+#itemTitle{
   margin: 0 0 10px 0;
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-size: calc(2.6rem * var(--reading-scale, 1)); /* 2x de 1.3rem */
+  font-weight: 900;
+  line-height: 1.15;
 }
 
-.reading-text{
-  --reading-font-size: 1.1rem;
-  font-size: var(--reading-font-size);
+/* Texto principal */
+.reading-text,
+#readingText,
+#itemText{
+  font-size: calc(1.1rem * var(--reading-scale, 1));
   line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-/* ===== Footer ===== */
+/* Mejor foco accesible */
+#readingText:focus,
+#itemText:focus{
+  outline: 3px solid rgba(80, 120, 255, 0.55);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+/* =========================================================
+   11) Audio (ancho completo)
+   ========================================================= */
+.audio,
+#audioPlayer{
+  width: 100% !important;
+  display: block;
+  margin: 0;
+}
+
+/* =========================================================
+   12) Footer
+   ========================================================= */
 .footer{
   padding: 14px 16px 24px 16px;
   text-align: center;
-}
-/* ===== FIX: aplicar variables dark cuando el body tiene class="dark" ===== */
-body.dark{
-  --bg: #0f1220;
-  --text: #eef1ff;
-  --muted: rgba(238,241,255,.70);
-  --border: rgba(255,255,255,.14);
-  --shadow: 0 10px 30px rgba(0,0,0,.25);
-  --radius: 18px;
-}
-#dayButtons{
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-#prayerButtons{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-@media (max-width: 520px){
-  #prayerButtons{ grid-template-columns: 1fr; }
-}
-/* ===== Escalado de lectura (solo títulos + texto) ===== */
-.page-title{
-  font-size: calc(1.6rem * var(--reading-scale, 1));
-  font-weight: 800;
-}
-
-.reading-title{
-  font-size: calc(1.3rem * var(--reading-scale, 1));
-  font-weight: 800;
-}
-
-.reading-text{
-  font-size: calc(1.1rem * var(--reading-scale, 1));
-  line-height: 1.7;
-}
-
-/* ===== Botones A- / A+ a la mitad ===== */
-.accessibility-bar .btn{
-  padding: 6px 10px;     /* antes ~12x14 */
-  border-radius: 12px;
-  font-size: 0.9rem;
-  min-width: 48px;
 }
