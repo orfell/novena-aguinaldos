@@ -319,3 +319,21 @@ body.no-bg{
   border: 1px solid rgba(255,255,255,0.18);
   box-shadow: 0 10px 24px rgba(0,0,0,0.25);
 }
+/* ===== FIX fondo en móvil: mantener Fondo1.png (no negro plano) ===== */
+/* OJO: styles.css está en /css, por eso usamos ../assets/... */
+body{
+  background-color: #000; /* base */
+  background-image: url("../assets/img/Fondo1.png");
+  background-repeat: repeat;
+  background-size: 320px auto; /* ajusta si quieres */
+  background-attachment: scroll; /* en móvil evita bugs de fixed */
+}
+
+/* Si tienes clase .dark que pisa el fondo, la blindamos también */
+body.dark{
+  background-color: #000;
+  background-image: url("../assets/img/Fondo1.png");
+  background-repeat: repeat;
+  background-size: 320px auto;
+  background-attachment: scroll;
+}
