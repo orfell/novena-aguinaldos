@@ -5,56 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Novena de Aguinaldos</title>
   <link rel="stylesheet" href="css/styles.css" />
+
   <style>
-    /* Portada */
+    /* ===== PORTADA ===== */
     .hero {
       min-height: 100vh;
       display: grid;
       place-items: center;
       padding: 18px;
-      background-image: url("assets/img/portada-novena.jpg");
+      background-image: url("assets/img/Portada4.jpg"); /* ajusta si el nombre cambia */
       background-size: cover;
       background-position: center top;
       background-repeat: no-repeat;
     }
 
-    /* Capa para que los botones siempre se lean */
+    /* Capa de lectura */
     .heroOverlay {
       width: min(560px, 100%);
       background: rgba(255, 255, 255, 0.10);
       backdrop-filter: blur(6px);
       border: 1px solid rgba(255,255,255,0.25);
       border-radius: 16px;
-      padding: 16px;
+      padding: 18px 16px 20px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
     }
 
+    /* Título */
+    .heroTitle {
+      text-align: center;
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.45);
+    }
+
+    /* Botones */
     .heroButtons {
       display: grid;
       gap: 12px;
-      margin-top: 14px;
     }
 
-    /* Botón navideño sobrio */
     .btnChristmas {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
       width: 100%;
       padding: 14px 16px;
       border-radius: 14px;
       border: 1px solid rgba(120, 0, 0, 0.35);
       background: rgba(255, 248, 240, 0.92); /* crema */
-      color: #7a0b0b; /* vino */
+      color: #7a0b0b; /* rojo vino */
       font-weight: 800;
       letter-spacing: 0.4px;
       text-decoration: none;
       box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
     }
 
-    .btnChristmas:active { transform: translateY(1px); }
+    .btnChristmas:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.14);
+    }
 
-    /* En pantallas anchas: 3 en fila */
+    /* Desktop: botones en fila */
     @media (min-width: 900px) {
       .heroOverlay { width: min(920px, 100%); }
       .heroButtons { grid-template-columns: repeat(3, 1fr); }
@@ -65,19 +79,23 @@
 <body>
   <main class="hero">
     <section class="heroOverlay" aria-label="Portada de la Novena">
-      <div class="muted" style="text-align:center; font-weight:700;">
-        Modo lector • Accesible • Audios locales
-      </div>
+
+      <h2 class="heroTitle">Novena de Aguinaldos</h2>
 
       <nav class="heroButtons" aria-label="Menú principal">
-        <a class="btnChristmas" href="./day.html?tipo=oraciones&id=1">Oraciones</a>
-        <a class="btnChristmas" href="./day.html?tipo=dias&id=1">Reflexiones</a>
-        <a class="btnChristmas" href="./villancicos.html">Villancicos</a>
+        <a class="btnChristmas" href="./day.html?tipo=oraciones&id=1">
+          Oraciones
+        </a>
+
+        <a class="btnChristmas" href="./day.html?tipo=dias&id=1">
+          Reflexiones
+        </a>
+
+        <a class="btnChristmas" href="./villancicos.html">
+          Villancicos
+        </a>
       </nav>
 
-      <div class="muted" style="text-align:center; margin-top:12px;">
-        App accesible • Modo lectura • Audios locales
-      </div>
     </section>
   </main>
 </body>
