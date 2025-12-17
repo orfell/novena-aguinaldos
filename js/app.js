@@ -84,36 +84,25 @@
       { key: "todos", label: "Oración para todos los días" },
       { key: "virgen", label: "Oración a la Virgen" },
       { key: "sanjose", label: "Oración a San José" },
-      { key: "gozos", label: "Gozos" },
-      { key: "nino", label: "Oración al Niño Jesús" }
+      { key: "nino_jesus", label: "Oración al Niño Jesús" },
+      { key: "gozos", label: "Los Gozos" },
     ];
 
-    function findItemByLabel(label) {
-      const low = (label || "").toLowerCase();
-      // buscamos por coincidencia flexible en el Titulo del JSON
-      return (
-        items.find(it => (it.Titulo || "").toLowerCase().includes(low.replace("oración ", ""))) ||
-        items.find(it => (it.Titulo || "").toLowerCase().includes(low))
-      );
-    }
-
-    // Construye 5 botones en el orden deseado
-    const resolved = desired.map(d => {
-      // Intento 1: match por palabras clave
-      let item =
-        items.find(it => (it.Titulo || "").toLowerCase().includes(d.key)) ||
-        findItemByLabel(d.label);
-
+    // Intento: resolver por Titulo o por Audio_Oracion
+    const resolved = desired.map((d) => {
+      const item =
+        items.find((o) => (o.Titulo || "").toLowerCase().includes(d.key.replace("_", " "))) ||
+        items.find((o) => (o.Audio_Oracion || "").toLowerCase().includes(d.key));
       return { label: d.label, item };
     });
 
     // Si no resolvió bien, fallback: orden por Orden
-    const finalList = resolved.every(x => x.item)
+    const finalList = resolved.every((x) => x.item)
       ? resolved
       : items
           .slice()
           .sort((a, b) => (a.Orden || 0) - (b.Orden || 0))
-          .map(it => ({ label: it.Titulo || "Oración", item: it }));
+          .map((it) => ({ label: it.Titulo || "Oración", item: it }));
 
     finalList.forEach(({ label, item }) => {
       const id = Number(item?.Orden) || 1;
@@ -162,20 +151,18 @@
         let item = items.find((o) => Number(o.Orden) === safeId);
         if (!item) item = items[safeId - 1];
 
-        // ✅ dos puntos también en el título del contenido
-        setText("itemTitle", (item?.Titulo || "Oración") + ":");
+        initPrayerButtons(safeId, items);
+
+        setText("itemTitle", (item?.Titulo || `Oración ${safeId}`) + ":");
         setText("itemMeta", `Sección · Oraciones · ${safeId}${total ? " de " + total : ""}`);
         setText("itemText", item?.Texto || "Sin contenido todavía.");
 
-        // Audio
+        // Audio (✅ corregido: Audio_Oracion)
         const audio = document.getElementById("audioPlayer");
         if (audio) {
-          audio.src = item?.Audio || "";
+          audio.src = item?.Audio_Oracion || item?.Audio || "";
           audio.load();
         }
-
-        initPrayerButtons(safeId, items);
-
       } else {
         setNavVisibility(true);
         showNavMode("dias");
@@ -189,35 +176,40 @@
 
         const safeId = Math.min(Math.max(currentId, 1), total || 1);
 
-        let item = items.find((d) => Number(d.id) === safeId);
+        // ✅ corregido: el JSON trae Dia (no id)
+        let item = items.find((d) => Number(d.Dia) === safeId || Number(d.id) === safeId);
         if (!item) item = items[safeId - 1];
+
+        initDayButtons(safeId, total || 9);
 
         // ✅ dos puntos también en el título del contenido
         setText("itemTitle", (item?.Titulo || `Día ${safeId}`) + ":");
-        setText("itemMeta", `Sección · Días · ${safeId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`);
-        setText("itemText", item?.Texto || "Sin contenido todavía.");
+        setText(
+          "itemMeta",
+          `Sección · Días · ${safeId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`
+        );
 
-        // Audio
+        // ✅ corregido: el JSON trae Reflexion (no Texto)
+        setText("itemText", item?.Reflexion || item?.Texto || "Sin contenido todavía.");
+
+        // Audio (✅ corregido: Audio_Reflexion)
         const audio = document.getElementById("audioPlayer");
         if (audio) {
-          audio.src = item?.Audio || "";
+          audio.src = item?.Audio_Reflexion || item?.Audio || "";
           audio.load();
         }
-
-        initDayButtons(safeId, total);
       }
 
-      // Accesibilidad
+      // Accesibilidad (si existe)
       if (typeof window.initAccessibility === "function") {
         window.initAccessibility();
       }
-
     } catch (err) {
       console.error(err);
       setText("pageTitle", "Error cargando datos");
       setText("itemTitle", "Error cargando datos");
       setText("itemMeta", "");
-      setText("itemText", (err && err.message) ? err.message : "Ocurrió un error.");
+      setText("itemText", err && err.message ? err.message : "Ocurrió un error.");
     }
   }
 
