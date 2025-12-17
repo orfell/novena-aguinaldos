@@ -136,10 +136,10 @@ body.no-bg{
 /* Título principal (pageTitle) escala también si quieres */
 .page-title,
 #pageTitle{
-  #pageTitle{
   font-size: 1.6rem;
   font-weight: 900;
 }
+
 
 /* =========================================================
    7) Botones base + botones “portada”

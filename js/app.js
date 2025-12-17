@@ -215,3 +215,27 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+// ===== Imagen del día (dinámica) =====
+const media = document.getElementById("readingMedia");
+const img = document.getElementById("itemImage");
+
+if (media && img) {
+  const dayPadded = String(safeId).padStart(2, "0");
+
+  // Ruta CORRECTA (D mayúscula)
+  let imgSrc = `assets/img/Dias/Dia_${dayPadded}.jpg`;
+
+  img.onload = () => {
+    media.style.display = "";
+  };
+
+  img.onerror = () => {
+    // Fallback si alguna imagen está como Dia_9.jpg
+    img.src = `assets/img/Dias/Dia_${safeId}.jpg`;
+  };
+
+  img.src = imgSrc;
+  img.alt = item?.Titulo
+    ? `Imagen del Día ${safeId}: ${item.Titulo}`
+    : `Imagen del Día ${safeId}`;
+}

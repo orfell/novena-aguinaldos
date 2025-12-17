@@ -29,14 +29,19 @@
         <!-- ✅ IDs que usa tu accessibility.js -->
         <button id="btnTextSmaller" class="btn" type="button" aria-label="Disminuir tamaño de lectura">A-</button>
         <button id="btnTextBigger" class="btn" type="button" aria-label="Aumentar tamaño de lectura">A+</button>
-        <!-- (sin botón de tema) -->
       </div>
     </section>
 
     <!-- Contenido principal -->
-    <section class="card reading-card">
+    <section id="content" class="card reading-card">
       <h3 id="itemTitle" class="reading-title"></h3>
       <div id="itemMeta" class="muted"></div>
+
+      <!-- ✅ Imagen del día (dinámica) -->
+      <div id="readingMedia" class="reading-media" style="display:none;">
+        <img id="itemImage" class="reading-image" alt="" loading="lazy" decoding="async">
+      </div>
+
       <div id="itemText" class="reading-text" tabindex="0"></div>
     </section>
 
