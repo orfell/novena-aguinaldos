@@ -136,7 +136,8 @@ body.no-bg{
 /* Título principal (pageTitle) escala también si quieres */
 .page-title,
 #pageTitle{
-  font-size: calc(1.6rem * var(--reading-scale, 1));
+  #pageTitle{
+  font-size: 1.6rem;
   font-weight: 900;
 }
 
@@ -258,11 +259,10 @@ body.no-bg{
    ========================================================= */
 
 /* TÍTULO del ítem: “Día 1 - …” (el que querías AL DOBLE) */
-.reading-title,
 #readingTitle,
 #itemTitle{
   margin: 0 0 10px 0;
-  font-size: calc(2.6rem * var(--reading-scale, 1)); /* 2x de 1.3rem */
+  font-size: 2.6rem;   /* tamaño fijo */
   font-weight: 900;
   line-height: 1.15;
 }
