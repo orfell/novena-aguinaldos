@@ -248,3 +248,16 @@ body.dark{
   --shadow: 0 10px 30px rgba(0,0,0,.25);
   --radius: 18px;
 }
+#dayButtons{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+#prayerButtons{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 520px){
+  #prayerButtons{ grid-template-columns: 1fr; }
+}

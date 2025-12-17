@@ -18,18 +18,28 @@
     return n;
   }
 
-  function setNavVisibility(visible) {
+  async function loadJSON(path) {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error("No se pudo cargar " + path);
+    return await res.json();
+  }
+
+  function setNavVisibility(show) {
     const navCard = document.getElementById("navCard");
-    if (navCard) navCard.style.display = visible ? "block" : "none";
+    if (navCard) navCard.style.display = show ? "" : "none";
   }
 
   function showNavMode(mode) {
-    // mode: "dias" | "oraciones"
-    const dayBox = document.getElementById("dayButtons");
-    const prayerBox = document.getElementById("prayerButtons");
+    const dayButtons = document.getElementById("dayButtons");
+    const prayerButtons = document.getElementById("prayerButtons");
 
-    if (dayBox) dayBox.style.display = mode === "dias" ? "grid" : "none";
-    if (prayerBox) prayerBox.style.display = mode === "oraciones" ? "grid" : "none";
+    if (mode === "dias") {
+      if (dayButtons) dayButtons.style.display = "";
+      if (prayerButtons) prayerButtons.style.display = "none";
+    } else {
+      if (dayButtons) dayButtons.style.display = "none";
+      if (prayerButtons) prayerButtons.style.display = "";
+    }
   }
 
   function initDayButtons(currentId, total) {
@@ -46,7 +56,8 @@
       btn.type = "button";
       btn.textContent = String(i);
 
-      btn.classList.add("btn-christmas");   
+      // ✅ estilo portada
+      btn.classList.add("btn-christmas");
       if (i === currentId) btn.classList.add("active");
 
       btn.addEventListener("click", () => {
@@ -80,8 +91,10 @@
     function findItemByLabel(label) {
       const low = (label || "").toLowerCase();
       // buscamos por coincidencia flexible en el Titulo del JSON
-      return items.find(it => (it.Titulo || "").toLowerCase().includes(low.replace("oración ", ""))) ||
-             items.find(it => (it.Titulo || "").toLowerCase().includes(low));
+      return (
+        items.find(it => (it.Titulo || "").toLowerCase().includes(low.replace("oración ", ""))) ||
+        items.find(it => (it.Titulo || "").toLowerCase().includes(low))
+      );
     }
 
     // Construye 5 botones en el orden deseado
@@ -92,19 +105,25 @@
         findItemByLabel(d.label);
 
       return { label: d.label, item };
-    }).filter(x => x.item); // si alguno no existe en JSON, no lo dibuja
+    });
 
-    // Si por alguna razón no resolvió, cae al listado natural por Orden
-    const list = resolved.length ? resolved : [...items].sort((a, b) => (a.Orden || 0) - (b.Orden || 0))
-      .map(it => ({ label: it.Titulo || "Oración", item: it }));
+    // Si no resolvió bien, fallback: orden por Orden
+    const finalList = resolved.every(x => x.item)
+      ? resolved
+      : items
+          .slice()
+          .sort((a, b) => (a.Orden || 0) - (b.Orden || 0))
+          .map(it => ({ label: it.Titulo || "Oración", item: it }));
 
-    list.forEach(({ label, item }) => {
-      const id = Number(item.Orden) || 1;
+    finalList.forEach(({ label, item }) => {
+      const id = Number(item?.Orden) || 1;
 
       const btn = document.createElement("button");
       btn.type = "button";
       btn.textContent = label;
 
+      // ✅ estilo portada
+      btn.classList.add("btn-christmas");
       if (id === currentId) btn.classList.add("active");
 
       btn.addEventListener("click", () => {
@@ -118,29 +137,12 @@
     if (hint) hint.textContent = `Oración actual: ${currentId} de ${total}`;
   }
 
-  function pickAudioUrl(item, tipo) {
-    if (!item) return "";
+  async function init() {
+    // OBLIGATORIO: si no existe, no inicializa
+    const pageTitle = document.getElementById("pageTitle");
+    if (!pageTitle) return;
 
-    if (tipo === "oraciones") {
-      return item.Audio_Oracion || item.audio_oracion || item.AudioOracion || item.audioOracion || item.Audio || item.audio || "";
-    }
-
-    if (tipo === "dias") {
-      return item.Audio_Reflexion || item.audio_reflexion || item.AudioReflexion || item.audioReflexion || item.Audio || item.audio || "";
-    }
-
-    return "";
-  }
-
-  function applyAudio(item, tipo) {
-    const url = pickAudioUrl(item, tipo);
-    if (window.loadAudio) window.loadAudio(url || "");
-  }
-
-  async function initDayPage() {
-    const tipo = getQueryParam("tipo"); // "oraciones" | "dias"
-    if (!tipo) return;
-
+    const tipo = (getQueryParam("tipo") || "dias").toLowerCase();
     const currentId = normalizeId(getQueryParam("id"));
 
     try {
@@ -148,6 +150,7 @@
         setNavVisibility(true);
         showNavMode("oraciones");
 
+        // ✅ dos puntos
         setText("pageTitle", "Oraciones:");
         document.title = "Oraciones · Novena";
 
@@ -159,54 +162,62 @@
         let item = items.find((o) => Number(o.Orden) === safeId);
         if (!item) item = items[safeId - 1];
 
+        // ✅ dos puntos también en el título del contenido
         setText("itemTitle", (item?.Titulo || "Oración") + ":");
         setText("itemMeta", `Sección · Oraciones · ${safeId}${total ? " de " + total : ""}`);
         setText("itemText", item?.Texto || "Sin contenido todavía.");
 
-        initPrayerButtons(safeId, items);
-        applyAudio(item, tipo);
-        return;
-      }
+        // Audio
+        const audio = document.getElementById("audioPlayer");
+        if (audio) {
+          audio.src = item?.Audio || "";
+          audio.load();
+        }
 
-      if (tipo === "dias") {
+        initPrayerButtons(safeId, items);
+
+      } else {
         setNavVisibility(true);
         showNavMode("dias");
 
+        // ✅ dos puntos
         setText("pageTitle", "Consideración del Día:");
-        document.title = "Días · Novena";
+        document.title = "Días 1–9 · Novena";
 
         const items = await loadJSON("data/dias.json");
         const total = items.length;
 
         const safeId = Math.min(Math.max(currentId, 1), total || 1);
 
-        let item = items.find((d) => Number(d.Dia) === safeId);
+        let item = items.find((d) => Number(d.id) === safeId);
         if (!item) item = items[safeId - 1];
 
+        // ✅ dos puntos también en el título del contenido
         setText("itemTitle", (item?.Titulo || `Día ${safeId}`) + ":");
-        setText(
-          "itemMeta",
-          `Sección · Días · ${safeId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`
-        );
-        setText("itemText", item?.Reflexion || "Sin contenido todavía.");
+        setText("itemMeta", `Sección · Días · ${safeId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`);
+        setText("itemText", item?.Texto || "Sin contenido todavía.");
 
-        initDayButtons(safeId, total || 1);
-        applyAudio(item, tipo);
-        return;
+        // Audio
+        const audio = document.getElementById("audioPlayer");
+        if (audio) {
+          audio.src = item?.Audio || "";
+          audio.load();
+        }
+
+        initDayButtons(safeId, total);
       }
-    } catch (err) {
-      setNavVisibility(false);
-      setText("itemTitle", "Error cargando datos");
-      setText("itemText", String(err));
-      if (window.loadAudio) window.loadAudio("");
-    }
-  }
 
-  function init() {
-    if (document.getElementById("pageTitle")) {
-      if (window.initAccessibility) window.initAccessibility();
-      if (window.initAudioUI) window.initAudioUI();
-      initDayPage();
+      // Accesibilidad
+      if (typeof window.initAccessibility === "function") {
+        window.initAccessibility();
+      }
+
+    } catch (err) {
+      console.error(err);
+      setText("pageTitle", "Error cargando datos");
+      setText("itemTitle", "Error cargando datos");
+      setText("itemMeta", "");
+      setText("itemText", (err && err.message) ? err.message : "Ocurrió un error.");
     }
   }
 
