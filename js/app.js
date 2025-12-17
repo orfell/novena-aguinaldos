@@ -172,7 +172,7 @@
         setNavVisibility(true);
         showNavMode("dias");
 
-        setText("pageTitle", "Días 1–9");
+        setText("pageTitle", "Consideración del Día");
         document.title = "Días · Novena";
 
         const items = await loadJSON("data/dias.json");
