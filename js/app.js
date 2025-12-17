@@ -163,6 +163,10 @@
           audio.src = item?.Audio_Oracion || item?.Audio || "";
           audio.load();
         }
+
+        // ✅ En oraciones NO mostramos imagen de día
+        const media = document.getElementById("readingMedia");
+        if (media) media.style.display = "none";
       } else {
         setNavVisibility(true);
         showNavMode("dias");
@@ -198,6 +202,37 @@
           audio.src = item?.Audio_Reflexion || item?.Audio || "";
           audio.load();
         }
+
+        // ===== Imagen del día (dinámica) =====
+        // Requiere: day.html tenga #readingMedia y #itemImage
+        // Carpeta: assets/img/Dias/  (D mayúscula)
+        const media = document.getElementById("readingMedia");
+        const img = document.getElementById("itemImage");
+
+        if (media && img) {
+          const dayPadded = String(safeId).padStart(2, "0");
+
+          const primarySrc = `assets/img/Dias/Dia_${dayPadded}.jpg`;
+          const fallbackSrc = `assets/img/Dias/Dia_${safeId}.jpg`;
+
+          // Estado inicial: oculto hasta que cargue bien
+          media.style.display = "none";
+
+          img.onload = () => {
+            media.style.display = "";
+          };
+
+          img.onerror = () => {
+            // Evita bucle si también falla el fallback
+            img.onerror = null;
+            img.src = fallbackSrc;
+          };
+
+          img.src = primarySrc;
+          img.alt = item?.Titulo
+            ? `Imagen del Día ${safeId}: ${item.Titulo}`
+            : `Imagen del Día ${safeId}`;
+        }
       }
 
       // Accesibilidad (si existe)
@@ -210,32 +245,12 @@
       setText("itemTitle", "Error cargando datos");
       setText("itemMeta", "");
       setText("itemText", err && err.message ? err.message : "Ocurrió un error.");
+
+      // Si hay bloque de imagen, lo ocultamos para no dejar “hueco”
+      const media = document.getElementById("readingMedia");
+      if (media) media.style.display = "none";
     }
   }
 
   document.addEventListener("DOMContentLoaded", init);
 })();
-// ===== Imagen del día (dinámica) =====
-const media = document.getElementById("readingMedia");
-const img = document.getElementById("itemImage");
-
-if (media && img) {
-  const dayPadded = String(safeId).padStart(2, "0");
-
-  // Ruta CORRECTA (D mayúscula)
-  let imgSrc = `assets/img/Dias/Dia_${dayPadded}.jpg`;
-
-  img.onload = () => {
-    media.style.display = "";
-  };
-
-  img.onerror = () => {
-    // Fallback si alguna imagen está como Dia_9.jpg
-    img.src = `assets/img/Dias/Dia_${safeId}.jpg`;
-  };
-
-  img.src = imgSrc;
-  img.alt = item?.Titulo
-    ? `Imagen del Día ${safeId}: ${item.Titulo}`
-    : `Imagen del Día ${safeId}`;
-}
