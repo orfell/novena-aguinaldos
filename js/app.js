@@ -46,6 +46,7 @@
       btn.type = "button";
       btn.textContent = String(i);
 
+      btn.classList.add("btn-christmas");   
       if (i === currentId) btn.classList.add("active");
 
       btn.addEventListener("click", () => {
