@@ -148,7 +148,7 @@
         setNavVisibility(true);
         showNavMode("oraciones");
 
-        setText("pageTitle", "Oraciones");
+        setText("pageTitle", "Oraciones:");
         document.title = "Oraciones · Novena";
 
         const items = await loadJSON("data/oraciones.json");
@@ -159,7 +159,7 @@
         let item = items.find((o) => Number(o.Orden) === safeId);
         if (!item) item = items[safeId - 1];
 
-        setText("itemTitle", item?.Titulo || "Oración");
+        setText("itemTitle", (item?.Titulo || "Oración") + ":");
         setText("itemMeta", `Sección · Oraciones · ${safeId}${total ? " de " + total : ""}`);
         setText("itemText", item?.Texto || "Sin contenido todavía.");
 
@@ -172,7 +172,7 @@
         setNavVisibility(true);
         showNavMode("dias");
 
-        setText("pageTitle", "Consideración del Día");
+        setText("pageTitle", "Consideración del Día:");
         document.title = "Días · Novena";
 
         const items = await loadJSON("data/dias.json");
@@ -183,7 +183,7 @@
         let item = items.find((d) => Number(d.Dia) === safeId);
         if (!item) item = items[safeId - 1];
 
-        setText("itemTitle", item?.Titulo || `Día ${safeId}`);
+        setText("itemTitle", (item?.Titulo || `Día ${safeId}`) + ":");
         setText(
           "itemMeta",
           `Sección · Días · ${safeId}${total ? " de " + total : ""}${item?.Fecha ? " · " + item.Fecha : ""}`

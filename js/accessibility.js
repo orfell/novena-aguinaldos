@@ -31,7 +31,8 @@
     function applySize() {
       size = Math.max(MIN, Math.min(MAX, size));
       // Solo el texto principal (NO menús, NO títulos)
-      textEl.style.setProperty("--reading-font-size", `${size}rem`);
+      const scope = document.querySelector(".reading-scope");
+      scope?.style.setProperty("--scale", size);
       localStorage.setItem("readingFontSize", String(size));
     }
 
