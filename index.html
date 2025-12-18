@@ -1,116 +1,96 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Novena de Aguinaldos</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <!-- ESTA ES TU VERSIÓN (ORIGINAL) -->
+
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
-	<!-- Favicon (pestaña del navegador) ----------------------->
-	<link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <!-- Open Graph (WhatsApp / redes) -->
+  <meta property="og:title" content="Novena de Aguinaldos">
+  <meta property="og:description" content="Familia Martínez Cuenca">
+  <meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
 
-	<!-- Open Graph para WhatsApp / redes ---------------------->
-	<meta property="og:title" content="Novena de Aguinaldos">
-	<meta property="og:description" content="Familia Martínez Cuenca">
-	<meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
-	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
-
-
-  <style>
-    /* ===== PORTADA ===== */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 18px;
-      background-image: url("assets/img/Portada-novena.jpg"); /* ajusta si el nombre cambia */
-      background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
-    }
-
-    /* Capa de lectura */
-    .heroOverlay {
-      width: min(560px, 100%);
-      background: rgba(255, 255, 255, 0.10);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 16px;
-      padding: 18px 16px 20px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-    }
-
-    /* Título */
-    .heroTitle {
-      text-align: center;
-      color: #ffffff;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      margin-bottom: 16px;
-      text-shadow: 0 4px 14px rgba(0,0,0,0.45);
-    }
-
-    /* Botones */
-    .heroButtons {
-      display: grid;
-      gap: 12px;
-    }
-
-    .btnChristmas {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(120, 0, 0, 0.35);
-      background: rgba(255, 248, 240, 0.92); /* crema */
-      color: #7a0b0b; /* rojo vino */
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-      transition: transform 0.08s ease, box-shadow 0.08s ease;
-    }
-
-    .btnChristmas:active {
-      transform: translateY(1px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.14);
-    }
-
-    /* Desktop: botones en fila */
-    @media (min-width: 900px) {
-      .heroOverlay { width: min(920px, 100%); }
-      .heroButtons { grid-template-columns: repeat(3, 1fr); }
-    }
-  </style>
->>>>>>> 6dc675a355ad4eb4c37969ac85d483db0e1a267b
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-  <main class="hero">
-    <section class="heroOverlay" aria-label="Portada de la Novena">
 
-      <h2 class="heroTitle">Novena de Aguinaldos</h2>
+  <!-- =========================
+       TOPBAR
+       ========================= -->
+  <header class="topbar topbar--double" role="banner">
 
-      <nav class="heroButtons" aria-label="Menú principal">
-        <a class="btnChristmas" href="./day.html?tipo=oraciones&id=1">
-          Oraciones
-        </a>
+    <!-- Fila 1: título -->
+    <div class="topbar-row topbar-row--brand">
+      <span class="brand-title">🎄 Novena de Aguinaldos</span>
+    </div>
 
-        <a class="btnChristmas" href="./day.html?tipo=dias&id=1">
-          Consideraciones
-        </a>
+    <!-- Fila 2: acciones -->
+    <nav class="topbar-row topbar-row--actions" aria-label="Acciones">
+      <a href="day.html?tipo=dias&id=1"
+         class="btn small"
+         aria-label="Ir a la Novena">
+        Días
+      </a>
 
-        <a class="btnChristmas" href="./villancicos.html">
-          Villancicos
-        </a>
-      </nav>
+      <a href="day.html?tipo=oraciones&id=1"
+         class="btn small"
+         aria-label="Ir a Oraciones">
+        Oraciones
+      </a>
 
+      <a href="villancicos.html"
+         class="btn small"
+         aria-label="Ir a Villancicos">
+        Villancicos
+      </a>
+    </nav>
+
+  </header>
+
+  <!-- =========================
+       CONTENIDO PRINCIPAL
+       ========================= -->
+  <main class="container" role="main">
+
+    <!-- Portada -->
+    <section class="card cover-card">
+      <img
+        src="assets/img/portada.jpg"
+        alt="Novena de Aguinaldos"
+        class="cover-image"
+        loading="lazy"
+      >
     </section>
+
+    <!-- Menú principal -->
+    <section class="card">
+      <h1 class="page-title">Bienvenidos</h1>
+      <p class="muted">
+        Novena de Aguinaldos – Familia Martínez Cuenca
+      </p>
+
+      <div class="grid-2">
+        <a class="btn primary" href="day.html?tipo=dias&id=1">Días</a>
+        <a class="btn primary" href="day.html?tipo=oraciones&id=1">Oraciones</a>
+        <a class="btn primary" href="villancicos.html">Villancicos</a>
+        <a class="btn primary" href="about.html">Acerca de</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <small>Familia Martínez Cuenca · 2025</small>
+    </footer>
+
   </main>
+
 </body>
 </html>

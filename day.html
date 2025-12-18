@@ -1,50 +1,54 @@
 <!doctype html>
 <html lang="es">
 <head>
-   <!-- ESTA ES TU VERSIÓN (ORIGINAL) ---->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0f1220" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Novena · Lectura</title>
 
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="css/styles.css">
-  <!-- ESTA ES TU VERSIÓN (ORIGINAL) ----> 
-  
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
-  <link rel="manifest" href="manifest.webmanifest">
 
+  <!-- Open Graph (por si comparten una página interna) -->
+  <meta property="og:title" content="Novena de Aguinaldos">
+  <meta property="og:description" content="Familia Martínez Cuenca">
+  <meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
 
-	<!-- Para WhatsApp / redes ------------>
-	<meta property="og:title" content="Novena de Aguinaldos">
-	<meta property="og:description" content="Familia Martínez Cuenca">
-	<meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/icon-512.png">
-	<meta property="og:type" content="website">
-  
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body class="dark">
-  <!-- Topbar (2 filas) -->
+
+  <!-- =========================
+       TOPBAR (2 filas)
+       Fila 1: título
+       Fila 2: A- | A+ | Inicio
+       ========================= -->
   <header class="topbar topbar--double" role="banner">
-    <!-- Fila 1: título -->
+
     <div class="topbar-row topbar-row--brand">
       <span class="brand-title" aria-label="Novena de Aguinaldos">🎄 Novena de Aguinaldos</span>
     </div>
 
-
-    <!-- Fila 2: acciones SIEMPRE en una sola línea -->
->>>>>>> 6dc675a355ad4eb4c37969ac85d483db0e1a267b
     <nav class="topbar-row topbar-row--actions" aria-label="Acciones">
+      <!-- IMPORTANTE: estos IDs los usa accessibility.js -->
       <button id="btnTextSmaller" class="btn small" type="button" aria-label="Disminuir tamaño del texto">A-</button>
       <button id="btnTextBigger" class="btn small" type="button" aria-label="Aumentar tamaño del texto">A+</button>
       <a class="btn small btn-home" href="./index.html" aria-label="Inicio">Inicio</a>
     </nav>
+
   </header>
 
+  <!-- =========================
+       CONTENIDO
+       ========================= -->
   <main class="container" role="main">
-    <!-- Título de página -->
+
+    <!-- Título de página (Días / Oraciones) -->
     <section class="card">
-      <h2 id="pageTitle" class="page-title">Cargando...</h2>
+      <h2 id="pageTitle" class="page-title">Cargando…</h2>
     </section>
 
     <!-- Contenido principal (UNA sola card) -->
@@ -57,15 +61,18 @@
         <img id="itemImage" class="reading-image" alt="" loading="lazy" decoding="async">
       </div>
 
-      <!-- Texto -->
+      <!-- Texto (solo esto escala con A-/A+) -->
       <div id="itemText" class="reading-text" tabindex="0"></div>
     </section>
 
-    <!-- Navegación -->
+    <!-- Navegación (botones) -->
     <section id="navCard" class="card">
       <div id="navTitle" class="h2">Ir al día</div>
 
+      <!-- Para DÍAS (1..9) -->
       <div id="dayButtons" class="grid-3"></div>
+
+      <!-- Para ORACIONES (1..5) -->
       <div id="prayerButtons" class="grid-2" style="display:none;"></div>
 
       <div id="navHint" class="muted"></div>
@@ -77,23 +84,20 @@
       <audio id="audioPlayer" class="audio" controls preload="metadata"></audio>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
-      <small>Desarrollado por Julio Ricardo Martínez Montezuma</small>
+      <small>Desarrollado por Julio Ricardo Martínez Montezuma</small><br>
+      <small>Familia Martínez Cuenca · 2025</small>
     </footer>
+
   </main>
 
-  <!-- JS (orden importa) -->
+  <!-- =========================
+       SCRIPTS (orden importa)
+       ========================= -->
   <script src="js/storage.js"></script>
   <script src="js/accessibility.js"></script>
   <script src="js/app.js"></script>
 
-  <!-- Service Worker -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
-      });
-    }
-  </script>
 </body>
 </html>
