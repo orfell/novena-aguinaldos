@@ -244,16 +244,18 @@
         document.title = "Oraciones · Novena";
 
         const items = await loadJSON("data/oraciones.json");
-        const total = Array.isArray(items) ? items.length : 0;
 
         // El menú SIEMPRE es 1..5
         const safeId = clamp(currentId, 1, 5);
-
         const item = pickOracionByMenuId(items, safeId);
 
         initPrayerButtons(safeId);
 
-        setText("itemTitle", ((item?.Titulo || `Oración ${safeId}`) + ":"));
+        // (micro-fix) evita doble ":" si el JSON ya termina en ":"
+        const rawTitle = (item?.Titulo || `Oración ${safeId}`).trim();
+        const prettyTitle = rawTitle.endsWith(":") ? rawTitle : (rawTitle + ":");
+
+        setText("itemTitle", prettyTitle);
         setText("itemMeta", `Sección · Oraciones · ${safeId} de 5`);
         setText("itemText", item?.Texto || "Sin contenido todavía.");
 
@@ -279,7 +281,15 @@
 
         initDayButtons(safeId, total || 9);
 
-        const titulo = (item?.Titulo || "").trim();
+        // ===== FIX: evitar "Día X - Día X - ..."
+        let titulo = (item?.Titulo || "").trim();
+
+        // Si el JSON ya trae "Día 1 - ..." o "Dia 1: ..." etc, lo eliminamos
+        titulo = titulo.replace(/^d[ií]a\s*\d+\s*[-–—:]\s*/i, "");
+
+        // Evita doble ":" si el título ya lo trae
+        if (titulo.endsWith(":")) titulo = titulo.slice(0, -1).trim();
+
         const fullTitle = titulo ? `Día ${safeId} - ${titulo}:` : `Día ${safeId}:`;
 
         setText("itemTitle", fullTitle);
