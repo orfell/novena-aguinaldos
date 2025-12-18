@@ -1,74 +1,87 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Novena de Aguinaldos</title>
-  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+
+  <!-- Open Graph (WhatsApp / redes) -->
+  <meta property="og:title" content="Novena de Aguinaldos">
+  <meta property="og:description" content="Familia Martínez Cuenca">
+  <meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Fondo SOLO para la portada -->
+  <style>
+    body.index-hero{
+      background-image: url("assets/img/portada-novena.jpg") !important;
+      background-size: cover !important;
+      background-position: center top !important;
+      background-repeat: no-repeat !important;
+      background-attachment: scroll !important;
+      background-color: #0f1220;
+      min-height: 100vh;
+    }
+
+    /* Para que el contenido se vea centrado y “landing” */
+    .hero-wrap{
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 18px 14px 30px 14px;
+      min-height: 100vh;
+      display: grid;
+      align-content: center;
+      gap: 14px;
+    }
+
+    /* Card glass un poquito más “portada” */
+    .hero-card{
+      background: rgba(0,0,0,0.38);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      box-shadow: 0 16px 34px rgba(0,0,0,0.35);
+    }
+
+    @media (max-width: 520px){
+      .hero-wrap{
+        padding-top: 22px;
+        padding-bottom: 26px;
+      }
+    }
+  </style>
 </head>
 
-<body>
-  <header class="topbar">
-    <a class="brand" href="./index.html" aria-label="Ir al inicio">🎄 Novena de Aguinaldos</a>
-    <div class="top-actions">
-      <a class="btn small" href="./about.html">Acerca de</a>
-      <button id="btnToggleTheme" class="btn small" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
-    </div>
-  </header>
+<body class="dark index-hero">
 
-  <main class="container">
+  <main class="hero-wrap" role="main">
 
-    <section class="card">
-      <h1 class="h1">Novena de Aguinaldos</h1>
-      <div class="muted">Modo lector • Accesible • Audios locales</div>
-    </section>
-
-    <section class="card">
-      <h2 class="h2">Secciones</h2>
+    <!-- Tarjeta glass del menú (encima del fondo) -->
+    <section class="card hero-card">
+      <h1 class="page-title" style="margin:0 0 8px 0;">Bienvenidos</h1>
+      <p class="muted" style="margin:0 0 14px 0;">
+        Novena de Aguinaldos – Familia Martínez Cuenca
+      </p>
 
       <div class="grid-2">
-        <a class="btn" href="./day.html?tipo=oraciones&id=1" aria-label="Abrir Oraciones">
-          📖 Oraciones
-        </a>
-
-        <a class="btn" href="./day.html?tipo=dias&id=1" aria-label="Abrir Días 1 a 9">
-          🗓️ Días 1–9
-        </a>
-
-        <a class="btn" href="./villancicos.html" aria-label="Abrir Villancicos">
-          🎶 Villancicos
-        </a>
-
-        <a class="btn" href="./about.html" aria-label="Abrir información de la app">
-          ℹ️ Acerca de
-        </a>
-      </div>
-
-      <div class="muted" style="margin-top: 10px;">
-        Entra a una sección y usa el panel de lectura para ajustar el texto y el tema.
+        <a class="btn-christmas" href="day.html?tipo=dias&id=1">Días</a>
+        <a class="btn-christmas" href="day.html?tipo=oraciones&id=1">Oraciones</a>
+        <a class="btn-christmas" href="villancicos.html">Villancicos</a>
+        <a class="btn-christmas" href="about.html">Acerca de</a>
       </div>
     </section>
+
+    <footer class="footer">
+      <small>Familia Martínez Cuenca · 2025</small>
+    </footer>
 
   </main>
 
-  <footer class="footer">
-    <div class="muted">App accesible • Modo lectura • Audios locales</div>
-  </footer>
-
-  <script>
-    (function () {
-      const btnTheme = document.getElementById("btnToggleTheme");
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") document.documentElement.classList.add("dark");
-
-      btnTheme?.addEventListener("click", () => {
-        document.documentElement.classList.toggle("dark");
-        localStorage.setItem(
-          "theme",
-          document.documentElement.classList.contains("dark") ? "dark" : "light"
-        );
-      });
-    })();
-  </script>
 </body>
 </html>
