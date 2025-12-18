@@ -133,13 +133,12 @@ body.no-bg{
 .h2{ margin: 0 0 10px 0; font-size: 1.15rem; font-weight: 800; }
 .muted{ color: var(--muted); font-size: 0.95rem; }
 
-/* Título principal (pageTitle) escala también si quieres */
+/* Título principal */
 .page-title,
 #pageTitle{
   font-size: 1.6rem;
   font-weight: 900;
 }
-
 
 /* =========================================================
    7) Botones base + botones “portada”
@@ -255,19 +254,19 @@ body.no-bg{
 }
 
 /* =========================================================
-   10) Lectura (SOLO títulos + texto escalan)
+   10) Lectura (Títulos NO escalan / Texto SÍ escala)
    ========================================================= */
 
-/* TÍTULO del ítem: “Día 1 - …” (el que querías AL DOBLE) */
+/* TÍTULO del ítem: “Día 1 - …” */
 #readingTitle,
 #itemTitle{
   margin: 0 0 10px 0;
-  font-size: 2.6rem;   /* tamaño fijo */
+  font-size: 2.6rem;   /* fijo */
   font-weight: 900;
   line-height: 1.15;
 }
 
-/* Texto principal */
+/* Texto principal (SÍ escala con A-/A+) */
 .reading-text,
 #readingText,
 #itemText{
@@ -302,7 +301,11 @@ body.no-bg{
   padding: 14px 16px 24px 16px;
   text-align: center;
 }
-/* Imagen entre título y texto (mobile-first) */
+
+/* =========================================================
+   13) Imagen entre título y texto
+   - Compatible con DÍAS (cuadradas) y ORACIONES (900x600)
+   ========================================================= */
 .reading-media{
   margin: 12px 0 16px 0;
 }
@@ -310,30 +313,12 @@ body.no-bg{
 .reading-image{
   display: block;
   width: 100%;
-  max-width: 600px;      /* tamaño ideal en celular */
-  aspect-ratio: 1 / 1;  /* cuadrada */
-  height: auto;
+  max-width: 600px;
+  height: auto;              /* respeta proporción real */
+  max-height: 380px;         /* evita que “se coma” el celular */
   margin-inline: auto;
   border-radius: 16px;
   object-fit: cover;
   border: 1px solid rgba(255,255,255,0.18);
   box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-}
-/* ===== FIX fondo en móvil: mantener Fondo1.png (no negro plano) ===== */
-/* OJO: styles.css está en /css, por eso usamos ../assets/... */
-body{
-  background-color: #000; /* base */
-  background-image: url("../assets/img/Fondo1.png");
-  background-repeat: repeat;
-  background-size: 320px auto; /* ajusta si quieres */
-  background-attachment: scroll; /* en móvil evita bugs de fixed */
-}
-
-/* Si tienes clase .dark que pisa el fondo, la blindamos también */
-body.dark{
-  background-color: #000;
-  background-image: url("../assets/img/Fondo1.png");
-  background-repeat: repeat;
-  background-size: 320px auto;
-  background-attachment: scroll;
 }

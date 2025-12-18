@@ -322,3 +322,25 @@ body.no-bg{
   border: 1px solid rgba(255,255,255,0.18);
   box-shadow: 0 10px 24px rgba(0,0,0,0.25);
 }
+/* =========================
+   TOPBAR SIEMPRE FIJA EN MÓVIL
+   ========================= */
+@media (max-width: 520px){
+  .topbar{
+    position: fixed;     /* en móvil: fijo real */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+  }
+
+  /* Empuja el contenido para que no quede debajo de la barra */
+  .container{
+    padding-top: 72px;   /* ajusta si tu topbar es más alta */
+  }
+
+  /* Si aún existe la card vieja de accesibilidad, la ocultamos en móvil */
+  .accessibility-card{
+    display: none !important;
+  }
+}

@@ -2,78 +2,91 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Novena de Aguinaldos</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f1220" />
+  <title>Novena · Lectura</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- iOS/PWA friendly -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 
 <body class="dark">
+  <!-- Topbar doble (móvil): fila 1 título + inicio, fila 2 A-/A+ centrados -->
+  <header class="topbar topbar--double">
+    <!-- Fila 1 -->
+    <div class="topbar-row topbar-row--main">
+      <a class="brand" href="./index.html" aria-label="Volver al inicio">🎄 Novena de Aguinaldos</a>
+      <a class="btn small" href="./index.html" aria-label="Inicio">Inicio</a>
+    </div>
 
-  <header class="topbar">
-    <a class="brand" href="./index.html" aria-label="Volver al inicio">🎄 Novena de Aguinaldos</a>
-    <div class="top-actions">
-      <a class="btn small" href="./index.html">Inicio</a>
+    <!-- Fila 2 -->
+    <div class="topbar-row topbar-row--tools" aria-label="Herramientas de lectura">
+      <button id="btnTextSmaller" class="btn small" type="button" aria-label="Disminuir tamaño del texto">A-</button>
+      <button id="btnTextBigger" class="btn small" type="button" aria-label="Aumentar tamaño del texto">A+</button>
     </div>
   </header>
 
   <main class="container">
-
-    <!-- ✅ ESTE ID ES OBLIGATORIO PARA QUE app.js INICIALICE -->
+    <!-- Título de página -->
     <section class="card">
-      <h2 id="pageTitle" class="h2">Cargando…</h2>
+      <h2 id="pageTitle" class="page-title">Cargando...</h2>
     </section>
 
-    <!-- Accesibilidad (A- / A+) -->
-    <section class="card accessibility-card" aria-label="Accesibilidad">
-      <div class="accessibility-bar" role="toolbar" aria-label="Controles de lectura">
-        <!-- ✅ IDs que usa tu accessibility.js -->
-        <button id="btnTextSmaller" class="btn" type="button" aria-label="Disminuir tamaño de lectura">A-</button>
-        <button id="btnTextBigger" class="btn" type="button" aria-label="Aumentar tamaño de lectura">A+</button>
-      </div>
-    </section>
-
-    <!-- Contenido principal -->
+    <!-- Contenido principal (UNA sola card) -->
     <section id="content" class="card reading-card">
       <h3 id="itemTitle" class="reading-title"></h3>
       <div id="itemMeta" class="muted"></div>
 
-      <!-- ✅ Imagen del día (dinámica) -->
-		<div id="readingMedia" class="reading-media">
+      <!-- Imagen dinámica (Días y Oraciones) -->
+      <div id="readingMedia" class="reading-media">
         <img id="itemImage" class="reading-image" alt="" loading="lazy" decoding="async">
       </div>
 
+      <!-- Texto (escala con --reading-scale) -->
       <div id="itemText" class="reading-text" tabindex="0"></div>
     </section>
 
     <!-- Navegación -->
     <section id="navCard" class="card">
-      <h2 id="navTitle" class="h2">Navegación</h2>
+      <div id="navTitle" class="h2">Ir al día</div>
 
-      <div id="dayButtons" class="grid-3" style="display:none;"></div>
+      <!-- Días 1–9 -->
+      <div id="dayButtons" class="grid-3"></div>
+
+      <!-- Oraciones 1–5 -->
       <div id="prayerButtons" class="grid-2" style="display:none;"></div>
 
       <div id="navHint" class="muted"></div>
     </section>
 
-    <!-- Audio (✅ sin tarjeta anidada) -->
+    <!-- Audio -->
     <section class="card">
-      <h2 class="h2">Audio</h2>
-      <audio id="audioPlayer" class="audio" controls preload="none"></audio>
+      <div class="h2">Audio</div>
+      <audio id="audioPlayer" class="audio" controls preload="metadata"></audio>
     </section>
 
+    <!-- Footer -->
+    <footer class="footer">
+      <small>Desarrollado por Julio Ricardo Martínez Montezuma</small>
+    </footer>
   </main>
 
-  <footer class="footer">
-    <div class="muted">Julio Ricardo Martínez Montezuma</div>
-	<div class="muted">2025</div>
-  </footer>
-
-  <!-- Scripts (en el orden que venías usando) -->
+  <!-- JS (orden importa) -->
   <script src="js/storage.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/audio.js"></script>
   <script src="js/accessibility.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
