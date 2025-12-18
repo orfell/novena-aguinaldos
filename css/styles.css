@@ -82,7 +82,7 @@ body.no-bg{
 }
 
 /* =========================================================
-   4) Topbar (si la tienes)
+   4) Topbar (base)
    ========================================================= */
 .topbar{
   position: sticky;
@@ -212,48 +212,6 @@ body.no-bg{
 }
 
 /* =========================================================
-   9) Accesibilidad (A-/A+)
-   - sticky en desktop
-   - NO sticky en móvil
-   - botones a la mitad
-   ========================================================= */
-.accessibility-card{
-  position: sticky;
-  top: 64px;
-  z-index: 80;
-  padding: 12px;
-}
-
-.accessibility-bar{
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-/* En móvil, quitar sticky para evitar “huecos” y crecimiento raro */
-@media (max-width: 520px){
-  .accessibility-card{
-    position: static;
-    top: auto;
-  }
-}
-
-/* Botones A-/A+ a la mitad */
-.accessibility-bar .btn{
-  padding: 6px 10px;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  min-width: 48px;
-}
-
-/* (Si dejas el hint, aquí; si lo borraste del HTML, no molesta) */
-.accessibility-hint{
-  margin-top: 8px;
-  font-size: 0.92rem;
-  color: var(--muted);
-}
-
-/* =========================================================
    10) Lectura (Títulos NO escalan / Texto SÍ escala)
    ========================================================= */
 
@@ -322,31 +280,10 @@ body.no-bg{
   border: 1px solid rgba(255,255,255,0.18);
   box-shadow: 0 10px 24px rgba(0,0,0,0.25);
 }
-/* =========================
-   TOPBAR SIEMPRE FIJA EN MÓVIL
-   ========================= */
-@media (max-width: 520px){
-  .topbar{
-    position: fixed;     /* en móvil: fijo real */
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-  }
 
-  /* Empuja el contenido para que no quede debajo de la barra */
-  .container{
-    padding-top: 72px;   /* ajusta si tu topbar es más alta */
-  }
-
-  /* Si aún existe la card vieja de accesibilidad, la ocultamos en móvil */
-  .accessibility-card{
-    display: none !important;
-  }
-}
-/* =========================
-   TOPBAR MÓVIL – IDENTIDAD + ACCIONES
-   ========================= */
+/* =========================================================
+   TOPBAR MÓVIL (2 filas) – BLOQUE ÚNICO, SIN DUPLICADOS
+   ========================================================= */
 
 .topbar--double{
   display: flex;
@@ -354,7 +291,6 @@ body.no-bg{
   gap: 6px;
 }
 
-/* Fila 1: nombre de la app */
 .topbar-row--brand{
   display: flex;
   justify-content: center;
@@ -365,87 +301,54 @@ body.no-bg{
   font-weight: 900;
   font-size: 1.1rem;
   letter-spacing: 0.3px;
+  text-align: center;
 }
 
-/* Fila 2: botones centrados */
+/* Fila 2: A- | A+ | Inicio SIEMPRE alineados (no se dispersan) */
 .topbar-row--actions{
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
   align-items: center;
-  gap: 14px; /* 👈 separación clara entre A-, Inicio y A+ */
+  justify-items: stretch;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
 }
 
-/* Comportamiento en móvil */
+.topbar-row--actions .btn.small{
+  width: 100%;
+  padding: 6px 10px;
+  min-width: 0;
+  text-align: center;
+}
+
 @media (max-width: 520px){
   .topbar{
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     z-index: 9999;
   }
 
-  /* Espacio para las dos filas */
+  /* Espacio para 2 filas del header */
   .container{
-    padding-top: 120px;
+    padding-top: 130px;
   }
 
-  /* Oculta la vieja card de accesibilidad si aún existe */
+  /* Ya no se usa la tarjeta vieja de accesibilidad */
   .accessibility-card{
     display: none !important;
   }
 }
 
-/* Desktop: puede seguir sticky */
 @media (min-width: 521px){
   .topbar{
     position: sticky;
     top: 0;
-    z-index: 999;
-  }
-}
-/* =========================
-   TOPBAR móvil – acciones en una sola línea
-   ========================= */
-
-.topbar-row--actions{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: nowrap;       /* ❗ nunca se parte */
-  white-space: nowrap;
-}
-
-/* Igualar visualmente los tres botones */
-.topbar-row--actions .btn.small{
-  padding: 6px 10px;
-  min-width: 56px;
-  text-align: center;
-}
-
-/* Inicio no se estira */
-.topbar-row--actions .btn-home{
-  min-width: 70px;
-}
-
-/* Comportamiento fijo en móvil */
-@media (max-width: 520px){
-  .topbar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
+    z-index: 100;
   }
 
-  /* espacio para las dos filas */
-  .container{
-    padding-top: 120px;
-  }
-
-  /* por si existe la card vieja */
-  .accessibility-card{
-    display: none !important;
+  .topbar-row--actions{
+    max-width: 420px;
   }
 }

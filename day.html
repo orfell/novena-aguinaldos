@@ -8,29 +8,25 @@
 
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="css/styles.css">
-
-  <!-- iOS/PWA friendly -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 
 <body class="dark">
-  <!-- Topbar doble (móvil): fila 1 título + inicio, fila 2 A-/A+ centrados -->
-	<header class="topbar topbar--double">
-	  <!-- Fila 1: título -->
-	  <div class="topbar-row topbar-row--brand">
-		<span class="brand-title">🎄 Novena de Aguinaldos</span>
-	  </div>
+  <!-- Topbar (2 filas) -->
+  <header class="topbar topbar--double" role="banner">
+    <!-- Fila 1: título -->
+    <div class="topbar-row topbar-row--brand">
+      <span class="brand-title" aria-label="Novena de Aguinaldos">🎄 Novena de Aguinaldos</span>
+    </div>
 
-	  <!-- Fila 2: acciones (UNA sola línea) -->
-	  <div class="topbar-row topbar-row--actions" aria-label="Herramientas de lectura">
-		<button id="btnTextSmaller" class="btn small" type="button" aria-label="Disminuir tamaño del texto">A-</button>
-		<button id="btnTextBigger" class="btn small" type="button" aria-label="Aumentar tamaño del texto">A+</button>
-		<a class="btn small btn-home" href="./index.html" aria-label="Inicio">Inicio</a>
-	  </div>
-	</header>
+    <!-- Fila 2: acciones SIEMPRE en una sola línea -->
+    <nav class="topbar-row topbar-row--actions" aria-label="Acciones">
+      <button id="btnTextSmaller" class="btn small" type="button" aria-label="Disminuir tamaño del texto">A-</button>
+      <button id="btnTextBigger" class="btn small" type="button" aria-label="Aumentar tamaño del texto">A+</button>
+      <a class="btn small btn-home" href="./index.html" aria-label="Inicio">Inicio</a>
+    </nav>
+  </header>
 
-  <main class="container">
+  <main class="container" role="main">
     <!-- Título de página -->
     <section class="card">
       <h2 id="pageTitle" class="page-title">Cargando...</h2>
@@ -41,12 +37,12 @@
       <h3 id="itemTitle" class="reading-title"></h3>
       <div id="itemMeta" class="muted"></div>
 
-      <!-- Imagen dinámica (Días y Oraciones) -->
+      <!-- Imagen dinámica -->
       <div id="readingMedia" class="reading-media">
         <img id="itemImage" class="reading-image" alt="" loading="lazy" decoding="async">
       </div>
 
-      <!-- Texto (escala con --reading-scale) -->
+      <!-- Texto -->
       <div id="itemText" class="reading-text" tabindex="0"></div>
     </section>
 
@@ -54,10 +50,7 @@
     <section id="navCard" class="card">
       <div id="navTitle" class="h2">Ir al día</div>
 
-      <!-- Días 1–9 -->
       <div id="dayButtons" class="grid-3"></div>
-
-      <!-- Oraciones 1–5 -->
       <div id="prayerButtons" class="grid-2" style="display:none;"></div>
 
       <div id="navHint" class="muted"></div>
@@ -69,7 +62,6 @@
       <audio id="audioPlayer" class="audio" controls preload="metadata"></audio>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
       <small>Desarrollado por Julio Ricardo Martínez Montezuma</small>
     </footer>
