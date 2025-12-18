@@ -1,96 +1,74 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Novena de Aguinaldos</title>
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/img/favicon.png">
-
-  <!-- Open Graph (WhatsApp / redes) -->
-  <meta property="og:title" content="Novena de Aguinaldos">
-  <meta property="og:description" content="Familia Martínez Cuenca">
-  <meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
-
-  <!-- Estilos -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-
-  <!-- =========================
-       TOPBAR
-       ========================= -->
-  <header class="topbar topbar--double" role="banner">
-
-    <!-- Fila 1: título -->
-    <div class="topbar-row topbar-row--brand">
-      <span class="brand-title">🎄 Novena de Aguinaldos</span>
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="Ir al inicio">🎄 Novena de Aguinaldos</a>
+    <div class="top-actions">
+      <a class="btn small" href="./about.html">Acerca de</a>
+      <button id="btnToggleTheme" class="btn small" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
     </div>
-
-    <!-- Fila 2: acciones -->
-    <nav class="topbar-row topbar-row--actions" aria-label="Acciones">
-      <a href="day.html?tipo=dias&id=1"
-         class="btn small"
-         aria-label="Ir a la Novena">
-        Días
-      </a>
-
-      <a href="day.html?tipo=oraciones&id=1"
-         class="btn small"
-         aria-label="Ir a Oraciones">
-        Oraciones
-      </a>
-
-      <a href="villancicos.html"
-         class="btn small"
-         aria-label="Ir a Villancicos">
-        Villancicos
-      </a>
-    </nav>
-
   </header>
 
-  <!-- =========================
-       CONTENIDO PRINCIPAL
-       ========================= -->
-  <main class="container" role="main">
+  <main class="container">
 
-    <!-- Portada -->
-    <section class="card cover-card">
-      <img
-        src="assets/img/portada.jpg"
-        alt="Novena de Aguinaldos"
-        class="cover-image"
-        loading="lazy"
-      >
+    <section class="card">
+      <h1 class="h1">Novena de Aguinaldos</h1>
+      <div class="muted">Modo lector • Accesible • Audios locales</div>
     </section>
 
-    <!-- Menú principal -->
     <section class="card">
-      <h1 class="page-title">Bienvenidos</h1>
-      <p class="muted">
-        Novena de Aguinaldos – Familia Martínez Cuenca
-      </p>
+      <h2 class="h2">Secciones</h2>
 
       <div class="grid-2">
-        <a class="btn primary" href="day.html?tipo=dias&id=1">Días</a>
-        <a class="btn primary" href="day.html?tipo=oraciones&id=1">Oraciones</a>
-        <a class="btn primary" href="villancicos.html">Villancicos</a>
-        <a class="btn primary" href="about.html">Acerca de</a>
+        <a class="btn" href="./day.html?tipo=oraciones&id=1" aria-label="Abrir Oraciones">
+          📖 Oraciones
+        </a>
+
+        <a class="btn" href="./day.html?tipo=dias&id=1" aria-label="Abrir Días 1 a 9">
+          🗓️ Días 1–9
+        </a>
+
+        <a class="btn" href="./villancicos.html" aria-label="Abrir Villancicos">
+          🎶 Villancicos
+        </a>
+
+        <a class="btn" href="./about.html" aria-label="Abrir información de la app">
+          ℹ️ Acerca de
+        </a>
+      </div>
+
+      <div class="muted" style="margin-top: 10px;">
+        Entra a una sección y usa el panel de lectura para ajustar el texto y el tema.
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <small>Familia Martínez Cuenca · 2025</small>
-    </footer>
-
   </main>
 
+  <footer class="footer">
+    <div class="muted">App accesible • Modo lectura • Audios locales</div>
+  </footer>
+
+  <script>
+    (function () {
+      const btnTheme = document.getElementById("btnToggleTheme");
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") document.documentElement.classList.add("dark");
+
+      btnTheme?.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        localStorage.setItem(
+          "theme",
+          document.documentElement.classList.contains("dark") ? "dark" : "light"
+        );
+      });
+    })();
+  </script>
 </body>
 </html>

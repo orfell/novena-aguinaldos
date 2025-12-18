@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f1220">
+  <title>Acerca de · Novena de Aguinaldos</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="no-contrast">
+  <header class="topbar topbar--double" role="banner">
+    <div class="topbar-row topbar-row--brand">
+      <span class="brand-title">🎄 Novena de Aguinaldos</span>
+    </div>
+    <nav class="topbar-row topbar-row--actions" aria-label="Acciones">
+      <a class="btn small btn-home" href="./index.html" aria-label="Inicio">Inicio</a>
+    </nav>
+  </header>
+
+  <main class="container" role="main">
+    <section class="card">
+      <h1 class="page-title">Acerca de</h1>
+      <p class="muted" style="margin-top:8px;">
+        App web accesible para leer la Novena de Aguinaldos con audios locales y navegación móvil.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Características</h2>
+      <ul class="muted" style="line-height:1.7; margin:0; padding-left:18px;">
+        <li>Modo lectura (jerarquía tipográfica)</li>
+        <li>Escalado de texto (A− / A+)</li>
+        <li>Audios locales</li>
+        <li>Contenido desde archivos JSON</li>
+        <li>Diseño mobile-first</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">Créditos</h2>
+      <p class="muted" style="margin:0;">
+        Desarrollado por Julio Ricardo Martínez Montezuma.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <small>© 2025 · Novena de Aguinaldos</small>
+    </footer>
+  </main>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
