@@ -344,3 +344,108 @@ body.no-bg{
     display: none !important;
   }
 }
+/* =========================
+   TOPBAR MÓVIL – IDENTIDAD + ACCIONES
+   ========================= */
+
+.topbar--double{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Fila 1: nombre de la app */
+.topbar-row--brand{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-title{
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+}
+
+/* Fila 2: botones centrados */
+.topbar-row--actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px; /* 👈 separación clara entre A-, Inicio y A+ */
+}
+
+/* Comportamiento en móvil */
+@media (max-width: 520px){
+  .topbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+  }
+
+  /* Espacio para las dos filas */
+  .container{
+    padding-top: 120px;
+  }
+
+  /* Oculta la vieja card de accesibilidad si aún existe */
+  .accessibility-card{
+    display: none !important;
+  }
+}
+
+/* Desktop: puede seguir sticky */
+@media (min-width: 521px){
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+}
+/* =========================
+   TOPBAR móvil – acciones en una sola línea
+   ========================= */
+
+.topbar-row--actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;       /* ❗ nunca se parte */
+  white-space: nowrap;
+}
+
+/* Igualar visualmente los tres botones */
+.topbar-row--actions .btn.small{
+  padding: 6px 10px;
+  min-width: 56px;
+  text-align: center;
+}
+
+/* Inicio no se estira */
+.topbar-row--actions .btn-home{
+  min-width: 70px;
+}
+
+/* Comportamiento fijo en móvil */
+@media (max-width: 520px){
+  .topbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+  }
+
+  /* espacio para las dos filas */
+  .container{
+    padding-top: 120px;
+  }
+
+  /* por si existe la card vieja */
+  .accessibility-card{
+    display: none !important;
+  }
+}
