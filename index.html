@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Novena de Aguinaldos</title>
   <link rel="stylesheet" href="css/styles.css" />
-  
+  <!-- ESTA ES TU VERSIÓN (ORIGINAL) -->
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
 	<!-- Favicon (pestaña del navegador) ---------------------->
@@ -19,70 +19,100 @@
 	<meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
 
  
+=======
+
+  <style>
+    /* ===== PORTADA ===== */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background-image: url("assets/img/Portada-novena.jpg"); /* ajusta si el nombre cambia */
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+
+    /* Capa de lectura */
+    .heroOverlay {
+      width: min(560px, 100%);
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 16px;
+      padding: 18px 16px 20px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    }
+
+    /* Título */
+    .heroTitle {
+      text-align: center;
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.45);
+    }
+
+    /* Botones */
+    .heroButtons {
+      display: grid;
+      gap: 12px;
+    }
+
+    .btnChristmas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(120, 0, 0, 0.35);
+      background: rgba(255, 248, 240, 0.92); /* crema */
+      color: #7a0b0b; /* rojo vino */
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+    }
+
+    .btnChristmas:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.14);
+    }
+
+    /* Desktop: botones en fila */
+    @media (min-width: 900px) {
+      .heroOverlay { width: min(920px, 100%); }
+      .heroButtons { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+>>>>>>> 6dc675a355ad4eb4c37969ac85d483db0e1a267b
 </head>
 
 <body>
-  <header class="topbar">
-    <a class="brand" href="./index.html" aria-label="Ir al inicio">🎄 Novena de Aguinaldos</a>
-    <div class="top-actions">
-      <a class="btn small" href="./about.html">Acerca de</a>
-      <button id="btnToggleTheme" class="btn small" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
-    </div>
-  </header>
+  <main class="hero">
+    <section class="heroOverlay" aria-label="Portada de la Novena">
 
-  <main class="container">
+      <h2 class="heroTitle">Novena de Aguinaldos</h2>
 
-    <section class="card">
-      <h1 class="h1">Novena de Aguinaldos</h1>
-      <div class="muted">Modo lector • Accesible • Audios locales</div>
+      <nav class="heroButtons" aria-label="Menú principal">
+        <a class="btnChristmas" href="./day.html?tipo=oraciones&id=1">
+          Oraciones
+        </a>
+
+        <a class="btnChristmas" href="./day.html?tipo=dias&id=1">
+          Consideraciones
+        </a>
+
+        <a class="btnChristmas" href="./villancicos.html">
+          Villancicos
+        </a>
+      </nav>
+
     </section>
-
-    <section class="card">
-      <h2 class="h2">Secciones</h2>
-
-      <div class="grid-2">
-        <a class="btn" href="./day.html?tipo=oraciones&id=1" aria-label="Abrir Oraciones">
-          📖 Oraciones
-        </a>
-
-        <a class="btn" href="./day.html?tipo=dias&id=1" aria-label="Abrir Días 1 a 9">
-          🗓️ Días 1–9
-        </a>
-
-        <a class="btn" href="./villancicos.html" aria-label="Abrir Villancicos">
-          🎶 Villancicos
-        </a>
-
-        <a class="btn" href="./about.html" aria-label="Abrir información de la app">
-          ℹ️ Acerca de
-        </a>
-      </div>
-
-      <div class="muted" style="margin-top: 10px;">
-        Entra a una sección y usa el panel de lectura para ajustar el texto y el tema.
-      </div>
-    </section>
-
   </main>
-
-  <footer class="footer">
-    <div class="muted">App accesible • Modo lectura • Audios locales</div>
-  </footer>
-
-  <script>
-    (function () {
-      const btnTheme = document.getElementById("btnToggleTheme");
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") document.documentElement.classList.add("dark");
-
-      btnTheme?.addEventListener("click", () => {
-        document.documentElement.classList.toggle("dark");
-        localStorage.setItem(
-          "theme",
-          document.documentElement.classList.contains("dark") ? "dark" : "light"
-        );
-      });
-    })();
-  </script>
 </body>
 </html>
