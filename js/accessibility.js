@@ -2,42 +2,39 @@
 (function () {
   "use strict";
 
+  function forceDarkTheme() {
+    document.documentElement.classList.add("dark");
+    document.body?.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+  }
+
   function initAccessibility() {
-    const textEl = document.getElementById("itemText");
+    forceDarkTheme();
+
     const btnMinus = document.getElementById("btnTextSmaller");
     const btnPlus  = document.getElementById("btnTextBigger");
-    const btnTheme = document.getElementById("btnToggleTheme");
 
-    if (!textEl) return;
+    // Si por alguna razón no existen botones, no rompas la app
+    if (!btnMinus || !btnPlus) return;
 
-    const MIN = 0.95;
+    const MIN = 0.85;
     const MAX = 1.80;
     const STEP = 0.10;
 
-    let size = Number(localStorage.getItem("readingFontSize")) || 1.10;
+    // Guarda la escala
+    let scale = Number(localStorage.getItem("readingScale")) || 1.0;
 
-    function applySize() {
-      size = Math.max(MIN, Math.min(MAX, size));
-      // Solo el texto principal
-      textEl.style.setProperty("--reading-font-size", `${size}rem`);
-      localStorage.setItem("readingFontSize", String(size));
+    function applyScale() {
+      scale = Math.max(MIN, Math.min(MAX, scale));
+      // La escala vive en el body, pero SOLO afecta elementos que usen --reading-scale
+      document.body.style.setProperty("--reading-scale", String(scale));
+      localStorage.setItem("readingScale", String(scale));
     }
 
-    btnMinus?.addEventListener("click", () => { size -= STEP; applySize(); });
-    btnPlus?.addEventListener("click",  () => { size += STEP; applySize(); });
+    btnMinus.addEventListener("click", () => { scale -= STEP; applyScale(); });
+    btnPlus .addEventListener("click", () => { scale += STEP; applyScale(); });
 
-    btnTheme?.addEventListener("click", () => {
-      document.documentElement.classList.toggle("dark");
-      localStorage.setItem(
-        "theme",
-        document.documentElement.classList.contains("dark") ? "dark" : "light"
-      );
-    });
-
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") document.documentElement.classList.add("dark");
-
-    applySize();
+    applyScale();
   }
 
   window.initAccessibility = initAccessibility;

@@ -82,7 +82,7 @@ body.no-bg{
 }
 
 /* =========================================================
-   4) Topbar (base)
+   4) Topbar (si la tienes)
    ========================================================= */
 .topbar{
   position: sticky;
@@ -212,6 +212,48 @@ body.no-bg{
 }
 
 /* =========================================================
+   9) Accesibilidad (A-/A+)
+   - sticky en desktop
+   - NO sticky en móvil
+   - botones a la mitad
+   ========================================================= */
+.accessibility-card{
+  position: sticky;
+  top: 64px;
+  z-index: 80;
+  padding: 12px;
+}
+
+.accessibility-bar{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* En móvil, quitar sticky para evitar “huecos” y crecimiento raro */
+@media (max-width: 520px){
+  .accessibility-card{
+    position: static;
+    top: auto;
+  }
+}
+
+/* Botones A-/A+ a la mitad */
+.accessibility-bar .btn{
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  min-width: 48px;
+}
+
+/* (Si dejas el hint, aquí; si lo borraste del HTML, no molesta) */
+.accessibility-hint{
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+/* =========================================================
    10) Lectura (Títulos NO escalan / Texto SÍ escala)
    ========================================================= */
 
@@ -279,76 +321,4 @@ body.no-bg{
   object-fit: cover;
   border: 1px solid rgba(255,255,255,0.18);
   box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-}
-
-/* =========================================================
-   TOPBAR MÓVIL (2 filas) – BLOQUE ÚNICO, SIN DUPLICADOS
-   ========================================================= */
-
-.topbar--double{
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.topbar-row--brand{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.brand-title{
-  font-weight: 900;
-  font-size: 1.1rem;
-  letter-spacing: 0.3px;
-  text-align: center;
-}
-
-/* Fila 2: A- | A+ | Inicio SIEMPRE alineados (no se dispersan) */
-.topbar-row--actions{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  align-items: center;
-  justify-items: stretch;
-  width: 100%;
-  max-width: 360px;
-  margin: 0 auto;
-}
-
-.topbar-row--actions .btn.small{
-  width: 100%;
-  padding: 6px 10px;
-  min-width: 0;
-  text-align: center;
-}
-
-@media (max-width: 520px){
-  .topbar{
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 9999;
-  }
-
-  /* Espacio para 2 filas del header */
-  .container{
-    padding-top: 130px;
-  }
-
-  /* Ya no se usa la tarjeta vieja de accesibilidad */
-  .accessibility-card{
-    display: none !important;
-  }
-}
-
-@media (min-width: 521px){
-  .topbar{
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .topbar-row--actions{
-    max-width: 420px;
-  }
 }

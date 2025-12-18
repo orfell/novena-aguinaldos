@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Villancicos</title>
   <link rel="stylesheet" href="css/styles.css" />
+  
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  
+  <!-- Para WhatsApp / redes -->
+	<meta property="og:title" content="Novena de Aguinaldos">
+	<meta property="og:description" content="Familia Martínez Cuenca">
+	<meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/icon-512.png">
+	<meta property="og:type" content="website">
+
+	<!-- Para WhatsApp / redes -->
+	<meta property="og:title" content="Novena de Aguinaldos">
+	<meta property="og:description" content="Familia Martínez Cuenca">
+	<meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/icon-512.png">
+	<meta property="og:type" content="website">
+	<link rel="manifest" href="manifest.webmanifest">
+
+  
 </head>
 
 <body>
@@ -12,7 +29,7 @@
     <a class="brand" href="./index.html" aria-label="Volver al inicio">🎄 Novena de Aguinaldos</a>
     <div class="top-actions">
       <a class="btn small" href="./index.html">Inicio</a>
-      <button id="btnToggleTheme" class="btn small" type="button" aria-label="Cambiar tema claro/oscuro">🌙</button>
+      <!-- ✅ Botón de contraste eliminado en Villancicos -->
     </div>
   </header>
 
@@ -56,34 +73,19 @@
     <section class="card">
       <h2 class="h2">Listado</h2>
       <div id="list"
-			style="display:grid; gap:10px; overflow:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--border); border-radius: var(--radius); padding:10px;"
-			aria-label="Listado de villancicos (desliza para ver más)">
-	</div>
-
+        style="display:grid; gap:10px; overflow:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--border); border-radius: var(--radius); padding:10px;"
+        aria-label="Listado de villancicos (desliza para ver más)">
+      </div>
     </section>
 
   </main>
 
   <footer class="footer">
-    <div class="muted">App accesible • Modo lectura • Audios locales</div>
+    <div class="muted">Julio Ricardo Martínez Montezuma</div>
+    <div class="muted">2025</div>
   </footer>
 
   <script>
-    // Tema persistente igual que index/day
-    (function () {
-      const btnTheme = document.getElementById("btnToggleTheme");
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") document.documentElement.classList.add("dark");
-
-      btnTheme?.addEventListener("click", () => {
-        document.documentElement.classList.toggle("dark");
-        localStorage.setItem(
-          "theme",
-          document.documentElement.classList.contains("dark") ? "dark" : "light"
-        );
-      });
-    })();
-
     async function loadVillancicos() {
       const res = await fetch("data/villancicos.json", { cache: "no-store" });
       if (!res.ok) throw new Error("No se pudo cargar data/villancicos.json");
