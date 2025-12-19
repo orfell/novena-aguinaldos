@@ -1,33 +1,55 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Villancicos</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Villancicos · Novena de Aguinaldos</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+
+  <!-- Open Graph (WhatsApp / redes) -->
+  <meta property="og:title" content="Novena de Aguinaldos">
+  <meta property="og:description" content="Familia Martínez Cuenca">
+  <meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
+
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body>
-  <header class="topbar">
-    <a class="brand" href="./index.html" aria-label="Volver al inicio">🎄 Novena de Aguinaldos</a>
-    <div class="top-actions">
-      <a class="btn small" href="./index.html">Inicio</a>
-      <!-- ✅ Botón de contraste eliminado en Villancicos -->
-    </div>
-  </header>
+<body class="dark">
 
-  <main class="container">
+  <!-- =========================
+       CONTENIDO
+       ========================= -->
+  <main class="container" role="main">
 
+    <!-- Título -->
     <section class="card">
-      <h1 class="h1">Villancicos</h1>
-      <div class="muted">Toca un villancico para reproducirlo aquí mismo.</div>
+      <h1 class="page-title">Villancicos</h1>
+      <p class="muted">
+        Toca un villancico para reproducirlo aquí mismo.
+      </p>
     </section>
 
-    <!-- Reproductor embebido (UNO SOLO) -->
+    <!-- Reproductor -->
     <section class="card">
       <h2 class="h2" id="playerTitle">Selecciona un villancico</h2>
 
-      <div style="position:relative; width:100%; padding-top:56.25%; border-radius: var(--radius); overflow:hidden; border:1px solid var(--border);">
+      <!-- Contenedor de video -->
+      <div
+        id="videoContainer"
+        style="
+          position:relative;
+          width:100%;
+          padding-top:56.25%;
+          border-radius:16px;
+          overflow:hidden;
+          border:1px solid rgba(255,255,255,0.18);
+          box-shadow:0 10px 24px rgba(0,0,0,0.25);
+        ">
         <iframe
           id="ytPlayer"
           title="Reproductor de YouTube"
@@ -38,42 +60,46 @@
         </iframe>
       </div>
 
-      <div id="playerHint" class="muted" style="margin-top:10px;">
-        El video se abrirá aquí cuando elijas uno del listado.
-      </div>
+      <p class="muted" id="playerHint" style="margin-top:10px;">
+        Si no reproduce automáticamente, pulsa ▶ dentro del video.
+      </p>
     </section>
 
     <!-- Buscar -->
     <section class="card">
       <h2 class="h2">Buscar</h2>
-      <input id="searchInput" type="search" placeholder="Escribe el nombre del villancico…"
-             class="btn" style="width:100%; text-align:left;"
-             aria-label="Buscar villancico por nombre" />
-      <div id="countInfo" class="muted" style="margin-top:10px;"></div>
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Buscar villancico…"
+        aria-label="Buscar villancico"
+        class="btn"
+        style="width:100%; text-align:left;"
+      >
+      <div id="countInfo" class="muted" style="margin-top:8px;"></div>
     </section>
 
-    <!-- Lista (scroll natural) -->
+    <!-- Lista de villancicos -->
     <section class="card">
-      <h2 class="h2">Listado</h2>
-      <div id="list"
-        style="display:grid; gap:10px; overflow:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--border); border-radius: var(--radius); padding:10px;"
-        aria-label="Listado de villancicos (desliza para ver más)">
-      </div>
+      <div id="villancicosList" style="display:grid; gap:10px;"></div>
     </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <small>Familia Martínez Cuenca · 2025</small>
+    </footer>
 
   </main>
 
-  <footer class="footer">
-    <div class="muted">Julio Ricardo Martínez Montezuma</div>
-    <div class="muted">2025</div>
-  </footer>
-
+  <!-- =========================
+       SCRIPT (autónomo)
+       ========================= -->
   <script>
-    async function loadVillancicos() {
+    async function loadVillancicos(){
       const res = await fetch("data/villancicos.json", { cache: "no-store" });
-      if (!res.ok) throw new Error("No se pudo cargar data/villancicos.json");
+      if(!res.ok) throw new Error("No se pudo cargar data/villancicos.json");
       const data = await res.json();
-      if (!Array.isArray(data)) throw new Error("villancicos.json debe ser un arreglo");
+      if(!Array.isArray(data)) throw new Error("villancicos.json debe ser un arreglo");
       return data;
     }
 
@@ -86,17 +112,14 @@
     }
 
     function getYouTubeId(url){
-      if (!url) return "";
+      if(!url) return "";
       const u = url.toString().trim();
-      // youtu.be/ID
       const m1 = u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/);
-      if (m1) return m1[1];
-      // youtube.com/watch?v=ID
+      if(m1) return m1[1];
       const m2 = u.match(/[?&]v=([A-Za-z0-9_-]{6,})/);
-      if (m2) return m2[1];
-      // youtube.com/embed/ID
+      if(m2) return m2[1];
       const m3 = u.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/);
-      if (m3) return m3[1];
+      if(m3) return m3[1];
       return "";
     }
 
@@ -107,38 +130,47 @@
       const iframe  = document.getElementById("ytPlayer");
 
       titleEl.textContent = nombre || "Villancico";
-      if (!id) {
+
+      if(!id){
         iframe.src = "";
-        hintEl.textContent = "Este villancico no tiene URL válida de YouTube.";
+        hintEl.textContent = "Este villancico no tiene un enlace válido.";
         return;
       }
 
-      // autoplay=1 para que arranque al tocar (si el navegador lo permite)
       iframe.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&autoplay=1`;
       hintEl.textContent = "Si no reproduce automáticamente, pulsa ▶ dentro del video.";
     }
 
     function makeRow(v, idx){
-      const nombre = (v.Nombre || v.nombre || v.Titulo || v.titulo || `Villancico ${idx+1}`).toString().trim();
-      const url = (v.Url || v.url || v.Video || v.videolink || "").toString().trim();
+      const nombre =
+        (v.Nombre || v.nombre || v.Titulo || v.titulo || `Villancico ${idx+1}`)
+          .toString()
+          .trim();
+
+      const url =
+        (v.Url || v.url || v.Video || v.video || v.link || "")
+          .toString()
+          .trim();
+
       const ok = Boolean(getYouTubeId(url));
 
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "btn";
-      btn.style.textAlign = "left";
       btn.style.width = "100%";
+      btn.style.textAlign = "left";
       btn.style.display = "flex";
       btn.style.justifyContent = "space-between";
       btn.style.alignItems = "center";
       btn.style.gap = "10px";
+      btn.setAttribute("aria-label", `Reproducir: ${nombre}`);
 
       const left = document.createElement("div");
       left.style.display = "grid";
       left.style.gap = "2px";
 
       const t = document.createElement("div");
-      t.style.fontWeight = "800";
+      t.style.fontWeight = "900";
       t.textContent = nombre;
 
       const s = document.createElement("div");
@@ -155,7 +187,7 @@
       btn.appendChild(left);
       btn.appendChild(right);
 
-      if (!ok){
+      if(!ok){
         btn.disabled = true;
         btn.style.opacity = "0.6";
         return btn;
@@ -163,15 +195,15 @@
 
       btn.addEventListener("click", () => {
         setPlayer(nombre, url);
-        // En móvil: subir suavemente al reproductor
-        document.getElementById("playerTitle").scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("playerTitle")
+          .scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
       return btn;
     }
 
     (async function main(){
-      const listEl = document.getElementById("list");
+      const listEl = document.getElementById("villancicosList");
       const search = document.getElementById("searchInput");
       const countInfo = document.getElementById("countInfo");
 
@@ -190,7 +222,12 @@
 
       function applyFilter(){
         const q = normalize(search.value);
-        const filtered = !q ? all : all.filter(v => normalize(v.Nombre || v.nombre || v.Titulo || v.titulo).includes(q));
+        const filtered = !q
+          ? all
+          : all.filter(v =>
+              normalize(v.Nombre || v.nombre || v.Titulo || v.titulo).includes(q)
+            );
+
         countInfo.textContent = `Mostrando ${filtered.length} de ${all.length}`;
         render(filtered);
       }
@@ -198,10 +235,15 @@
       search.addEventListener("input", applyFilter);
       applyFilter();
 
-      // Si el primer item tiene video, lo preseleccionamos (opcional)
-      const firstWithUrl = all.find(v => getYouTubeId(v.Url || v.url || v.Video || v.videolink));
-      if (firstWithUrl) setPlayer(firstWithUrl.Nombre || firstWithUrl.Titulo || "Villancico", firstWithUrl.Url || firstWithUrl.url || "");
+      const first = all.find(v => getYouTubeId(v.Url || v.url || v.Video || v.video || v.link));
+      if(first){
+        setPlayer(
+          first.Nombre || first.Titulo || "Villancico",
+          first.Url || first.url || first.Video || first.video || first.link
+        );
+      }
     })();
   </script>
+
 </body>
 </html>
