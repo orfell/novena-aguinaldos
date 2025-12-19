@@ -1,59 +1,102 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Novena de Aguinaldos</title>
+  <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <style>
+    /* ===== PORTADA ===== */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background-image: url("assets/img/Portada-novena.jpg"); /* ajusta si el nombre cambia */
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
 
-  <!-- Open Graph (WhatsApp / redes) -->
-  <meta property="og:title" content="Novena de Aguinaldos">
-  <meta property="og:description" content="Familia Martínez Cuenca">
-  <meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://orfell.github.io/novena-aguinaldos/">
+    /* Capa de lectura */
+    .heroOverlay {
+      width: min(560px, 100%);
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 16px;
+      padding: 18px 16px 20px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    }
 
-  <link rel="stylesheet" href="css/styles.css">
+    /* Título */
+    .heroTitle {
+      text-align: center;
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.45);
+    }
 
-  <!-- Fondo SOLO para la portada -->
-<style>
-  body.portada{
-    background-image: url("assets/img/portada-novena.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* ✅ fondo fijo */
-  }
-</style>
+    /* Botones */
+    .heroButtons {
+      display: grid;
+      gap: 12px;
+    }
+
+    .btnChristmas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(120, 0, 0, 0.35);
+      background: rgba(255, 248, 240, 0.92); /* crema */
+      color: #7a0b0b; /* rojo vino */
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+    }
+
+    .btnChristmas:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.14);
+    }
+
+    /* Desktop: botones en fila */
+    @media (min-width: 900px) {
+      .heroOverlay { width: min(920px, 100%); }
+      .heroButtons { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
 </head>
 
-<body class="dark index-hero">
+<body>
+  <main class="hero">
+    <section class="heroOverlay" aria-label="Portada de la Novena">
 
-  <main class="hero-wrap" role="main">
+      <h2 class="heroTitle">Novena de Aguinaldos</h2>
 
-    <!-- Tarjeta glass del menú (encima del fondo) -->
-    <section class="card hero-card">
-      <h2 class="page-title" style="margin:0 0 8px 0;">Novena deAguinaldos</h2>
-      <p class="muted" style="margin:0 0 14px 0;">
-        Novena de Aguinaldos – Familia Martínez Cuenca
-      </p>
+      <nav class="heroButtons" aria-label="Menú principal">
+        <a class="btnChristmas" href="./day.html?tipo=oraciones&id=1">
+          Oraciones
+        </a>
 
-      <div class="grid-2">
-        <a class="btn-christmas" href="day.html?tipo=dias&id=1">Días</a>
-        <a class="btn-christmas" href="day.html?tipo=oraciones&id=1">Oraciones</a>
-        <a class="btn-christmas" href="villancicos.html">Villancicos</a>
-        <a class="btn-christmas" href="about.html">Acerca de</a>
-      </div>
+        <a class="btnChristmas" href="./day.html?tipo=dias&id=1">
+          Consideraciones
+        </a>
+
+        <a class="btnChristmas" href="./villancicos.html">
+          Villancicos
+        </a>
+      </nav>
+
     </section>
-
-    <footer class="footer">
-      <small>Familia Martínez Cuenca · 2025</small>
-    </footer>
-
   </main>
-
 </body>
 </html>
