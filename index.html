@@ -19,43 +19,15 @@
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- Fondo SOLO para la portada -->
-  <style>
-    body.index-hero{
-      background-image: url("assets/img/portada-novena.jpg") !important;
-      background-size: cover !important;
-      background-position: center top !important;
-      background-repeat: no-repeat !important;
-      background-attachment: scroll !important;
-      background-color: #0f1220;
-      min-height: 100vh;
-    }
-
-    /* Para que el contenido se vea centrado y “landing” */
-    .hero-wrap{
-      width: min(980px, 100%);
-      margin: 0 auto;
-      padding: 18px 14px 30px 14px;
-      min-height: 100vh;
-      display: grid;
-      align-content: center;
-      gap: 14px;
-    }
-
-    /* Card glass un poquito más “portada” */
-    .hero-card{
-      background: rgba(0,0,0,0.38);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 18px;
-      box-shadow: 0 16px 34px rgba(0,0,0,0.35);
-    }
-
-    @media (max-width: 520px){
-      .hero-wrap{
-        padding-top: 22px;
-        padding-bottom: 26px;
-      }
-    }
-  </style>
+<style>
+  body.portada{
+    background-image: url("assets/img/portada-novena.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* ✅ fondo fijo */
+  }
+</style>
 </head>
 
 <body class="dark index-hero">
@@ -64,7 +36,7 @@
 
     <!-- Tarjeta glass del menú (encima del fondo) -->
     <section class="card hero-card">
-      <h1 class="page-title" style="margin:0 0 8px 0;">Bienvenidos</h1>
+      <h2 class="page-title" style="margin:0 0 8px 0;">Novena deAguinaldos</h2>
       <p class="muted" style="margin:0 0 14px 0;">
         Novena de Aguinaldos – Familia Martínez Cuenca
       </p>
