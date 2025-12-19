@@ -9,7 +9,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
-  <!-- Open Graph (WhatsApp / redes) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Novena de Aguinaldos">
   <meta property="og:description" content="Familia Martínez Cuenca">
   <meta property="og:image" content="https://orfell.github.io/novena-aguinaldos/assets/img/favicon.png">
@@ -19,7 +19,27 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body class="dark">
+<body class="dark no-contrast">
+
+  <!-- =========================
+       TOPBAR (MISMA QUE DÍAS)
+       ========================= -->
+  <header class="topbar topbar--double" role="banner">
+
+    <!-- Fila 1: título -->
+    <div class="topbar-row topbar-row--brand">
+      <span class="brand-title">🎄 Novena de Aguinaldos</span>
+    </div>
+
+    <!-- Fila 2: acciones -->
+    <nav class="topbar-row topbar-row--actions" aria-label="Acciones">
+      <!-- IDs usados por accessibility.js -->
+      <button id="btnTextSmaller" class="btn small" type="button" aria-label="Disminuir texto">A-</button>
+      <button id="btnTextBigger" class="btn small" type="button" aria-label="Aumentar texto">A+</button>
+      <a href="./index.html" class="btn small btn-home" aria-label="Inicio">Inicio</a>
+    </nav>
+
+  </header>
 
   <!-- =========================
        CONTENIDO
@@ -38,9 +58,7 @@
     <section class="card">
       <h2 class="h2" id="playerTitle">Selecciona un villancico</h2>
 
-      <!-- Contenedor de video -->
       <div
-        id="videoContainer"
         style="
           position:relative;
           width:100%;
@@ -79,12 +97,11 @@
       <div id="countInfo" class="muted" style="margin-top:8px;"></div>
     </section>
 
-    <!-- Lista de villancicos -->
+    <!-- Lista -->
     <section class="card">
       <div id="villancicosList" style="display:grid; gap:10px;"></div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
       <small>Familia Martínez Cuenca · 2025</small>
     </footer>
@@ -92,156 +109,63 @@
   </main>
 
   <!-- =========================
-       SCRIPT (autónomo)
+       SCRIPTS
        ========================= -->
+  <script src="js/storage.js"></script>
+  <script src="js/accessibility.js"></script>
+
   <script>
     async function loadVillancicos(){
       const res = await fetch("data/villancicos.json", { cache: "no-store" });
-      if(!res.ok) throw new Error("No se pudo cargar data/villancicos.json");
       const data = await res.json();
-      if(!Array.isArray(data)) throw new Error("villancicos.json debe ser un arreglo");
       return data;
     }
 
     function normalize(s){
-      return (s || "")
-        .toString()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+      return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
     }
 
     function getYouTubeId(url){
       if(!url) return "";
-      const u = url.toString().trim();
-      const m1 = u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/);
-      if(m1) return m1[1];
-      const m2 = u.match(/[?&]v=([A-Za-z0-9_-]{6,})/);
-      if(m2) return m2[1];
-      const m3 = u.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/);
-      if(m3) return m3[1];
-      return "";
+      const m = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+      return m ? m[1] : "";
     }
 
     function setPlayer(nombre, url){
       const id = getYouTubeId(url);
-      const titleEl = document.getElementById("playerTitle");
-      const hintEl  = document.getElementById("playerHint");
-      const iframe  = document.getElementById("ytPlayer");
-
-      titleEl.textContent = nombre || "Villancico";
-
-      if(!id){
-        iframe.src = "";
-        hintEl.textContent = "Este villancico no tiene un enlace válido.";
-        return;
-      }
-
-      iframe.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&autoplay=1`;
-      hintEl.textContent = "Si no reproduce automáticamente, pulsa ▶ dentro del video.";
+      document.getElementById("playerTitle").textContent = nombre;
+      document.getElementById("ytPlayer").src =
+        id ? `https://www.youtube.com/embed/${id}?autoplay=1` : "";
     }
 
-    function makeRow(v, idx){
-      const nombre =
-        (v.Nombre || v.nombre || v.Titulo || v.titulo || `Villancico ${idx+1}`)
-          .toString()
-          .trim();
-
-      const url =
-        (v.Url || v.url || v.Video || v.video || v.link || "")
-          .toString()
-          .trim();
-
-      const ok = Boolean(getYouTubeId(url));
-
+    function makeRow(v){
       const btn = document.createElement("button");
-      btn.type = "button";
       btn.className = "btn";
-      btn.style.width = "100%";
       btn.style.textAlign = "left";
-      btn.style.display = "flex";
-      btn.style.justifyContent = "space-between";
-      btn.style.alignItems = "center";
-      btn.style.gap = "10px";
-      btn.setAttribute("aria-label", `Reproducir: ${nombre}`);
-
-      const left = document.createElement("div");
-      left.style.display = "grid";
-      left.style.gap = "2px";
-
-      const t = document.createElement("div");
-      t.style.fontWeight = "900";
-      t.textContent = nombre;
-
-      const s = document.createElement("div");
-      s.className = "muted";
-      s.textContent = ok ? "YouTube" : "Sin enlace válido";
-
-      left.appendChild(t);
-      left.appendChild(s);
-
-      const right = document.createElement("div");
-      right.textContent = ok ? "▶" : "—";
-      right.setAttribute("aria-hidden", "true");
-
-      btn.appendChild(left);
-      btn.appendChild(right);
-
-      if(!ok){
-        btn.disabled = true;
-        btn.style.opacity = "0.6";
-        return btn;
-      }
-
-      btn.addEventListener("click", () => {
-        setPlayer(nombre, url);
-        document.getElementById("playerTitle")
-          .scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-
+      btn.textContent = v.Nombre;
+      btn.onclick = () => setPlayer(v.Nombre, v.Url);
       return btn;
     }
 
-    (async function main(){
-      const listEl = document.getElementById("villancicosList");
+    (async function(){
+      const list = document.getElementById("villancicosList");
       const search = document.getElementById("searchInput");
-      const countInfo = document.getElementById("countInfo");
+      const count = document.getElementById("countInfo");
 
-      let all = [];
-      try{
-        all = await loadVillancicos();
-      }catch(e){
-        listEl.innerHTML = `<div class="muted">Error: ${String(e)}</div>`;
-        return;
-      }
+      const all = await loadVillancicos();
 
       function render(items){
-        listEl.innerHTML = "";
-        items.forEach((v, i) => listEl.appendChild(makeRow(v, i)));
+        list.innerHTML = "";
+        items.forEach(v => list.appendChild(makeRow(v)));
+        count.textContent = `Mostrando ${items.length} de ${all.length}`;
       }
 
-      function applyFilter(){
+      search.oninput = () => {
         const q = normalize(search.value);
-        const filtered = !q
-          ? all
-          : all.filter(v =>
-              normalize(v.Nombre || v.nombre || v.Titulo || v.titulo).includes(q)
-            );
+        render(all.filter(v => normalize(v.Nombre).includes(q)));
+      };
 
-        countInfo.textContent = `Mostrando ${filtered.length} de ${all.length}`;
-        render(filtered);
-      }
-
-      search.addEventListener("input", applyFilter);
-      applyFilter();
-
-      const first = all.find(v => getYouTubeId(v.Url || v.url || v.Video || v.video || v.link));
-      if(first){
-        setPlayer(
-          first.Nombre || first.Titulo || "Villancico",
-          first.Url || first.url || first.Video || first.video || first.link
-        );
-      }
+      render(all);
     })();
   </script>
 
